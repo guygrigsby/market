@@ -2,6 +2,7 @@ import React from 'react'
 import Header from '../components/Header.js'
 import Nav from '../components/Nav.js'
 import Body from '../components/Body.js'
+import Login from '../components/Login.js'
 
 const menu = [
   {
@@ -25,7 +26,7 @@ const menu = [
 const Home = () => {
   return (
     <div>
-      <Header />
+      <Header login={<Login />} />
       <Nav items={menu} />
       <Body />
     </div>

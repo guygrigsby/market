@@ -1,21 +1,36 @@
 import React from 'react'
 import { css } from 'pretty-lights'
-import mtg from '../mtg_logo.png'
+import PropTypes from 'prop-types'
+import { B, U, R, G, W } from '../Mana.js'
 
 const style = css`
+  display: flex;
+  justify-content: flex-start;
+  background-color: black;
   padding: 25px;
 `
 const image = css`
-  display: block;
-  height: 25%;
+  height: 53px;
+  width: 53px;
+  margin: 0 20px 0 20px;
 `
-
-const Header = () => {
+const log = css`
+  margin-left: auto;
+`
+const Header = ({ login }) => {
   return (
     <div className={style}>
-      <img className={image} src={mtg} alt="Magic: The Gathering" />
+      <B style={image} />
+      <U style={image} />
+      <W style={image} />
+      <R style={image} />
+      <G style={image} />
+      <div className={log}>{login} </div>
     </div>
   )
 }
 
+Header.propTypes = {
+  login: PropTypes.element,
+}
 export default Header
