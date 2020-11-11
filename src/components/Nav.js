@@ -4,15 +4,16 @@ import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 
 const style = css`
+  display: flex;
   background-color: #333;
+  justify-content: space-evenly;
   overflow: hidden;
 `
 
 const link = css`
-  float: left;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 14px 0 16px 0;
   text-decoration: none;
   &:hover: {
     background-color: #ddd;
@@ -23,6 +24,7 @@ const link = css`
 const Nav = ({ items }) => {
   return (
     <nav className={style}>
+      <span />
       {items.map((e, idx) => {
         return (
           <Link key={idx} to={e.link} className={link}>
@@ -30,6 +32,7 @@ const Nav = ({ items }) => {
           </Link>
         )
       })}
+      <span />
     </nav>
   )
 }

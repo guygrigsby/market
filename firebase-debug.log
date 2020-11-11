@@ -1,0 +1,87 @@
+[debug] [2020-11-11T21:02:43.513Z] ----------------------------------------------------------------------
+[debug] [2020-11-11T21:02:43.515Z] Command:       /usr/local/Cellar/node/14.8.0/bin/node /usr/local/bin/firebase emulators:start
+[debug] [2020-11-11T21:02:43.515Z] CLI Version:   8.15.1
+[debug] [2020-11-11T21:02:43.515Z] Platform:      darwin
+[debug] [2020-11-11T21:02:43.515Z] Node Version:  v14.8.0
+[debug] [2020-11-11T21:02:43.516Z] Time:          Wed Nov 11 2020 14:02:43 GMT-0700 (Mountain Standard Time)
+[debug] [2020-11-11T21:02:43.516Z] ----------------------------------------------------------------------
+[debug] [2020-11-11T21:02:43.516Z] 
+[debug] [2020-11-11T21:02:43.522Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-11-11T21:02:43.522Z] > authorizing via signed-in user
+[info] i  emulators: Starting emulators: auth, database, hosting, pubsub {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, database, hosting, pubsub"}}
+[debug] [2020-11-11T21:02:43.538Z] [hub] writing locator at /var/folders/js/pybyh0jd3qsg_szrv6mrmkpc0000gn/T/hub-marketplace-c87d0.json
+[debug] [2020-11-11T21:02:43.560Z] database rules config:  [{"instance":"marketplace-c87d0","rules":"/Users/guygrigsby/go/src/github.com/guygrigsby/market/database.rules.json"}]
+[debug] [2020-11-11T21:02:43.562Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2020-11-11T21:02:43.563Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2020-11-11T21:02:43.563Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2020-11-11T21:02:43.563Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar","--host","localhost","--port",9000],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar\",\"--host\",\"localhost\",\"--port\",9000],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\"],\"joinArgs\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2020-11-11T21:02:43.972Z] WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (file:/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar) to field sun.nio.ch.SelectorImpl.selectedKeys
+WARNING: Please consider reporting this to the maintainers of io.netty.util.internal.ReflectionUtil
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+ {"metadata":{"emulator":{"name":"database"},"message":"WARNING: An illegal reflective access operation has occurred\nWARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (file:/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar) to field sun.nio.ch.SelectorImpl.selectedKeys\nWARNING: Please consider reporting this to the maintainers of io.netty.util.internal.ReflectionUtil\nWARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations\nWARNING: All illegal access operations will be denied in a future release\n"}}
+[debug] [2020-11-11T21:02:44.462Z] 14:02:44.461 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+ {"metadata":{"emulator":{"name":"database"},"message":"14:02:44.461 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started\n"}}
+[debug] [2020-11-11T21:02:44.573Z] 14:02:44.572 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000
+ {"metadata":{"emulator":{"name":"database"},"message":"14:02:44.572 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000\n"}}
+[debug] [2020-11-11T21:02:47.010Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"pubsub"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2020-11-11T21:02:47.011Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"pubsub"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2020-11-11T21:02:47.011Z] Starting Pub/Sub Emulator with command {"binary":"/Users/guygrigsby/.cache/firebase/emulators/pubsub-emulator-0.1.0/pubsub-emulator/bin/cloud-pubsub-emulator","args":["--host=localhost","--port=8085"],"optionalArgs":["port","host"],"joinArgs":true} {"metadata":{"emulator":{"name":"pubsub"},"message":"Starting Pub/Sub Emulator with command {\"binary\":\"/Users/guygrigsby/.cache/firebase/emulators/pubsub-emulator-0.1.0/pubsub-emulator/bin/cloud-pubsub-emulator\",\"args\":[\"--host=localhost\",\"--port=8085\"],\"optionalArgs\":[\"port\",\"host\"],\"joinArgs\":true}"}}
+[info] i  pubsub: Pub/Sub Emulator logging to pubsub-debug.log {"metadata":{"emulator":{"name":"pubsub"},"message":"Pub/Sub Emulator logging to \u001b[1mpubsub-debug.log\u001b[22m"}}
+[debug] [2020-11-11T21:02:47.135Z] This is the Google Pub/Sub fake.
+Implementation may be incomplete or differ from the real system.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"This is the Google Pub/Sub fake.\nImplementation may be incomplete or differ from the real system.\n"}}
+[debug] [2020-11-11T21:02:47.166Z] Nov 11, 2020 2:02:47 PM com.google.cloud.pubsub.testing.v1.Main main
+INFO: IAM integration is disabled. IAM policy methods and ACL checks are not supported
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 11, 2020 2:02:47 PM com.google.cloud.pubsub.testing.v1.Main main\nINFO: IAM integration is disabled. IAM policy methods and ACL checks are not supported\n"}}
+[debug] [2020-11-11T21:02:47.444Z] Nov 11, 2020 2:02:47 PM io.gapi.emulators.netty.NettyUtil applyJava7LongHostnameWorkaround
+INFO: Unable to apply Java 7 long hostname workaround.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 11, 2020 2:02:47 PM io.gapi.emulators.netty.NettyUtil applyJava7LongHostnameWorkaround\nINFO: Unable to apply Java 7 long hostname workaround.\n"}}
+[debug] [2020-11-11T21:02:47.512Z] Nov 11, 2020 2:02:47 PM com.google.cloud.pubsub.testing.v1.Main main
+INFO: Server started, listening on 8085
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 11, 2020 2:02:47 PM com.google.cloud.pubsub.testing.v1.Main main\nINFO: Server started, listening on 8085\n"}}
+[debug] [2020-11-11T21:02:47.529Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/marketplace-c87d0/webApps/-/config  
+ 
+[debug] [2020-11-11T21:02:47.583Z] Nov 11, 2020 2:02:47 PM io.gapi.emulators.grpc.GrpcServer$3 operationComplete
+INFO: Adding handler(s) to newly registered Channel.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 11, 2020 2:02:47 PM io.gapi.emulators.grpc.GrpcServer$3 operationComplete\nINFO: Adding handler(s) to newly registered Channel.\n"}}
+[debug] [2020-11-11T21:02:47.773Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 11 Nov 2020 21:02:47 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  hosting: Serving hosting files from: build {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mbuild\u001b[22m"}}
+[info] ✔  hosting: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
+[debug] [2020-11-11T21:02:47.804Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2020-11-11T21:02:47.804Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2020-11-11T21:02:47.804Z] Starting Emulator UI with command {"binary":"node","args":["/Users/guygrigsby/.cache/firebase/emulators/ui-v1.2.2/server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/guygrigsby/.cache/firebase/emulators/ui-v1.2.2/server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2020-11-11T21:02:47.895Z] Web / API server started at http://localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at http://localhost:4000\n"}}
+[debug] [2020-11-11T21:02:48.067Z] >>> HTTP REQUEST PUT http://localhost:9000/.settings/rules.json?ns=marketplace-c87d0  
+ {
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": false,
+    ".write": false
+  }
+}
+[debug] [2020-11-11T21:02:48.316Z] <<< HTTP RESPONSE 200 {"content-length":"15","content-type":"application/json; charset=utf-8","access-control-allow-origin":"*","cache-control":"no-cache","x-firebase-project-id":"marketplace-c87d0","x-firebase-project-number":"123456789","x-firebase-uuid":"b63cbfa5-a3a0-4a02-bab2-485538e0407d"}
+[info] 
+┌───────────────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! View status and logs at http://localhost:4000 │
+└───────────────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI            │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Authentication │ localhost:9099 │ http://localhost:4000/auth     │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Database       │ localhost:9000 │ http://localhost:4000/database │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Hosting        │ localhost:5000 │ n/a                            │
+├────────────────┼────────────────┼────────────────────────────────┤
+│ Pub/Sub        │ localhost:8085 │ n/a                            │
+└────────────────┴────────────────┴────────────────────────────────┘
+  Other reserved ports: 4400, 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 

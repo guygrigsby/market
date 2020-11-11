@@ -5,14 +5,14 @@ import { B, U, R, G, W } from '../Mana.js'
 
 const style = css`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-evenly;
+  align-items: center;
   background-color: black;
   padding: 25px;
 `
 const image = css`
   height: 53px;
   width: 53px;
-  margin: 0 20px 0 20px;
 `
 const log = css`
   margin-left: auto;
@@ -25,7 +25,7 @@ const Header = ({ login }) => {
       <W style={image} />
       <R style={image} />
       <G style={image} />
-      <div className={log}>{login} </div>
+      {login && <div className={log}>{login} </div>}
     </div>
   )
 }
