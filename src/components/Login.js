@@ -1,5 +1,5 @@
 import React from 'react'
-import { css } from 'pretty-lights'
+import { cx, css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 
 const style = css`
@@ -7,13 +7,16 @@ const style = css`
   flex-direction: column;
   justify-content: space-between;
 `
-
-const field1 = css`
+const fields = css`
   height: 20px;
+  padding: 5px;
+  border-radius: 2px;
+  border: none;
+`
+const field1 = css`
   margin-bottom: 10px;
 `
 const field2 = css`
-  height: 20px;
   align-self: flex-end;
 `
 const Header = ({ login }) => {
@@ -25,13 +28,13 @@ const Header = ({ login }) => {
   return (
     <form className={style} onSubmit={signin}>
       <input
-        className={field1}
+        className={cx(fields, field1)}
         type="text"
         placeholder="username"
         onChange={(e) => setUser(e.target.value)}
       ></input>
       <input
-        className={field2}
+        className={cx(fields, field2)}
         type="password"
         placeholder="password"
         onChange={(e) => hashPass(e.target.value)}
