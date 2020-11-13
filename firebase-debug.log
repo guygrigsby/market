@@ -1,0 +1,78 @@
+[debug] [2020-11-13T05:25:57.411Z] ----------------------------------------------------------------------
+[debug] [2020-11-13T05:25:57.413Z] Command:       /usr/local/Cellar/node/14.8.0/bin/node /usr/local/bin/firebase emulators:start
+[debug] [2020-11-13T05:25:57.413Z] CLI Version:   8.15.1
+[debug] [2020-11-13T05:25:57.413Z] Platform:      darwin
+[debug] [2020-11-13T05:25:57.413Z] Node Version:  v14.8.0
+[debug] [2020-11-13T05:25:57.414Z] Time:          Thu Nov 12 2020 22:25:57 GMT-0700 (Mountain Standard Time)
+[debug] [2020-11-13T05:25:57.414Z] ----------------------------------------------------------------------
+[debug] [2020-11-13T05:25:57.414Z] 
+[debug] [2020-11-13T05:25:57.421Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-11-13T05:25:57.421Z] > authorizing via signed-in user
+[info] i  emulators: Starting emulators: auth, functions, database, hosting, pubsub {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, database, hosting, pubsub"}}
+[debug] [2020-11-13T05:25:57.439Z] [hub] writing locator at /var/folders/js/pybyh0jd3qsg_szrv6mrmkpc0000gn/T/hub-marketplace-c87d0.json
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: firestore {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mfirestore\u001b[22m"}}
+[warn] ⚠  Your requested "node" version "12" doesn't match your global version "14" {"metadata":{"emulator":{"name":"functions"},"message":"Your requested \"node\" version \"12\" doesn't match your global version \"14\""}}
+[debug] [2020-11-13T05:25:57.470Z] defaultcredentials: writing to file /Users/guygrigsby/.config/firebase/guy_grigsby_gmail.com_application_default_credentials.json
+[debug] [2020-11-13T05:25:57.473Z] Setting GAC to /Users/guygrigsby/.config/firebase/guy_grigsby_gmail.com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /Users/guygrigsby/.config/firebase/guy_grigsby_gmail.com_application_default_credentials.json"}}
+[debug] [2020-11-13T05:25:57.733Z] database rules config:  [{"instance":"marketplace-c87d0","rules":"/Users/guygrigsby/go/src/github.com/guygrigsby/market/database.rules.json"}]
+[debug] [2020-11-13T05:25:57.736Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2020-11-13T05:25:57.737Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2020-11-13T05:25:57.737Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2020-11-13T05:25:57.737Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar","--host","localhost","--port",9000,"--functions_emulator_host","localhost","--functions_emulator_port",5001],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host"],"joinArgs":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar\",\"--host\",\"localhost\",\"--port\",9000,\"--functions_emulator_host\",\"localhost\",\"--functions_emulator_port\",5001],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\"],\"joinArgs\":false}"}}
+[info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
+[debug] [2020-11-13T05:25:58.736Z] WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (file:/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar) to field sun.nio.ch.SelectorImpl.selectedKeys
+WARNING: Please consider reporting this to the maintainers of io.netty.util.internal.ReflectionUtil
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+ {"metadata":{"emulator":{"name":"database"},"message":"WARNING: An illegal reflective access operation has occurred\nWARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (file:/Users/guygrigsby/.cache/firebase/emulators/firebase-database-emulator-v4.7.1.jar) to field sun.nio.ch.SelectorImpl.selectedKeys\nWARNING: Please consider reporting this to the maintainers of io.netty.util.internal.ReflectionUtil\nWARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations\nWARNING: All illegal access operations will be denied in a future release\n"}}
+[debug] [2020-11-13T05:25:59.451Z] 22:25:59.450 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+ {"metadata":{"emulator":{"name":"database"},"message":"22:25:59.450 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started\n"}}
+[debug] [2020-11-13T05:25:59.613Z] 22:25:59.612 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000
+ {"metadata":{"emulator":{"name":"database"},"message":"22:25:59.612 [main] INFO com.firebase.server.forge.App$ - Listening at localhost:9000\n"}}
+[debug] [2020-11-13T05:26:02.217Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"pubsub"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2020-11-13T05:26:02.217Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"pubsub"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2020-11-13T05:26:02.217Z] Starting Pub/Sub Emulator with command {"binary":"/Users/guygrigsby/.cache/firebase/emulators/pubsub-emulator-0.1.0/pubsub-emulator/bin/cloud-pubsub-emulator","args":["--host=localhost","--port=8085"],"optionalArgs":["port","host"],"joinArgs":true} {"metadata":{"emulator":{"name":"pubsub"},"message":"Starting Pub/Sub Emulator with command {\"binary\":\"/Users/guygrigsby/.cache/firebase/emulators/pubsub-emulator-0.1.0/pubsub-emulator/bin/cloud-pubsub-emulator\",\"args\":[\"--host=localhost\",\"--port=8085\"],\"optionalArgs\":[\"port\",\"host\"],\"joinArgs\":true}"}}
+[info] i  pubsub: Pub/Sub Emulator logging to pubsub-debug.log {"metadata":{"emulator":{"name":"pubsub"},"message":"Pub/Sub Emulator logging to \u001b[1mpubsub-debug.log\u001b[22m"}}
+[debug] [2020-11-13T05:26:02.380Z] This is the Google Pub/Sub fake.
+Implementation may be incomplete or differ from the real system.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"This is the Google Pub/Sub fake.\nImplementation may be incomplete or differ from the real system.\n"}}
+[debug] [2020-11-13T05:26:02.411Z] Nov 12, 2020 10:26:02 PM com.google.cloud.pubsub.testing.v1.Main main
+INFO: IAM integration is disabled. IAM policy methods and ACL checks are not supported
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 12, 2020 10:26:02 PM com.google.cloud.pubsub.testing.v1.Main main\nINFO: IAM integration is disabled. IAM policy methods and ACL checks are not supported\n"}}
+[debug] [2020-11-13T05:26:02.823Z] Nov 12, 2020 10:26:02 PM io.gapi.emulators.netty.NettyUtil applyJava7LongHostnameWorkaround
+INFO: Unable to apply Java 7 long hostname workaround.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 12, 2020 10:26:02 PM io.gapi.emulators.netty.NettyUtil applyJava7LongHostnameWorkaround\nINFO: Unable to apply Java 7 long hostname workaround.\n"}}
+[debug] [2020-11-13T05:26:02.912Z] Nov 12, 2020 10:26:02 PM com.google.cloud.pubsub.testing.v1.Main main
+INFO: Server started, listening on 8085
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 12, 2020 10:26:02 PM com.google.cloud.pubsub.testing.v1.Main main\nINFO: Server started, listening on 8085\n"}}
+[debug] [2020-11-13T05:26:02.986Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-11-13T05:26:02.987Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-11-13T05:26:03.073Z] Nov 12, 2020 10:26:03 PM io.gapi.emulators.grpc.GrpcServer$3 operationComplete
+INFO: Adding handler(s) to newly registered Channel.
+ {"metadata":{"emulator":{"name":"pubsub"},"message":"Nov 12, 2020 10:26:03 PM io.gapi.emulators.grpc.GrpcServer$3 operationComplete\nINFO: Adding handler(s) to newly registered Channel.\n"}}
+[debug] [2020-11-13T05:26:03.166Z] <<< HTTP RESPONSE 200 {"date":"Fri, 13 Nov 2020 05:26:03 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-11-13T05:26:03.178Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/marketplace-c87d0/webApps/-/config  
+ 
+[debug] [2020-11-13T05:26:03.638Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 13 Nov 2020 05:26:03 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-Q050=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  hosting: Serving hosting files from: build {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mbuild\u001b[22m"}}
+[info] ✔  hosting: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
+[debug] [2020-11-13T05:26:03.932Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2020-11-13T05:26:03.932Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2020-11-13T05:26:03.932Z] Starting Emulator UI with command {"binary":"node","args":["/Users/guygrigsby/.cache/firebase/emulators/ui-v1.2.2/server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/guygrigsby/.cache/firebase/emulators/ui-v1.2.2/server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2020-11-13T05:26:04.024Z] Web / API server started at http://localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at http://localhost:4000\n"}}
+[info] i  functions: Watching "/Users/guygrigsby/go/src/github.com/guygrigsby/market/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/Users/guygrigsby/go/src/github.com/guygrigsby/market/functions\" for Cloud Functions..."}}
+[debug] [2020-11-13T05:26:04.195Z] [worker-pool] addWorker(~diagnostic~) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(~diagnostic~)"}}
+[debug] [2020-11-13T05:26:04.195Z] [worker-pool] Adding worker with key ~diagnostic~, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key ~diagnostic~, total=1"}}
+[debug] [2020-11-13T05:26:04.195Z] [worker-pool] submitWork(triggerId=) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=)"}}
+[debug] [2020-11-13T05:26:04.196Z] [worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: Assigning socketPath: /var/folders/js/pybyh0jd3qsg_szrv6mrmkpc0000gn/T/fire_emu_32725.sock {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: Assigning socketPath: /var/folders/js/pybyh0jd3qsg_szrv6mrmkpc0000gn/T/fire_emu_32725.sock"}}
+[debug] [2020-11-13T05:26:04.196Z] [worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: BUSY"}}
+[debug] [2020-11-13T05:26:04.510Z] [runtime-status] [32725] Functions runtime initialized. {"cwd":"/Users/guygrigsby/go/src/github.com/guygrigsby/market/functions","node_version":"14.8.0"} {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [32725] Functions runtime initialized. {\"cwd\":\"/Users/guygrigsby/go/src/github.com/guygrigsby/market/functions\",\"node_version\":\"14.8.0\"}"}}
+[debug] [2020-11-13T05:26:04.512Z] [runtime-status] [32725] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"message":"[runtime-status] [32725] Disabled runtime features: undefined"}}
+[warn] ⚠  The Cloud Functions emulator requires the module "firebase-admin" to be installed. This package is in your package.json, but it's not available. You probably need to run "npm install" in your functions directory. {"metadata":{"emulator":{"name":"functions"},"message":"The Cloud Functions emulator requires the module \"firebase-admin\" to be installed. This package is in your package.json, but it's not available. You probably need to run \"npm install\" in your functions directory."}}
+[info] i  functions: Your functions could not be parsed due to an issue with your node_modules (see above) {"metadata":{"emulator":{"name":"functions"},"message":"Your functions could not be parsed due to an issue with your node_modules (see above)"}}
+[debug] [2020-11-13T05:26:04.528Z] [worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: exited"}}
+[debug] [2020-11-13T05:26:04.528Z] [worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-~diagnostic~-b3d09752-73dd-431f-82d6-6bd757b8d215]: FINISHED"}}
