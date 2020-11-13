@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 942.16 745.1">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 942.56 762.96">
   <defs>
-    <pattern id="New_Pattern_Swatch_2" data-name="New Pattern Swatch 2" width="271.32" height="267.37" patternTransform="translate(-47.8 -260.59) rotate(24.85) scale(0.84)" patternUnits="userSpaceOnUse" viewBox="0 0 271.32 267.37">
+    <pattern id="New_Pattern_Swatch_2" data-name="New Pattern Swatch 2" width="271.32" height="267.37" patternTransform="translate(-357.46 -43.32) rotate(-26.7) scale(0.84)" patternUnits="userSpaceOnUse" viewBox="0 0 271.32 267.37">
       <rect width="271.32" height="267.37" style="fill: none"/>
       <polygon points="271.32 267.37 0 267.37 0 14.74 0 0 19.21 0 271.32 0 271.32 267.37" style="fill: #fff"/>
       <g>
@@ -779,21 +779,21 @@
     </pattern>
   </defs>
   <g style="isolation: isolate">
-    <g id="White">
+    <g id="white">
       <g>
         <g style="opacity: 0.5">
           <g>
-            <path d="M235.54,144.77A16.93,16.93,0,0,0,213.12,153L43.1,520.07a16.94,16.94,0,0,0,8.23,22.43l734.15,340a17,17,0,0,0,22.43-8.23l170-367.08a16.94,16.94,0,0,0-8.23-22.42ZM924.85,501.26a16.94,16.94,0,0,1,8.22,22.43L797.17,817.12c-3.91,8.43-11.88,9.41-17.71,2.18L293.8,217.22c-5.83-7.24-3.71-10,4.72-6.05ZM96.18,526A16.94,16.94,0,0,1,88,503.62L224.37,209.08c3.9-8.43,11.87-9.41,17.7-2.18L729.46,811.12c5.83,7.24,3.71,10-4.72,6Z" transform="translate(-39.43 -141.1)" style="fill: #fff"/>
-            <path d="M235.54,144.77A16.93,16.93,0,0,0,213.12,153L43.1,520.07a16.94,16.94,0,0,0,8.23,22.43l734.15,340a17,17,0,0,0,22.43-8.23l170-367.08a16.94,16.94,0,0,0-8.23-22.42ZM924.85,501.26a16.94,16.94,0,0,1,8.22,22.43L797.17,817.12c-3.91,8.43-11.88,9.41-17.71,2.18L293.8,217.22c-5.83-7.24-3.71-10,4.72-6.05ZM96.18,526A16.94,16.94,0,0,1,88,503.62L224.37,209.08c3.9-8.43,11.87-9.41,17.7-2.18L729.46,811.12c5.83,7.24,3.71,10-4.72,6Z" transform="translate(-39.43 -141.1)" style="fill: none;stroke-miterlimit: 10;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
+            <path d="M50.63,499.66a16.94,16.94,0,0,0-7.49,22.68L224.92,883.73a17,17,0,0,0,22.68,7.5L970.39,527.65a17,17,0,0,0,7.5-22.68L796.1,143.58a16.93,16.93,0,0,0-22.68-7.5ZM758.42,181.44a16.93,16.93,0,0,1,22.68,7.5L926.42,477.82c4.17,8.3,0,15.15-9.3,15.22l-773.52,6c-9.29.07-10.1-3.28-1.8-7.46ZM262.6,845.87a17,17,0,0,1-22.68-7.5l-145.86-290c-4.18-8.29,0-15.14,9.3-15.22l776.27-6c9.29-.07,10.1,3.29,1.8,7.46Z" transform="translate(-39.23 -132.17)" style="fill: #fff"/>
+            <path d="M50.63,499.66a16.94,16.94,0,0,0-7.49,22.68L224.92,883.73a17,17,0,0,0,22.68,7.5L970.39,527.65a17,17,0,0,0,7.5-22.68L796.1,143.58a16.93,16.93,0,0,0-22.68-7.5ZM758.42,181.44a16.93,16.93,0,0,1,22.68,7.5L926.42,477.82c4.17,8.3,0,15.15-9.3,15.22l-773.52,6c-9.29.07-10.1-3.28-1.8-7.46ZM262.6,845.87a17,17,0,0,1-22.68-7.5l-145.86-290c-4.18-8.29,0-15.14,9.3-15.22l776.27-6c9.29-.07,10.1,3.29,1.8,7.46Z" transform="translate(-39.23 -132.17)" style="fill: none;stroke-miterlimit: 10;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
           </g>
           <g>
-            <path d="M224.88,247l177.81,82.35L380,378.46,268,326.6l-20.32,43.86,73.34,34L298.7,452.62l-73.34-34-42.84,92.5-65.86-30.5Z" transform="translate(-39.43 -141.1)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-            <path d="M474.69,362.71l72.59,33.62L516.89,666l-69.15-32,6.53-50.6-77.53-35.91-35.12,37.36L288,560ZM462.64,527.65,474,442.21,415.2,505.67Z" transform="translate(-39.43 -141.1)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-            <path d="M638.58,438.62l65.86,30.5L596.22,702.77l-65.86-30.5Z" transform="translate(-39.43 -141.1)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-            <path d="M745.3,488.05l66.46,30.78L726.83,702.18l95.94,44.44-23.29,50.29-162.4-75.22Z" transform="translate(-39.43 -141.1)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
+            <path d="M124.08,571.58l175.06-88.06,24.31,48.33L213.23,587.3,235,630.47l72.2-36.32L331,641.6l-72.21,36.32L304.62,769,239.79,801.6Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
+            <path d="M370,447.86l71.47-35.95L633.82,603.39l-68.08,34.25-35.57-36.58-76.33,38.4,7.42,50.73-52.75,26.54Zm121.69,112-59.83-62L445,583.34Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
+            <path d="M531.37,366.7l64.84-32.62,115.71,230-64.84,32.61Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
+            <path d="M636.44,313.85l65.43-32.92,90.8,180.52,94.46-47.52L912,463.45,752.15,543.87Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
           </g>
         </g>
-        <text transform="translate(154.98 456.59)" style="mix-blend-mode: multiply;font-size: 444.5815124511719px;fill: #fff;font-family: GoudyMediaeval-DemiBold, Goudy Mediaeval;font-weight: 300">mtg</text>
+        <text transform="translate(120.41 489.2)" style="mix-blend-mode: multiply;font-size: 545.1508178710938px;fill: #fff;font-family: GoudyMediaeval-DemiBold, Goudy Mediaeval;font-weight: 300">mtg</text>
       </g>
     </g>
   </g>
