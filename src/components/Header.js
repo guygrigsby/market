@@ -22,8 +22,8 @@ const logo = css`
   width: 200px;
 `
 const image = css`
-  height: 100px;
-  width: 100px;
+  height: 53;
+  width: 53;
 `
 const log = css`
   margin-left: auto;
