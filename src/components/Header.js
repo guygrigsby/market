@@ -30,10 +30,7 @@ const image = css`
     transform: scale(1.1);
   }
 `
-const log = css`
-  margin-left: auto;
-`
-const Header = ({ login }) => {
+const Header = ({ setUser, setPass }) => {
   return (
     <div className={box}>
       <Link to="/">
@@ -45,13 +42,13 @@ const Header = ({ login }) => {
         <W style={image} />
         <R style={image} />
         <G style={image} />
-        {login && <div className={log}>{login} </div>}
       </div>
     </div>
   )
 }
 
 Header.propTypes = {
-  login: PropTypes.element,
+  setUser: PropTypes.func,
+  setPass: PropTypes.func,
 }
 export default Header

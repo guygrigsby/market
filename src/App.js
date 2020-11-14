@@ -19,16 +19,12 @@ const menu = [
     link: '/about',
     content: 'About',
   },
-  {
-    link: '/login',
-    content: 'Login',
-  },
 ]
 
 const App = () => {
   return (
     <Router>
-      <Header />
+      <Header  />
       <Nav items={menu} />
       <Page>
         <Switch>
