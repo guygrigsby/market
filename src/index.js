@@ -2,13 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
-import RootContext from './RootContext.js'
+import AuthProvider from './AuthProvider.js'
 
 ReactDOM.render(
   <React.StrictMode>
-    <RootContext>
+    <AuthProvider>
       <App />
-    </RootContext>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

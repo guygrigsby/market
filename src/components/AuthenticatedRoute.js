@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { RootContext } from '../../RootContext'
+import { useAuth } from '../AuthProvider.js'
 
 const AuthenticatedRoute = ({ render, ...routeProps }) => {
-  const { authenticated } = useContext(RootContext)
+  const { authenticated } = useAuth()
   return (
     <Route
       {...routeProps}

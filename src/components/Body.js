@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { css } from 'pretty-lights'
 
 const style = css`
@@ -9,8 +10,11 @@ const style = css`
   margin-left: 20px;
 `
 
-const Body = () => {
+const Body = ({ children }) => {
   return <div className={style}></div>
+}
+Body.propTypes = {
+  children: PropTypes.any,
 }
 
 export default Body

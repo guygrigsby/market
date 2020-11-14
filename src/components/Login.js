@@ -1,55 +1,35 @@
-import React from 'react'
-import { cx, css } from 'pretty-lights'
-import PropTypes from 'prop-types'
-import { toggleSignIn } from '../auth.js'
+import firebase from 'firebase'
+import * as firebaseui from 'firebaseui'
 
-const style = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`
-const fields = css`
-  height: 20px;
-  padding: 5px;
-  border-radius: 2px;
-  border: none;
-  font-size: 1em;
-`
-const field1 = css`
-  margin-bottom: 10px;
-`
-const field2 = css`
-  align-self: flex-end;
-`
-const Header = ({ login }) => {
-  const [user, setUser] = React.useState('')
-  const [pass, setPass] = React.useState('')
-
-  return (
-    <form
-      className={style}
-      onSubmit={(e) =>
-        e.preventDefault && e.stopPropagation && toggleSignIn(user, pass)
-      }
-    >
-      <input
-        className={cx(fields, field1)}
-        type="email"
-        placeholder="email"
-        onChange={(e) => setUser(e.target.value)}
-      />
-      <input
-        className={cx(fields, field2)}
-        type="password"
-        placeholder="password"
-        onChange={(e) => setPass(e.target.value)}
-      />
-      <input type="submit" />
-    </form>
-  )
+var uiConfig = {
+  callbacks: {
+    signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+      // User successfully signed in.
+      // Return type determines whether we continue the redirect automatically
+      // or whether we leave that to developer to handle.
+      return true
+    },
+    uiShown: () => {
+      // The widget is rendered.
+      // Hide the loader.
+      document.getElementById('loader').style.display = 'none'
+    },
+  },
+  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+  signInFlow: 'popup',
+  signInSuccessUrl: '<url-to-redirect-to-on-success>',
+  signInOptions: [
+    // Leave the lines as is for the providers you want to offer your users.
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  ],
+  // Terms of service url.
+  tosUrl: '<your-tos-url>',
+  // Privacy policy url.
+  privacyPolicyUrl: '<your-privacy-policy-url>',
 }
 
-Header.propTypes = {
-  login: PropTypes.element,
+const ui = new firebaseui.auth.AuthUI(firebase.auth())
+
+export const login = () => {
+  ui.start('#firebaseui-auth-container', uiConfig)
 }
-export default Header
