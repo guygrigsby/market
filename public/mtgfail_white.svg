@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 942.56 762.96">
   <defs>
-    <pattern id="New_Pattern_Swatch_2" data-name="New Pattern Swatch 2" width="271.32" height="267.37" patternTransform="translate(-357.46 -43.32) rotate(-26.7) scale(0.84)" patternUnits="userSpaceOnUse" viewBox="0 0 271.32 267.37">
+    <pattern id="Unnamed_Pattern_2" data-name="Unnamed Pattern 2" width="271.32" height="267.37" patternTransform="translate(-361.87 -66.28) rotate(-26.7) scale(0.84)" patternUnits="userSpaceOnUse" viewBox="0 0 271.32 267.37">
       <rect width="271.32" height="267.37" style="fill: none"/>
       <polygon points="271.32 267.37 0 267.37 0 14.74 0 0 19.21 0 271.32 0 271.32 267.37" style="fill: #fff"/>
       <g>
@@ -778,22 +778,20 @@
       </g>
     </pattern>
   </defs>
-  <g style="isolation: isolate">
+  <g id="Layer_2" data-name="Layer 2">
     <g id="white">
-      <g>
-        <g style="opacity: 0.5">
-          <g>
-            <path d="M50.63,499.66a16.94,16.94,0,0,0-7.49,22.68L224.92,883.73a17,17,0,0,0,22.68,7.5L970.39,527.65a17,17,0,0,0,7.5-22.68L796.1,143.58a16.93,16.93,0,0,0-22.68-7.5ZM758.42,181.44a16.93,16.93,0,0,1,22.68,7.5L926.42,477.82c4.17,8.3,0,15.15-9.3,15.22l-773.52,6c-9.29.07-10.1-3.28-1.8-7.46ZM262.6,845.87a17,17,0,0,1-22.68-7.5l-145.86-290c-4.18-8.29,0-15.14,9.3-15.22l776.27-6c9.29-.07,10.1,3.29,1.8,7.46Z" transform="translate(-39.23 -132.17)" style="fill: #fff"/>
-            <path d="M50.63,499.66a16.94,16.94,0,0,0-7.49,22.68L224.92,883.73a17,17,0,0,0,22.68,7.5L970.39,527.65a17,17,0,0,0,7.5-22.68L796.1,143.58a16.93,16.93,0,0,0-22.68-7.5ZM758.42,181.44a16.93,16.93,0,0,1,22.68,7.5L926.42,477.82c4.17,8.3,0,15.15-9.3,15.22l-773.52,6c-9.29.07-10.1-3.28-1.8-7.46ZM262.6,845.87a17,17,0,0,1-22.68-7.5l-145.86-290c-4.18-8.29,0-15.14,9.3-15.22l776.27-6c9.29-.07,10.1,3.29,1.8,7.46Z" transform="translate(-39.23 -132.17)" style="fill: none;stroke-miterlimit: 10;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-          </g>
-          <g>
-            <path d="M124.08,571.58l175.06-88.06,24.31,48.33L213.23,587.3,235,630.47l72.2-36.32L331,641.6l-72.21,36.32L304.62,769,239.79,801.6Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-            <path d="M370,447.86l71.47-35.95L633.82,603.39l-68.08,34.25-35.57-36.58-76.33,38.4,7.42,50.73-52.75,26.54Zm121.69,112-59.83-62L445,583.34Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-            <path d="M531.37,366.7l64.84-32.62,115.71,230-64.84,32.61Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-            <path d="M636.44,313.85l65.43-32.92,90.8,180.52,94.46-47.52L912,463.45,752.15,543.87Z" transform="translate(-39.23 -132.17)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#New_Pattern_Swatch_2)"/>
-          </g>
+      <text transform="translate(108.21 507.82)" style="font-size: 545.1508178710938px;fill: #fff;font-family: GoudyMediaeval-DemiBold, Goudy Mediaeval;font-weight: 300">mtg</text>
+      <g style="opacity: 0.6">
+        <g>
+          <path d="M17.92,374a16.94,16.94,0,0,0-7.49,22.68l181.78,361.4a17,17,0,0,0,22.68,7.5L937.68,402a17,17,0,0,0,7.5-22.68L763.39,17.92a16.94,16.94,0,0,0-22.68-7.49ZM725.71,55.79a16.93,16.93,0,0,1,22.68,7.49L893.71,352.17c4.17,8.3,0,15.15-9.3,15.22l-773.52,6c-9.29.07-10.1-3.28-1.8-7.46ZM229.89,720.22a17,17,0,0,1-22.68-7.5l-145.86-290c-4.18-8.3,0-15.15,9.3-15.22l776.27-6c9.29-.07,10.1,3.29,1.8,7.46Z" transform="translate(-6.52 -6.52)" style="fill: #fff"/>
+          <path d="M17.92,374a16.94,16.94,0,0,0-7.49,22.68l181.78,361.4a17,17,0,0,0,22.68,7.5L937.68,402a17,17,0,0,0,7.5-22.68L763.39,17.92a16.94,16.94,0,0,0-22.68-7.49ZM725.71,55.79a16.93,16.93,0,0,1,22.68,7.49L893.71,352.17c4.17,8.3,0,15.15-9.3,15.22l-773.52,6c-9.29.07-10.1-3.28-1.8-7.46ZM229.89,720.22a17,17,0,0,1-22.68-7.5l-145.86-290c-4.18-8.3,0-15.15,9.3-15.22l776.27-6c9.29-.07,10.1,3.29,1.8,7.46Z" transform="translate(-6.52 -6.52)" style="fill: none;stroke-miterlimit: 10;stroke-width: 4.222750002675458px;stroke: url(#Unnamed_Pattern_2)"/>
         </g>
-        <text transform="translate(120.41 489.2)" style="mix-blend-mode: multiply;font-size: 545.1508178710938px;fill: #fff;font-family: GoudyMediaeval-DemiBold, Goudy Mediaeval;font-weight: 300">mtg</text>
+        <g>
+          <path d="M91.37,445.93l175.06-88.06,24.31,48.33L180.52,461.64l21.72,43.18,72.2-36.32L298.31,516,226.1,552.27l45.81,91.07L207.08,676Z" transform="translate(-6.52 -6.52)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#Unnamed_Pattern_2)"/>
+          <path d="M337.31,322.21l71.47-35.95L601.11,477.74,533,512l-35.57-36.58-76.33,38.4,7.42,50.73L375.8,591.08ZM459,434.19l-59.83-62,13.12,85.54Z" transform="translate(-6.52 -6.52)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#Unnamed_Pattern_2)"/>
+          <path d="M498.66,241.05l64.84-32.62,115.71,230-64.84,32.61Z" transform="translate(-6.52 -6.52)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#Unnamed_Pattern_2)"/>
+          <path d="M603.73,188.19l65.43-32.91L760,335.8l94.46-47.52,24.9,49.51L719.44,418.22Z" transform="translate(-6.52 -6.52)" style="fill: #fff;stroke-width: 4.222750002675458px;stroke: url(#Unnamed_Pattern_2)"/>
+        </g>
       </g>
     </g>
   </g>

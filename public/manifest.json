@@ -3,12 +3,12 @@
   "name": "mtg.fail Marketplace for Magic: The Gathering Cards",
   "icons": [
     {
-      "src": "failmtgfail_logo_bw192x192.png",
+      "src": "mtgfail_white192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "failmtgfail_logo_bw512x512.png",
+      "src": "mtgfail_white512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

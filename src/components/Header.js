@@ -22,8 +22,12 @@ const logo = css`
   width: 200px;
 `
 const image = css`
-  height: 100px;
-  width: 100px;
+  height: 60;
+  transition: transform 0.15s;
+  width: 60px;
+  &:hover {
+    transform: scale(1.1);
+  }
 `
 const log = css`
   margin-left: auto;
