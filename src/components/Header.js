@@ -3,6 +3,7 @@ import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import { B, U, R, G, W } from '../Mana.js'
 import { MTGFailLogoWhite as MTGFailLogo } from '../MTGFailLogo.js'
+import { Link } from 'react-router-dom'
 
 const box = css`
   display: flex;
@@ -35,7 +36,9 @@ const log = css`
 const Header = ({ login }) => {
   return (
     <div className={box}>
-      <MTGFailLogo style={logo} />
+      <Link to="/">
+        <MTGFailLogo style={logo} />
+      </Link>
       <div className={style}>
         <B style={image} />
         <U style={image} />

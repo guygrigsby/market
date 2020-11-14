@@ -1,5 +1,7 @@
+import React from 'react'
 import firebase from 'firebase'
-import * as firebaseui from 'firebaseui'
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
+import { useAuth } from '../AuthProvider.js'
 
 var uiConfig = {
   callbacks: {
@@ -28,8 +30,10 @@ var uiConfig = {
   privacyPolicyUrl: '<your-privacy-policy-url>',
 }
 
-const ui = new firebaseui.auth.AuthUI(firebase.auth())
-
-export const login = () => {
-  ui.start('#firebaseui-auth-container', uiConfig)
+const Login = () => {
+  const { config } = useAuth()
+  console.log('login page')
+  return <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={config} />
 }
+
+export default Login

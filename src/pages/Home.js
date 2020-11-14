@@ -1,20 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Body from '../components/Body.js'
-import { useAuth } from '../AuthProvider.js'
-import { login } from '../components/Login.js'
 
-const Home = ({ initLogin }) => {
-  const auth = useAuth()
-  if (initLogin && !auth.authenticated) {
-    console.log('In home calling login', initLogin, auth)
-    login()
-  }
+const Home = () => {
+  //writeUserData(
+  //  1,
+  //  'Guy',
+  //  'guy.grigsby@gmail.com',
+  //  'https://media-exp1.licdn.com/dms/image/C4D03AQE4cljWD-Nd8g/profile-displayphoto-shrink_400_400/0',
+  //)
   return <Body />
-}
-
-Home.propTypes = {
-  initLogin: PropTypes.bool,
 }
 
 export default Home

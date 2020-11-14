@@ -2,13 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
-import AuthProvider from './AuthProvider.js'
+import { ProvideAuth } from './use-auth.js'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </React.StrictMode>,
+  <ProvideAuth>
+    <App />
+  </ProvideAuth>,
   document.getElementById('root'),
 )

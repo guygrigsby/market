@@ -2,24 +2,16 @@ import React, { useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import firebase from 'firebase/app'
 import 'firebase/auth'
-
-console.log(process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'development') {
-  console.warn('using firebase emulators. Is that intentional?')
-  firebase.initializeApp({})
-  firebase.auth().useEmulator('http://localhost:9099/')
-} else {
-  const dotenv = require('dotenv')
-  const dotenvExpand = require('dotenv-expand')
-
-  const result = dotenv.config()
-  dotenvExpand(result)
-
-  if (result.error) {
-    throw result.error
-  }
-
-  firebase.initializeApp(process.env.FIREBASE_CONFIG)
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: 'AIzaSyCRmb76McESvNi440lZx24PazPsql9H-zk',
+  authDomain: 'marketplace-c87d0.firebaseapp.com',
+  databaseURL: 'https://marketplace-c87d0.firebaseio.com',
+  projectId: 'marketplace-c87d0',
+  storageBucket: 'marketplace-c87d0.appspot.com',
+  messagingSenderId: '847837735961',
+  appId: '1:847837735961:web:2e3f177db742e483334e88',
+  measurementId: 'G-3XFHFT0SZZ',
 }
 const RootContext = React.createContext()
 // Hook for child components to get the auth object ...
@@ -31,22 +23,28 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(null)
   const [user, setUser] = useState(false)
-
+  firebase.initializeApp(firebaseConfig)
+  console.log('auth prv')
+  const conf = firebase.auth()
   React.useEffect(() => {
-    firebase.auth().onAuthStateChanged((u) => {
+    const unsubscribe = conf.onAuthStateChanged((u) => {
       if (u) {
-        console.log('user', u)
+        console.log('user is logged in', u)
         setUser(u)
         setAuthenticated(true)
       } else {
-        console.log('out')
+        console.log('user is not logged in')
       }
     })
-  }, [])
+    // Cleanup subscription on unmount
+
+    return () => unsubscribe()
+  }, [conf])
 
   const defaultContext = {
     authenticated,
     user,
+    config: conf,
   }
   return (
     <RootContext.Provider value={defaultContext}>
