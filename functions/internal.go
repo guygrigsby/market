@@ -4,13 +4,12 @@ import (
 	"context"
 
 	"github.com/guygrigsby/mtgfail"
-	"github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
 )
 
 // BuildDeck ...
-func BuildTTS(ctx context.Context, bulk Store, deckList map[string]int, log log15.Logger) (*tabletopsimulator.DeckFile, error) {
-	deck := make(map[*mtgfail.Entry]int)
+func BuildInternal(ctx context.Context, store Store, deckList map[string]int, log log15.Logger) ([]*mtgfail.Entry, []error) {
+
 	names := make([]string, len(deckList))
 	counts := make([]int, len(deckList))
 	var i int
@@ -20,8 +19,6 @@ func BuildTTS(ctx context.Context, bulk Store, deckList map[string]int, log log1
 		i++
 
 	}
-	bulk.Get(names)
-
-	return tabletopsimulator.BuildStacks(log, deck), nil
+	return store.Get(names)
 
 }
