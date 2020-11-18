@@ -4,10 +4,9 @@ import { css } from 'pretty-lights'
 
 const box = css`
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
   width: 100%;
+  margin: 15px;
+  padding: 10px;
 `
 
 const Page = ({ children, ...rest }) => {

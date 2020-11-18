@@ -20,9 +20,6 @@
     "auth": {
       "port": 9099
     },
-    "database": {
-      "port": 9001
-    },
     "hosting": {
       "port": 5000
     },
@@ -31,6 +28,16 @@
     },
     "ui": {
       "enabled": true
+    },
+    "firestore": {
+      "port": 8080
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

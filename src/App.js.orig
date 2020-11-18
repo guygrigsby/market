@@ -21,14 +21,20 @@ const menu = [
     link: '/singles',
     content: 'Singles',
   },
+<<<<<<< HEAD
   {
     link: '/about',
     content: 'About',
   },
+  {
+    link: '/login',
+    content: 'Login',
+  },
+=======
+>>>>>>> c989a90... adding deck building
 ]
 
 const App = () => {
-  const [deck, setDeck] = React.useState(null)
   const [cards, setCards] = React.useState([])
   const [removed, setRemoved] = React.useState([])
   const [added, setAdded] = React.useState([])
@@ -73,7 +79,7 @@ const App = () => {
           <Selling cards={cards} addCard={addCard} removeCard={removeCard} />
         </Route>
         <Route path="/decks">
-          <Deck deck={deck} setDeck={setDeck} />
+          <Deck />
         </Route>
         <Route path="/singles">
           <Body>{'singles'}</Body>

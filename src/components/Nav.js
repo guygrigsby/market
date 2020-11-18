@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import { useAuth } from '../use-auth.js'
+import { writeUser } from '../store.js'
+import Login from './Login.js'
 
 const style = css`
   display: flex;
@@ -23,11 +25,31 @@ const link = css`
 `
 
 const Nav = ({ items }) => {
+  const [user, setUser] = React.useState()
+  const [pass, setPass] = React.useState()
+
   const auth = useAuth()
-  console.log('auth obj', auth)
+
+  const handleLogin = (user, pass) => {
+    auth.login(user, pass).catch((e) => {
+      console.error('Login Error', e, 'trying things')
+      switch (e.code) {
+        case 'auth/weak-password':
+          console.error('Login Error', e, 'weak password')
+          break
+        case 'auth/user-not-found':
+          console.error('Login Error', e, 'user not found attempting to signup')
+          auth.signup(user, pass).then((user) => {
+            writeUser(user)
+          })
+          break
+        default:
+          console.error('Login Error', e)
+      }
+    })
+  }
   return (
     <nav className={style}>
-      <span />
       {items.map((e, idx) => {
         return (
           <Link key={idx} to={e.link} className={link}>
@@ -42,18 +64,17 @@ const Nav = ({ items }) => {
         Sign Up
       </span>
       {!auth.user ? (
-        <span
-          className={link}
-          onClick={() => auth.login('guy@grigsby.dev', 'password')}
-        >
-          Log In
+        <span className={link}>
+          <Login setUser={setUser} setPass={setPass} />
+          <span className={link} onClick={() => handleLogin(user, pass)}>
+            Login / Signup
+          </span>
         </span>
       ) : (
         <span className={link} onClick={() => auth.logout()}>
           Log Out
         </span>
       )}
-      <span />
     </nav>
   )
 }

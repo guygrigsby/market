@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
-// Add your Firebase credentials
 firebase.initializeApp({
   apiKey: 'AIzaSyCRmb76McESvNi440lZx24PazPsql9H-zk',
   authDomain: 'marketplace-c87d0.firebaseapp.com',
@@ -83,10 +82,8 @@ function useProvideAuth() {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log('user is logged in', user)
         setUser(user)
       } else {
-        console.log('user is logged out')
         setUser(false)
       }
     })
@@ -99,7 +96,6 @@ function useProvideAuth() {
     login,
     signup,
     logout,
-
     sendPasswordResetEmail,
     confirmPasswordReset,
   }

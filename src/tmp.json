@@ -1,0 +1,33 @@
+{
+  "conditions": {
+    "codes": ["M", "NM", "LP", "MP", "HP"],
+    "descriptions": {
+      "M": {
+        "name": "Mint",
+        "Description": "",
+        "Grading": ""
+      },
+      "NM": {
+        "name": "Near Mint",
+        "Description": "",
+        "Grading": ""
+      },
+
+      "LP": {
+        "name": "Lightly Played",
+        "Description": "",
+        "Grading": ""
+      },
+      "MP": {
+        "name": "Moderately Played",
+        "Description": "",
+        "Grading": ""
+      },
+      "HP": {
+        "name": "Heavily Played",
+        "Description": "",
+        "Grading": ""
+      }
+    }
+  }
+}
