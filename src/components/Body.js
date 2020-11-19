@@ -11,7 +11,7 @@ const style = css`
 `
 
 const Body = ({ children }) => {
-  return <div className={style}></div>
+  return <div className={style}>{children}</div>
 }
 Body.propTypes = {
   children: PropTypes.any,

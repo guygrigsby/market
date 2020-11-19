@@ -1,4 +1,5 @@
 import React from 'react'
+import { fetchDecks } from '../services/deck.js'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import { B, U, R, G, W } from '../Mana.js'
@@ -26,6 +27,8 @@ const image = css`
   height: 60;
   transition: transform 0.15s;
   width: 60px;
+  A
+  z-offset: 99;
   &:hover {
     transform: scale(1.1);
   }
@@ -33,7 +36,23 @@ const image = css`
 const log = css`
   margin-left: auto;
 `
-const Header = ({ login }) => {
+
+const OMNOM = 'https://deckbox.org/sets/2785835'
+
+const Header = ({ setDecks, login }) => {
+  const [reload, setReload] = React.useState(false)
+
+  React.useEffect(() => {
+    const f = async () => {
+      if (reload) {
+        const decks = await fetchDecks(reload)
+        console.log('clicky', decks)
+        setDecks(decks)
+      }
+    }
+    f()
+  }, [reload, setDecks])
+
   return (
     <div className={box}>
       <Link to="/">
@@ -43,7 +62,9 @@ const Header = ({ login }) => {
         <B style={image} />
         <U style={image} />
         <W style={image} />
-        <R style={image} />
+        <span onClick={() => setReload(OMNOM)}>
+          <R style={image} />
+        </span>
         <G style={image} />
         {login && <div className={log}>{login} </div>}
       </div>

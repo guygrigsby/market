@@ -15,20 +15,24 @@ const fields = css`
 const Login = ({ setUser, setPass }) => {
   return (
     <form className={style}>
-      <input
-        className={fields}
-        type="email"
-        placeholder="Email"
-        autoComplete="username"
-        onChange={(e) => setUser(e.target.value)}
-      />
-      <input
-        className={fields}
-        type="password"
-        placeholder="Password"
-        autoComplete="current-password"
-        onChange={(e) => setPass(e.target.value)}
-      />
+      <details>
+        <summary>Login</summary>
+
+        <input
+          className={fields}
+          type="email"
+          placeholder="Email"
+          autoComplete="username"
+          onChange={(e) => setUser(e.target.value)}
+        />
+        <input
+          className={fields}
+          type="password"
+          placeholder="Password"
+          autoComplete="current-password"
+          onChange={(e) => setPass(e.target.value)}
+        />
+      </details>
     </form>
   )
 }

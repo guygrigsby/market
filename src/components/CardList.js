@@ -1,93 +1,91 @@
 import React from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import { css } from 'pretty-lights'
 import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.css'
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.css'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css'
-import { css } from 'pretty-lights'
-import { fetchDeck } from '../services/deck.js'
-import './table.css'
-const progress = css`
-  cursor: progress;
+//import './bootstrap4.css'
+
+const thumbnailsClass = css`
+  &:hover {
+    height: auto;
+  }
 `
 
-const CardList = ({ deck, setDeck }) => {
-  const [deckURL, setDeckURL] = React.useState(null)
-  const [tts, setTTS] = React.useState(null)
-  const [loading, setLoading] = React.useState(false)
-  const [ready, setReady] = React.useState(false)
-  React.useEffect(() => {
-    if (!ready || !deckURL) {
-      return
-    }
-    const f = async () => {
-      setLoading(true)
-      const decks = await fetchDeck(deckURL)
+const rowEvents = {
+  onClick: (e, row, rowIndex) => {},
+}
 
-      setDeck(decks.Cards)
-      setLoading(false)
-    }
-    f()
-  }, [setDeck, ready, deckURL, setTTS])
-  /*
- *
-    { title: 'Name', field: 'Name' },
-    { title: 'Cost', field: 'Cost' },
-    { title: 'Cmc', field: 'Cmc' },
-    { title: 'Rarity', field: 'Rarity' },
-    { title: 'Set', field: 'Set' },
- * */
+const imageFormatter = (cell, row, rowIndex) => {
+  return (
+    <img
+      key={`${rowIndex}-${row.name}`}
+      src={row.image_uris.small}
+      alt="card"
+    ></img>
+  )
+}
+
+const CardList = ({ setLoading, deck, setDeck }) => {
   const columns = [
     {
-      dataField: 'Name',
+      dataField: 'image_uris.small',
+      text: 'Image',
+      formatter: (cell, row, rowIndex) => {
+        console.log('cell', cell)
+        return imageFormatter(cell, row, rowIndex)
+      },
+    },
+    {
+      dataField: 'name',
       text: 'Name',
+      sort: true,
     },
     {
-      dataField: 'Set',
+      dataField: 'set',
       text: 'Set',
+      sort: true,
     },
     {
-      dataField: 'CMC',
+      dataField: 'cmc',
       text: 'Cmc',
+      sort: true,
     },
     {
-      dataField: 'Cost',
+      dataField: 'cost',
       text: 'Cost',
     },
     {
-      dataField: 'Rarity',
+      dataField: 'rarity',
       text: 'Rarity',
+      sort: true,
     },
   ]
-
-  const cn = loading ? progress : ''
+  const rowClasses = (row, rowIndex) => {
+    return css`
+      max-height: 100px;
+      &:hover {
+        height: auto;
+      }
+    `
+  }
 
   return (
-    <div className={cn}>
-      <label>Deck URL</label>
-      <input type="url" onChange={(e) => setDeckURL(e.target.value)} />
-      <button onClick={(e) => setReady(true)}>Get it</button>
-      <button href={`data:text/json;${tts}`} download disabled>
-        Download
-      </button>
-      <ToolkitProvider
-        keyField="Name"
-        data={deck ? deck : []}
-        columns={columns}
-      >
-        {(props) => {
-          return (
-            <BootstrapTable
-              bordered={true}
-              hover={true}
-              condensed={true}
-              bootstrap4={true}
-              {...props.baseProps}
-            />
-          )
-        }}
-      </ToolkitProvider>
-    </div>
+    <ToolkitProvider keyField="name" data={deck ? deck : []} columns={columns}>
+      {(props) => {
+        return (
+          <BootstrapTable
+            bordered={true}
+            hover={true}
+            condensed={true}
+            rowEvents={rowEvents}
+            bootstrap4={true}
+            {...props.baseProps}
+          />
+        )
+      }}
+    </ToolkitProvider>
   )
 }
 export default CardList
