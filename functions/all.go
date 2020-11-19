@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/mtgfail"
@@ -25,18 +24,10 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		log.Debug("CORS preflight")
 		return
 	}
-	ctx, cancel := context.WithTimeout(r.Context(), time.Second*10)
-	defer cancel()
+	ctx := context.Background()
 
 	uri := r.URL.Query().Get("deck")
 
-	client, err := firestore.NewClient(ctx, "snackend")
-	if err != nil {
-		log.Error(
-			"Failed to get firestore client",
-			"err", err,
-		)
-	}
 	rc, err := FetchDeck(uri, log)
 	if err != nil {
 		log.Error(
@@ -46,16 +37,32 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "cannot read decklist", http.StatusBadGateway)
 		return
 	}
+	log.Debug("fetched deck")
 
 	deckList, err := mtgfail.ReadCardList(rc, log)
 	if err != nil {
 		msg := "cannot fetch deck"
+		log.Error(
+			"can't read cards",
+			"err", err,
+		)
 		http.Error(w, msg, http.StatusBadGateway)
+		return
+	}
+	log.Debug("parsed deck")
+	client, err := firestore.NewClient(ctx, "snackend")
+	if err != nil {
+		log.Error(
+			"Failed to get firestore client",
+			"err", err,
+		)
+		return
 	}
 	store := NewFirestore(client, log)
 	ret := &DualDeck{}
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
+		log.Debug("starting TTS build")
 		ttsDeck, err := BuildTTS(ctx, store, deckList, log)
 		if err != nil {
 			return err
@@ -64,6 +71,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 	g.Go(func() error {
+		log.Debug("starting internal build")
 		internDeck, errs := BuildInternal(ctx, store, deckList, log)
 		if len(errs) > 0 {
 			return errs[0]

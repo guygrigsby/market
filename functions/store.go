@@ -38,24 +38,17 @@ func (c *cardStore) Get(names []string) ([]*mtgfail.Entry, []error) {
 	coll := c.client.Collection(collection)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
-	queue := make(chan string)
 	results := make(chan *mtgfail.Entry)
 	errs := make(chan error)
-	go func() {
-		for _, v := range names {
-			queue <- v
-		}
-	}()
 	var wg sync.WaitGroup
-	for name := range queue {
+
+	for _, name := range names {
 		wg.Add(1)
 		name := name
-		ctx, gocancel := context.WithTimeout(ctx, time.Millisecond*100)
 		go func() {
-			defer func() {
-				gocancel()
-				wg.Done()
-			}()
+			defer wg.Done()
+
+			c.log.Debug("go read doc", "name", name)
 			if strings.Contains(name, "//") {
 				name = strings.ReplaceAll(name, "//", "")
 			}
@@ -82,18 +75,22 @@ func (c *cardStore) Get(names []string) ([]*mtgfail.Entry, []error) {
 				errs <- err
 				return
 			}
+			c.log.Debug("go read doc done", "name", name)
 			results <- entry
 		}()
 	}
+	c.log.Debug("main preparing to gather")
 
 	var cards []*mtgfail.Entry
 	var errors []error
-
 	for range names {
+		c.log.Debug("gather loop")
 		select {
 		case entry := <-results:
+			c.log.Debug("gather result doc", "name", entry.Name)
 			cards = append(cards, entry)
 		case err := <-errs:
+			c.log.Debug("gather error", "err", err)
 			errors = append(errors, err)
 		}
 	}
