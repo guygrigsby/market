@@ -1,4 +1,5 @@
 import React from 'react'
+import setList from '../sets.json'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
@@ -7,13 +8,14 @@ import CardChooser from './CardChooser'
 const setCell = css`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   font-size: 0.8em;
 `
 const logoClass = css`
   padding-right: 7px;
 `
 
-const selectClass = css`
+const setSelectClass = css`
   min-width: 300px;
 `
 const entry = css`
@@ -36,14 +38,20 @@ const conditionList = [
   { value: 'HP', label: 'Heavily Played' },
 ]
 
-const CardForm = ({ sets, addCard, removeCard }) => {
+const selectTheme = (theme) => ({
+  ...theme,
+  borderRadius: '1px',
+})
+
+const CardForm = ({ sets, setSets, addCard, removeCard }) => {
   const [matches, setMatches] = React.useState(false)
   const [card, setCard] = React.useState('')
+  const [filteredSets, setFilteredSets] = React.useState(
+    Array.from(sets.values()),
+  )
   const [set, setSet] = React.useState('')
   const [condition, setCondition] = React.useState('')
   const [price, setPrice] = React.useState('')
-
-  const ref = React.createRef()
 
   const handleSubmit = (e, card, condition, price) => {
     addCard(card)
@@ -59,14 +67,47 @@ const CardForm = ({ sets, addCard, removeCard }) => {
     }
   }
 
+  const loadSets = () => {
+    return new Map(
+      setList.data
+        .sort((a, b) => (a.name > b.name ? 1 : -1))
+        .map((set) => [set.name, set]),
+    )
+  }
+
+  React.useEffect(() => {
+    let m = []
+    if (!matches || matches.length < 1) {
+      m = Array.from(sets.values())
+    } else {
+      let c
+
+      for (c in matches) {
+        m.push(sets.get(c.set))
+      }
+    }
+    setFilteredSets(m)
+    console.log('fsts', m)
+  }, [matches, sets])
+
+  React.useEffect(() => {
+    const f = () => {
+      const s = loadSets()
+      setSets(s)
+    }
+    f()
+  }, [setSets])
+
   return (
-    <div className={box}>
+    <form
+      className={box}
+      onSubmit={(e) => handleSubmit(e, card, condition, price)}
+    >
       <div className={entry}>
         <label>Card Name</label>
         <CardChooser
           className={entry}
-          ref={ref}
-          sets={sets}
+          set={set}
           matches={matches}
           setMatches={setMatches}
           handleKeyPress={handleKeyPress}
@@ -77,33 +118,35 @@ const CardForm = ({ sets, addCard, removeCard }) => {
         <label>Set</label>
 
         <Select
-          className={selectClass}
+          className={setSelectClass}
           onChange={(val) => setSet(val)}
           getOptionValue={(v) => {
-            return <span>v.code</span>
+            return v.code
           }}
           getOptionLabel={(v) => {
             return (
-              <span className={setCell}>
+              <div className={setCell}>
+                <span style={{ marginRight: '.5em' }}>{v.name}</span>
                 <img
                   className={logoClass}
                   src={v.icon_svg_uri}
-                  alt={v.name}
-                  width="15px"
+                  alt={`${v.name} logo`}
+                  height="15px"
                 />
-                {v.name}
-              </span>
+              </div>
             )
           }}
-          options={sets}
+          options={filteredSets}
+          theme={selectTheme}
         />
       </div>
       <div className={entry}>
         <label>Condition</label>
         <Select
-          className={selectClass}
           options={conditionList}
           onChange={(val) => setCondition(val)}
+          styles={customStyles}
+          theme={selectTheme}
         />
       </div>
       <div className={entry}>
@@ -114,14 +157,17 @@ const CardForm = ({ sets, addCard, removeCard }) => {
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
-      <button onClick={(e) => handleSubmit(e, card, condition, price)}>
-        Add
-      </button>
-    </div>
+      <button type="submit">Add</button>
+    </form>
   )
 }
+const customStyles = {
+  input: (provided, state) => ({
+    ...provided,
+  }),
+}
 CardForm.propTypes = {
-  sets: PropTypes.array.isRequired,
+  sets: PropTypes.instanceOf(Map).isRequired,
   addCard: PropTypes.func,
   removeCard: PropTypes.func,
 }

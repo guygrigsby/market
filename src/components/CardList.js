@@ -1,22 +1,35 @@
 import React from 'react'
-import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import { useTable } from 'react-table'
 import { css } from 'pretty-lights'
-import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.css'
-import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.css'
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css'
-//import './bootstrap4.css'
 
-const thumbnailsClass = css`
-  &:hover {
-    height: auto;
+const style = css`
+  padding: 1rem;
+
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+
+      :last-child {
+        border-right: 0;
+      }
+    }
   }
 `
-
-const rowEvents = {
-  onClick: (e, row, rowIndex) => {},
-}
-
 const imageFormatter = (cell, row, rowIndex) => {
   return (
     <img
@@ -27,65 +40,74 @@ const imageFormatter = (cell, row, rowIndex) => {
   )
 }
 
-const CardList = ({ setLoading, deck, setDeck }) => {
-  const columns = [
-    {
-      dataField: 'image_uris.small',
-      text: 'Image',
-      formatter: (cell, row, rowIndex) => {
-        console.log('cell', cell)
-        return imageFormatter(cell, row, rowIndex)
-      },
-    },
-    {
-      dataField: 'name',
-      text: 'Name',
-      sort: true,
-    },
-    {
-      dataField: 'set',
-      text: 'Set',
-      sort: true,
-    },
-    {
-      dataField: 'cmc',
-      text: 'Cmc',
-      sort: true,
-    },
-    {
-      dataField: 'cost',
-      text: 'Cost',
-    },
-    {
-      dataField: 'rarity',
-      text: 'Rarity',
-      sort: true,
-    },
-  ]
-  const rowClasses = (row, rowIndex) => {
-    return css`
-      max-height: 100px;
-      &:hover {
-        height: auto;
-      }
-    `
-  }
+const CardList = ({ setLoading, cards, columns, setDeck }) => {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({
+    columns: columns ? columns : defaultColumns,
+    data: cards ? cards : [],
+  })
 
   return (
-    <ToolkitProvider keyField="name" data={deck ? deck : []} columns={columns}>
-      {(props) => {
-        return (
-          <BootstrapTable
-            bordered={true}
-            hover={true}
-            condensed={true}
-            rowEvents={rowEvents}
-            bootstrap4={true}
-            {...props.baseProps}
-          />
-        )
-      }}
-    </ToolkitProvider>
+    <div className={style}>
+      <table {...getTableProps()} style={{ width: '100%' }}>
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
   )
 }
+const defaultColumns = [
+  {
+    accessor: 'image_uris.small',
+    Header: 'Image',
+    formatter: (cell, row, rowIndex) => {
+      console.log('cell', cell)
+      return imageFormatter(cell, row, rowIndex)
+    },
+  },
+  {
+    accessor: 'name',
+    Header: 'Name',
+  },
+  {
+    accessor: 'set',
+    Header: 'Set',
+  },
+  {
+    accessor: 'cmc',
+    Header: 'Cmc',
+  },
+  {
+    accessor: 'cost',
+    Header: 'Cost',
+  },
+  {
+    accessor: 'rarity',
+    Header: 'Rarity',
+  },
+]
 export default CardList

@@ -1,9 +1,3 @@
-html,
-body,
-#root,
-.App {
-  height: 100%;
-}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,33 +7,33 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button {
-  border-radius: 1px;
-}
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-button {
+button,
+#button-like {
+  border-radius: 1px;
   background-color: #333;
   border: none;
   color: white;
-  padding: 10px 25px;
+  padding: 0.5rem 25px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 4px 6px;
+  margin-left: 1rem;
   font-size: 16px;
 }
 button:hover:enabled {
-  background-color: silver;
-  box-shadow: inset -1px -1px 5px #606060;
+  background-color: #ddd;
   color: black;
 }
 button:disabled {
   background-color: silver;
 }
 input {
-  padding: 10px 0 10px 0;
+  border: 1px lightgray solid;
+  border-radius: 1px;
+  font-size: 1em;
+  padding: 0.5em;
 }

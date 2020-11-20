@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { css } from 'pretty-lights'
 import Header from './components/Header.js'
 import Nav from './components/Nav.js'
 import Home from './pages/Home.js'
@@ -30,9 +29,10 @@ const menu = [
 ]
 
 const App = () => {
-  const [decks, setDecks] = React.useState(null)
+  const [deck, setDeck] = React.useState(null)
+  const [ttsDeck, setTTSDeck] = React.useState(null)
   const [cards, setCards] = React.useState([])
-  const [sets, setSets] = React.useState([])
+  const [sets, setSets] = React.useState(new Map())
   const [removed, setRemoved] = React.useState([])
   const [added, setAdded] = React.useState([])
 
@@ -70,7 +70,12 @@ const App = () => {
 
   return (
     <Router>
-      <Header setDecks={setDecks} />
+      <Header
+        deck={deck}
+        ttsDeck={ttsDeck}
+        setTTSDeck={setTTSDeck}
+        setDeck={setDeck}
+      />
       <Nav items={menu} />
       <Switch>
         <Route path="/selling">
@@ -83,7 +88,12 @@ const App = () => {
           />
         </Route>
         <Route path="/decks">
-          <Deck decks={decks} setDecks={setDecks} />
+          <Deck
+            deck={deck}
+            ttsDeck={ttsDeck}
+            setDeck={setDeck}
+            setTTSDeck={setTTSDeck}
+          />
         </Route>
         <Route path="/singles">
           <Body>{'singles'}</Body>

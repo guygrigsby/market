@@ -1,21 +1,8 @@
 import React from 'react'
-import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import { searchForCard } from '../services/scryfall.js'
 import AsyncAutoComplete from './AutoComplete'
-const close = css`
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
 
-  &:hover,
-  &:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-`
 const CardChooser = React.forwardRef(
   ({ matches, setMatches, setCard, ...rest }, ref) => {
     const [cardName, setCardName] = React.useState('')
@@ -40,7 +27,6 @@ const CardChooser = React.forwardRef(
     }
     return (
       <AsyncAutoComplete
-        ref={ref}
         open={showAutocomplete}
         handleKeyPress={handleKeyPress}
         setCardName={setCardName}

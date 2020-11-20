@@ -1,63 +1,39 @@
 import React from 'react'
 import CardForm from '../components/CardForm'
-import CustomCardTable from '../components/CustomCardTable.js'
-import { css } from 'pretty-lights'
-import setList from '../sets.json'
-
-const page = css`
-  display: flex;
-  flex: 1 1 auto;
-  flex-flow: column wrap;
-  justify-content: space-between;
-  align-items: center;
-`
-const selectOptions = {
-  0: 'M',
-  1: 'NM',
-  2: 'LP',
-  3: 'MP',
-  4: 'HP',
-}
+import CardList from '../components/CardList'
 const Selling = ({ sets, setSets, cards, addCard, removeCard }) => {
   const columns = [
     {
-      dataField: 'id',
-      text: 'ID',
+      accessor: 'id',
+      Header: 'ID',
     },
     {
-      dataField: 'name',
-      text: 'Name',
+      accessor: 'name',
+      Header: 'Name',
     },
     {
-      dataField: 'set',
-      text: 'Set',
+      accessor: 'set',
+      Header: 'Set',
     },
     {
-      dataField: 'condition',
-      text: 'Condition',
-      formatter: (cell) => selectOptions[cell],
+      accessor: 'condition',
+      Header: 'Condition',
     },
     {
-      dataField: 'price',
-      text: 'My Price',
+      accessor: 'price',
+      Header: 'My Price',
     },
   ]
-
-  React.useEffect(() => {
-    setSets(setList.data.sort((a, b) => (a.name > b.name ? 1 : -1)))
-  }, [setSets])
-
   return (
-    <div className={page}>
-      <CardForm sets={sets} addCard={addCard} removeCard={removeCard} />
-
-      <CustomCardTable
+    <>
+      <CardForm
+        sets={sets}
+        setSets={setSets}
         addCard={addCard}
         removeCard={removeCard}
-        cards={cards}
-        columns={columns}
       />
-    </div>
+      <CardList cards={cards} columns={columns} />
+    </>
   )
 }
 export default Selling
