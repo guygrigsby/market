@@ -1,16 +1,8 @@
 import React from 'react'
-import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit'
-import filterFactory, {
-  selectFilter,
-  textFilter,
-  numberFilter,
-} from 'react-bootstrap-table2-filter'
 import CardForm from '../components/CardForm'
+import CustomCardTable from '../components/CustomCardTable.js'
 import { css } from 'pretty-lights'
-import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.css'
-import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.css'
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css'
+import setList from '../sets.json'
 
 const page = css`
   display: flex;
@@ -26,9 +18,7 @@ const selectOptions = {
   3: 'MP',
   4: 'HP',
 }
-const Selling = ({ cards, addCard, removeCard }) => {
-  React.useEffect(() => {})
-
+const Selling = ({ sets, setSets, cards, addCard, removeCard }) => {
   const columns = [
     {
       dataField: 'id',
@@ -37,50 +27,36 @@ const Selling = ({ cards, addCard, removeCard }) => {
     {
       dataField: 'name',
       text: 'Name',
-      filter: textFilter(),
     },
     {
       dataField: 'set',
       text: 'Set',
-      filter: textFilter(),
     },
     {
       dataField: 'condition',
       text: 'Condition',
       formatter: (cell) => selectOptions[cell],
-      filter: selectFilter({
-        options: selectOptions,
-      }),
     },
     {
       dataField: 'price',
       text: 'My Price',
-      filter: numberFilter(),
     },
   ]
-  console.log('cards in Selling page', cards)
+
+  React.useEffect(() => {
+    setSets(setList.data.sort((a, b) => (a.name > b.name ? 1 : -1)))
+  }, [setSets])
 
   return (
     <div className={page}>
-      <CardForm addCard={addCard} removeCard={removeCard} />
-      <ToolkitProvider
-        keyField="id"
-        data={cards ? cards : []}
+      <CardForm sets={sets} addCard={addCard} removeCard={removeCard} />
+
+      <CustomCardTable
+        addCard={addCard}
+        removeCard={removeCard}
+        cards={cards}
         columns={columns}
-      >
-        {(props) => {
-          return (
-            <BootstrapTable
-              filter={filterFactory()}
-              bordered={true}
-              hover={true}
-              condensed={true}
-              bootstrap4={true}
-              {...props.baseProps}
-            />
-          )
-        }}
-      </ToolkitProvider>
+      />
     </div>
   )
 }

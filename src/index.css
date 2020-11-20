@@ -13,7 +13,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-input,
 button {
   border-radius: 1px;
 }
@@ -43,5 +42,4 @@ button:disabled {
 }
 input {
   padding: 10px 0 10px 0;
-  margin: 0 5px 0 5px;
 }

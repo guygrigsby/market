@@ -1,7 +1,7 @@
 import React from 'react'
 import Autocomplete from 'react-autocomplete'
 
-const AsyncAutoComplete = ({ setCardName }) => {
+const AsyncAutoComplete = ({ open, handleKeyPress, setCardName, ...rest }) => {
   const [cards, setCards] = React.useState([])
   const [cardLocal, setCardLocal] = React.useState('')
 
@@ -40,6 +40,7 @@ const AsyncAutoComplete = ({ setCardName }) => {
         setCardName(val)
         setCardLocal(val)
       }}
+      {...rest}
     />
   )
 }

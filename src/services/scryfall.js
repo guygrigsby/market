@@ -3,6 +3,7 @@ import Collection from '../components/Collection'
 const BULK_URL =
   'https://c2.scryfall.com/file/scryfall-bulk/default-cards/default-cards-20201114100433.json'
 const SEARCH_URL = 'https://api.scryfall.com/cards/search'
+const SETS_URL = 'https://api.scryfall.com/sets'
 
 export const getDeckLocal = (uri) => {
   const text = `${uri}/export`
@@ -50,7 +51,7 @@ const collection = async (uri, cards) => {
 }
 
 export const searchForCard = async (name) => {
-  const uri = `https://api.scryfall.com/cards/named?fuzzy=${name}`
+  const uri = `${SEARCH_URL}?q=${name}&unique=prints`
   return fetch(uri).then(async (res) => await res.json())
 }
 
@@ -66,6 +67,11 @@ export const loadCards = async (onErr) => {
     })
     .catch((e) => (onErr ? onErr(e) : null))
 }
+export const sets = () => {
+  return fetch(SETS_URL)
+    .then(async (r) => await r.json())
+    .then((j) => j.data)
+}
 export const search = (text, onErr) => {
   var url = new URL(SEARCH_URL)
 
@@ -73,9 +79,7 @@ export const search = (text, onErr) => {
 
   url.search = new URLSearchParams(params).toString()
 
-  return fetch(url)
-    .then(async (res) => await res.json)
-    .catch((e) => (onErr ? onErr(e) : null))
+  return fetch(url).then(async (res) => await res.json)
 }
 /*
  *{
@@ -201,7 +205,7 @@ export const search = (text, onErr) => {
   },
   purchase_uris: {
     tcgplayer: 'https://shop.tcgplayer.com/product/productsearch?id=196620&utm_campaign=affiliate&utm_medium=api&utm_source=scryfall',
-    cardmarket: 'https://www.cardmarket.com/en/Magic/Products/Singles/Commander-2019/Dusk-Dawn?referrer=scryfall&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall',
+    cardmarket: 'https://www.cardmarket.com/en/Magic/Products/Singles/Commander-2019/Dusk-Dawn?quereferrer=scryfall&utm_campaign=card_prices&utm_medium=text&utm_source=scryfall',
     cardhoarder: 'https://www.cardhoarder.com/cards/77240?affiliate_id=scryfall&ref=card-profile&utm_campaign=affiliate&utm_medium=card&utm_source=scryfall'
   }
 }
