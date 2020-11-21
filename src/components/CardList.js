@@ -1,91 +1,81 @@
 import React from 'react'
-import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit'
-import { css } from 'pretty-lights'
-import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.css'
-import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.css'
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css'
-//import './bootstrap4.css'
+import { cx, css } from 'pretty-lights'
+import { mana, manaHeader } from '../formatters/table.js'
+import DataGrid from 'react-data-grid'
+import 'react-data-grid/dist/react-data-grid.css'
+const style = css`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
-const thumbnailsClass = css`
-  &:hover {
-    height: auto;
+  > .rdg {
+    flex: 1;
+  }
+  .highlight:hover .rdg-cell {
+    background-color: #000080;
   }
 `
 
-const rowEvents = {
-  onClick: (e, row, rowIndex) => {},
-}
-
-const imageFormatter = (cell, row, rowIndex) => {
+const CardList = ({ setLoading, cards, columns, setDeck, cname }) => {
   return (
-    <img
-      key={`${rowIndex}-${row.name}`}
-      src={row.image_uris.small}
-      alt="card"
-    ></img>
+    <div className={cx(style, cname)}>
+      <DataGrid
+        columns={columns ? columns : defaultColumns}
+        rows={cards ? cards : []}
+      />
+    </div>
   )
 }
-
-const CardList = ({ setLoading, deck, setDeck }) => {
-  const columns = [
-    {
-      dataField: 'image_uris.small',
-      text: 'Image',
-      formatter: (cell, row, rowIndex) => {
-        console.log('cell', cell)
-        return imageFormatter(cell, row, rowIndex)
-      },
+const defaultColumns = [
+  //{
+  //  key: 'image_uris.small',
+  //  name: 'Image',
+  //  formatter: ({ row }) => {
+  //    const u = row.image_uris.small
+  //    console.log(u)
+  //    return <Image key={row.id} value={u} />
+  //  },
+  //},
+  {
+    key: 'name',
+    name: 'Name',
+    resizable: true,
+  },
+  {
+    key: 'set',
+    name: 'Set',
+    resizable: true,
+  },
+  {
+    key: 'prices.usd',
+    name: 'Price',
+    resizable: true,
+  },
+  {
+    key: 'mana_cost',
+    name: 'Cost',
+    resizable: true,
+    width: 100,
+    headerRenderer: () => manaHeader('Cost'),
+    formatter: ({ row }) => {
+      return mana(row.mana_cost)
     },
-    {
-      dataField: 'name',
-      text: 'Name',
-      sort: true,
-    },
-    {
-      dataField: 'set',
-      text: 'Set',
-      sort: true,
-    },
-    {
-      dataField: 'cmc',
-      text: 'Cmc',
-      sort: true,
-    },
-    {
-      dataField: 'cost',
-      text: 'Cost',
-    },
-    {
-      dataField: 'rarity',
-      text: 'Rarity',
-      sort: true,
-    },
-  ]
-  const rowClasses = (row, rowIndex) => {
-    return css`
-      max-height: 100px;
-      &:hover {
-        height: auto;
-      }
-    `
-  }
-
-  return (
-    <ToolkitProvider keyField="name" data={deck ? deck : []} columns={columns}>
-      {(props) => {
-        return (
-          <BootstrapTable
-            bordered={true}
-            hover={true}
-            condensed={true}
-            rowEvents={rowEvents}
-            bootstrap4={true}
-            {...props.baseProps}
-          />
-        )
-      }}
-    </ToolkitProvider>
-  )
-}
+  },
+  {
+    key: 'type_line',
+    name: 'Type',
+    resizable: true,
+  },
+  {
+    key: 'cmc',
+    name: 'Cmc',
+    width: 100,
+    resizable: true,
+  },
+  {
+    key: 'rarity',
+    name: 'Rarity',
+    resizable: true,
+  },
+]
 export default CardList

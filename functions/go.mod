@@ -8,6 +8,7 @@ require (
 	github.com/avast/retry-go v2.6.0+incompatible
 	github.com/guygrigsby/mtgfail v0.2.10
 	github.com/inconshreveable/log15 v0.0.0-20201112154412-8562bdadbbac
+	github.com/prometheus/common v0.15.0
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	google.golang.org/api v0.35.0

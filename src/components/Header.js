@@ -19,6 +19,7 @@ const style = css`
   background-color: black;
 `
 const logo = css`
+  margin-left: 1em;
   align-self: baseline;
   height: 200px;
   width: 200px;
@@ -39,7 +40,7 @@ const log = css`
 
 const OMNOM = 'https://deckbox.org/sets/2785835'
 
-const Header = ({ setDecks, login }) => {
+const Header = ({ setDeck, setTTSDeck, login }) => {
   const [reload, setReload] = React.useState(false)
 
   React.useEffect(() => {
@@ -47,11 +48,12 @@ const Header = ({ setDecks, login }) => {
       if (reload) {
         const decks = await fetchDecks(reload)
         console.log('clicky', decks)
-        setDecks(decks)
+        setTTSDeck(decks.tts)
+        setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
       }
     }
     f()
-  }, [reload, setDecks])
+  }, [reload, setDeck, setTTSDeck])
 
   return (
     <div className={box}>

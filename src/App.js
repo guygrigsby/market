@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { css } from 'pretty-lights'
 import Header from './components/Header.js'
 import Nav from './components/Nav.js'
 import Home from './pages/Home.js'
@@ -10,10 +9,6 @@ import Body from './components/Body.js'
 import { writeCardsToCollection, removeCardsFromCollection } from './store.js'
 import { useAuth } from './use-auth'
 
-const loadingClass = css`
-  height: 100%;
-  cursor: wait;
-`
 const menu = [
   {
     link: '/decks',
@@ -34,22 +29,23 @@ const menu = [
 ]
 
 const App = () => {
-  const [loading, setLoading] = React.useState(false)
-  const [decks, setDecks] = React.useState(null)
+  const [deck, setDeck] = React.useState(null)
+  const [ttsDeck, setTTSDeck] = React.useState(null)
   const [cards, setCards] = React.useState([])
+  const [sets, setSets] = React.useState(new Map())
   const [removed, setRemoved] = React.useState([])
   const [added, setAdded] = React.useState([])
 
   const addCard = (card) => {
-    console.log('adding card', card, 'to cards list', cards)
+    console.log('adding card', card, 'to cards list')
     setCards((prev) => {
       const m = [...prev]
-      console.log('prev', prev)
       m.push(card)
       return m
     })
   }
   const removeCard = (card) => {
+    console.log('removing card', card, 'from cards list')
     setCards((prev) => {
       var index = prev.indexOf(card)
       const m = prev
@@ -72,33 +68,41 @@ const App = () => {
     }
   }, [added, removed, auth])
 
-  console.log('App Page', decks)
   return (
-    <div className={loading ? loadingClass : ''}>
-      <Router>
-        <Header setDecks={setDecks} />
-        <Nav items={menu} />
-        <Switch>
-          <Route path="/selling">
-            <Selling
-              cards={cards}
-              addCard={addCard}
-              removeCard={removeCard}
-              setLoading={setLoading}
-            />
-          </Route>
-          <Route path="/decks">
-            <Deck decks={decks} setDecks={setDecks} setLoading={setLoading} />
-          </Route>
-          <Route path="/singles">
-            <Body setLoading={setLoading}>{'singles'}</Body>
-          </Route>
-          <Route exact path="/">
-            <Home setLoading={setLoading} />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <Router>
+      <Header
+        deck={deck}
+        ttsDeck={ttsDeck}
+        setTTSDeck={setTTSDeck}
+        setDeck={setDeck}
+      />
+      <Nav items={menu} />
+      <Switch>
+        <Route path="/selling">
+          <Selling
+            cards={cards}
+            sets={sets}
+            setSets={setSets}
+            addCard={addCard}
+            removeCard={removeCard}
+          />
+        </Route>
+        <Route path="/decks">
+          <Deck
+            deck={deck}
+            ttsDeck={ttsDeck}
+            setDeck={setDeck}
+            setTTSDeck={setTTSDeck}
+          />
+        </Route>
+        <Route path="/singles">
+          <Body>{'singles'}</Body>
+        </Route>
+        <Route exact path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 
