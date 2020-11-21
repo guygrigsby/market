@@ -21,14 +21,13 @@ const style = css`
 const logo = css`
   margin-left: 1em;
   align-self: baseline;
-  height: 200px;
-  width: 200px;
+  height: 100px;
+  width: 100px;
 `
 const image = css`
-  height: 60;
+  height: 45px;
   transition: transform 0.15s;
-  width: 60px;
-  A
+  width: 45px;
   z-offset: 99;
   &:hover {
     transform: scale(1.1);
