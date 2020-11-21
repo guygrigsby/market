@@ -57,7 +57,15 @@ const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
         onChange={(e) => setDeckURL(e.target.value)}
       />
       <button onClick={(e) => loadDecks(deckURL)}>Get it</button>
-      {ttsDownload(!ttsDeck)}
+      {ttsDeck && (
+        <a
+          className="button-like"
+          href={`data:text/json;${JSON.stringify(ttsDeck)}`}
+          download="deck.json"
+        >
+          <button>Download</button>
+        </a>
+      )}
     </div>
   )
 }
