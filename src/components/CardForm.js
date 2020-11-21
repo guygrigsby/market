@@ -97,7 +97,7 @@ const CardForm = ({ sets, addCard, removeCard }) => {
       }
     }
     setFilteredSets(acc.sort((a, b) => (a.name > b.name ? 1 : -1)))
-  }, [matches, sets])
+  }, [matches, sets, filteredSets])
   return (
     <form className={box} onSubmit={(e) => handleSubmit(e)}>
       <div className={entry}>

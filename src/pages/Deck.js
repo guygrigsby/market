@@ -1,7 +1,7 @@
 import React from 'react'
 import FetchDeckForm from '../components/FetchDeckForm.js'
 import CardList from '../components/CardList'
-import { cx, css } from 'pretty-lights'
+import { css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
 const box = css`
   display: flex;
@@ -11,10 +11,6 @@ const box = css`
 
 const w50 = css`
   width: 50%;
-`
-const bg = css`
-  width: 50%;
-  background-color: lightgray;
 `
 
 const Deck = ({ deck, ttsDeck, setDeck, setTTSDeck, ...rest }) => {

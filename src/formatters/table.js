@@ -21,8 +21,6 @@ export const mana = (str) => {
   for (let i = 0; i < str.length; i++) {
     const curr = str[i]
     if (curr === '}') {
-      //start
-      const start = i
       while (curr !== '}') {
         i++
       }
