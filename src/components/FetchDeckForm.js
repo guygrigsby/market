@@ -18,8 +18,7 @@ const hidden = css`
   display: none;
 `
 
-const FetchDeckForm = ({ decks, setDecks }) => {
-  const [tts, setTTS] = React.useState(null)
+const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
   const [loading, setLoading] = React.useState(false)
   const [deckURL, setDeckURL] = React.useState(null)
 
@@ -33,7 +32,7 @@ const FetchDeckForm = ({ decks, setDecks }) => {
     return (
       <a
         className={classes}
-        href={`data:text/json;${JSON.stringify(tts)}`}
+        href={`data:text/json;${JSON.stringify(ttsDeck)}`}
         download="deck.json"
       >
         Download
@@ -45,10 +44,8 @@ const FetchDeckForm = ({ decks, setDecks }) => {
     setLoading(true)
     const decks = await fetchDecks(deckURL)
     setLoading(false)
-    setDecks((prev) => {
-      setTTS(decks.tts)
-      return decks
-    })
+    setDeck(decks.internal)
+    setTTSDeck(decks.tts)
   }
 
   return (
@@ -60,7 +57,7 @@ const FetchDeckForm = ({ decks, setDecks }) => {
         onChange={(e) => setDeckURL(e.target.value)}
       />
       <button onClick={(e) => loadDecks(deckURL)}>Get it</button>
-      {ttsDownload(!tts)}
+      {ttsDownload(!ttsDeck)}
     </div>
   )
 }

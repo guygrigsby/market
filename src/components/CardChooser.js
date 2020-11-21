@@ -3,43 +3,21 @@ import PropTypes from 'prop-types'
 import { searchForCard } from '../services/scryfall.js'
 import AsyncAutoComplete from './AutoComplete'
 
-const CardChooser = React.forwardRef(
-  ({ matches, setMatches, setCard, ...rest }, ref) => {
-    const [cardName, setCardName] = React.useState('')
+const CardChooser = ({ setMatches, setCard, ...rest }) => {
+  const [cardName, setCardName] = React.useState(null)
 
-    React.useEffect(() => {
-      if (!cardName) return
-      const f = async () => {
-        const matches = await searchForCard(cardName)
-        console.log('matches', matches)
-        setMatches(matches)
-      }
-      f()
-    }, [cardName, setMatches])
+  React.useEffect(() => {
+    if (!cardName) return
+    const f = async () => {
+      const m = await searchForCard(cardName)
+      setMatches(m.data)
+    }
+    f()
+  }, [cardName, setMatches])
+  return <AsyncAutoComplete setCardName={setCardName} {...rest} />
+}
 
-    const handleKeyPress = (event) => {
-      if (event.key === 'Esc') {
-        setMatches(false)
-      }
-    }
-    const showAutocomplete = () => {
-      return !matches
-    }
-    return (
-      <AsyncAutoComplete
-        open={showAutocomplete}
-        handleKeyPress={handleKeyPress}
-        setCardName={setCardName}
-        {...rest}
-      />
-    )
-  },
-)
 CardChooser.propTypes = {
-  matches: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.arrayOf(PropTypes.string),
-  ]),
   setMatches: PropTypes.func,
   setCard: PropTypes.func,
 }

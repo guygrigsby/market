@@ -1,113 +1,81 @@
 import React from 'react'
-import { useTable } from 'react-table'
 import { css } from 'pretty-lights'
-
+import { mana, manaHeader } from '../formatters/table.js'
+import DataGrid from 'react-data-grid'
+import 'react-data-grid/dist/react-data-grid.css'
 const style = css`
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
+  > .rdg {
+    flex: 1;
+  }
+  .highlight:hover .rdg-cell {
+    background-color: #000080;
   }
 `
-const imageFormatter = (cell, row, rowIndex) => {
-  return (
-    <img
-      key={`${rowIndex}-${row.name}`}
-      src={row.image_uris.small}
-      alt="card"
-    ></img>
-  )
-}
 
 const CardList = ({ setLoading, cards, columns, setDeck }) => {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns: columns ? columns : defaultColumns,
-    data: cards ? cards : [],
-  })
-
   return (
     <div className={style}>
-      <table {...getTableProps()} style={{ width: '100%' }}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <DataGrid
+        columns={columns ? columns : defaultColumns}
+        rows={cards ? cards : []}
+      />
     </div>
   )
 }
 const defaultColumns = [
+  //{
+  //  key: 'image_uris.small',
+  //  name: 'Image',
+  //  formatter: ({ row }) => {
+  //    const u = row.image_uris.small
+  //    console.log(u)
+  //    return <Image key={row.id} value={u} />
+  //  },
+  //},
   {
-    accessor: 'image_uris.small',
-    Header: 'Image',
-    formatter: (cell, row, rowIndex) => {
-      console.log('cell', cell)
-      return imageFormatter(cell, row, rowIndex)
+    key: 'name',
+    name: 'Name',
+    resizable: true,
+  },
+  {
+    key: 'set',
+    name: 'Set',
+    resizable: true,
+  },
+  {
+    key: 'prices.usd',
+    name: 'Price',
+    resizable: true,
+  },
+  {
+    key: 'mana_cost',
+    name: 'Cost',
+    resizable: true,
+    width: 100,
+    headerRenderer: () => manaHeader('Cost'),
+    formatter: ({ row }) => {
+      return mana(row.mana_cost)
     },
   },
   {
-    accessor: 'name',
-    Header: 'Name',
+    key: 'type_line',
+    name: 'Type',
+    resizable: true,
   },
   {
-    accessor: 'set',
-    Header: 'Set',
+    key: 'cmc',
+    name: 'Cmc',
+    width: 100,
+    resizable: true,
   },
   {
-    accessor: 'cmc',
-    Header: 'Cmc',
-  },
-  {
-    accessor: 'cost',
-    Header: 'Cost',
-  },
-  {
-    accessor: 'rarity',
-    Header: 'Rarity',
+    key: 'rarity',
+    name: 'Rarity',
+    resizable: true,
   },
 ]
 export default CardList

@@ -1,7 +1,6 @@
 import React from 'react'
 import FetchDeckForm from '../components/FetchDeckForm.js'
 import CardList from '../components/CardList'
-
 const Deck = ({ deck, ttsDeck, setDeck, setTTSDeck, ...rest }) => {
   return (
     <>

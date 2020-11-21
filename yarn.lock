@@ -3765,6 +3765,11 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
+clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz"
@@ -8016,6 +8021,11 @@ makeerror@1.0.x:
   dependencies:
     tmpl "1.0.x"
 
+mana-font@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/mana-font/-/mana-font-1.9.4.tgz#b62f753a38750420552d4524c657299931ce657c"
+  integrity sha512-g0QdZPZSkSwvSDVOaBR2zTDRdrsqbZIbLis60Eo8QP2d8g+MsJwZu9D51QuzL2wVKg0lDKokNntwMsaFHEIKLA==
+
 map-cache@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz"
@@ -10068,6 +10078,13 @@ react-autocomplete@^1.8.1:
     dom-scroll-into-view "1.0.1"
     prop-types "^15.5.10"
 
+react-data-grid@^7.0.0-canary.33:
+  version "7.0.0-canary.33"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-7.0.0-canary.33.tgz#7f1ebe89c89418bc661015d503a58dbdf3342b7c"
+  integrity sha512-S6bX+DoEQ8M+rhX8NEs4WyefCxEB/7Vp5KVrbSeQvkzf91pZaQ5G4+OmLJf2n6i1+faWoL9/l40KozD80iZkXg==
+  dependencies:
+    clsx "^1.1.1"
+
 react-dev-utils@^11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.0.tgz"
@@ -10248,11 +10265,6 @@ react-select@^3.1.0:
     prop-types "^15.6.0"
     react-input-autosize "^2.2.2"
     react-transition-group "^4.3.0"
-
-react-table@^7.6.2:
-  version "7.6.2"
-  resolved "https://registry.yarnpkg.com/react-table/-/react-table-7.6.2.tgz#b60932fa6d457c2bca0da49815cd6a8fe9451f77"
-  integrity sha512-urwNZTieb+xg/+BITUIrqdH5jZfJlw7rKVAAq25iXpBPwbQojLCEKJuGycLbVwn8fzU+Ovly3y8HHNaLNrPCvQ==
 
 react-transition-group@^4.3.0:
   version "4.4.1"

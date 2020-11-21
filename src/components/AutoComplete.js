@@ -3,6 +3,7 @@ import Autocomplete from 'react-autocomplete'
 import { css } from 'pretty-lights'
 
 const style = css`
+  z-offset: 2;
   font-size: 1 em;
   padding: 0.5em;
 `
@@ -43,7 +44,12 @@ const AsyncAutoComplete = ({ open, handleKeyPress, setCardName, ...rest }) => {
         </div>
       )}
       value={cardLocal}
-      onChange={(e) => setCardLocal(e.target.value)}
+      onChange={(e) => {
+        if (e.target.value === '') {
+          setCardName(null)
+        }
+        setCardLocal(e.target.value)
+      }}
       onSelect={(val) => {
         console.log('value', val)
         setCardName(val)

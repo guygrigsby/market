@@ -39,7 +39,7 @@ const log = css`
 
 const OMNOM = 'https://deckbox.org/sets/2785835'
 
-const Header = ({ setDecks, login }) => {
+const Header = ({ setDeck, setTTSDeck, login }) => {
   const [reload, setReload] = React.useState(false)
 
   React.useEffect(() => {
@@ -47,11 +47,12 @@ const Header = ({ setDecks, login }) => {
       if (reload) {
         const decks = await fetchDecks(reload)
         console.log('clicky', decks)
-        setDecks(decks)
+        setTTSDeck(decks.tts)
+        setDeck(decks.internal)
       }
     }
     f()
-  }, [reload, setDecks])
+  }, [reload, setDeck, setTTSDeck])
 
   return (
     <div className={box}>

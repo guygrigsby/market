@@ -1,5 +1,4 @@
 import React from 'react'
-import setList from '../sets.json'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
@@ -43,74 +42,69 @@ const selectTheme = (theme) => ({
   borderRadius: '1px',
 })
 
-const CardForm = ({ sets, setSets, addCard, removeCard }) => {
-  const [matches, setMatches] = React.useState(false)
-  const [card, setCard] = React.useState('')
-  const [filteredSets, setFilteredSets] = React.useState(
-    Array.from(sets.values()),
-  )
-  const [set, setSet] = React.useState('')
-  const [condition, setCondition] = React.useState('')
-  const [price, setPrice] = React.useState('')
+const CardForm = ({ sets, addCard, removeCard }) => {
+  const [matches, setMatches] = React.useState([])
+  const [card, setCard] = React.useState({})
+  const [filteredSets, setFilteredSets] = React.useState([])
+  const [condition, setCondition] = React.useState()
+  const [price, setPrice] = React.useState(0)
 
-  const handleSubmit = (e, card, condition, price) => {
-    addCard(card)
-    console.log('card added', card)
-    e.preventDefault()
-  }
-  const handleKeyPress = (e) => {
-    if (e.keyCode === 13) {
-      const form = e.target.form
-      const index = Array.prototype.indexOf.call(form, e.target)
-      form.elements[index + 1].focus()
-      e.preventDefault()
-    }
-  }
-
-  const loadSets = () => {
-    return new Map(
-      setList.data
-        .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .map((set) => [set.name, set]),
-    )
-  }
-
-  React.useEffect(() => {
-    let m = []
-    if (!matches || matches.length < 1) {
-      m = Array.from(sets.values())
-    } else {
-      let c
-
-      for (c in matches) {
-        m.push(sets.get(c.set))
+  const setCardVersion = (set) => {
+    for (let i = 0; i < matches.length; i++) {
+      const card = matches[i]
+      if (card.set === set.code) {
+        console.log('found exact card', set, card)
+        setCard(card)
+        setPrice(card.prices.usd)
+        return
       }
     }
-    setFilteredSets(m)
-    console.log('fsts', m)
-  }, [matches, sets])
+  }
+
+  const handleSubmit = (e) => {
+    if (!card) alert('No card')
+    if (!condition) alert('No condition')
+    if (!price) alert('No price')
+    const listing = {
+      card,
+      condition,
+      price,
+    }
+    addCard(listing)
+    clear()
+    e.preventDefault()
+  }
+
+  const clear = () => {
+    setMatches([])
+    setCard({})
+    setFilteredSets([])
+    setCondition('')
+    setPrice(0)
+  }
 
   React.useEffect(() => {
-    const f = () => {
-      const s = loadSets()
-      setSets(s)
+    if ((filteredSets && !matches) || matches.length === 0) return
+    let acc = []
+    if (!matches || matches.length < 1) {
+      acc = Array.from(sets.values())
+    } else {
+      for (let i = 0; i < matches.length; i++) {
+        const match = matches[i]
+        const set = sets.get(match.set)
+        console.log('filtering', set)
+        set && acc.push(set)
+      }
     }
-    f()
-  }, [setSets])
-
+    setFilteredSets(acc.sort((a, b) => (a.name > b.name ? 1 : -1)))
+  }, [matches, sets])
   return (
-    <form
-      className={box}
-      onSubmit={(e) => handleSubmit(e, card, condition, price)}
-    >
+    <form className={box} onSubmit={(e) => handleSubmit(e)}>
       <div className={entry}>
         <label>Card Name</label>
         <CardChooser
           className={entry}
-          set={set}
-          matches={matches}
           setMatches={setMatches}
-          handleKeyPress={handleKeyPress}
           setCard={setCard}
         />
       </div>
@@ -119,7 +113,7 @@ const CardForm = ({ sets, setSets, addCard, removeCard }) => {
 
         <Select
           className={setSelectClass}
-          onChange={(val) => setSet(val)}
+          onChange={(val) => setCardVersion(val)}
           getOptionValue={(v) => {
             return v.code
           }}
