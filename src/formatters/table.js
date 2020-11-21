@@ -17,7 +17,6 @@ export const manaHeader = (str) => {
   return <span className={cellExpand}>{str}</span>
 }
 export const mana = (str) => {
-  console.log('string', str)
   let symbols = []
   for (let i = 0; i < str.length; i++) {
     const curr = str[i]
@@ -28,12 +27,10 @@ export const mana = (str) => {
         i++
       }
       const sym = str[i - 1]
-      console.log('symbol code', sym, ' start ', start, ' end ', i)
       symbols.push(`ms ms-${sym} ms-cost`.toLowerCase())
     }
   }
   //
-  console.log('symbols', symbols)
   return (
     <div className={cellExpand}>
       <span>

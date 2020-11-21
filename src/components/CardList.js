@@ -1,5 +1,5 @@
 import React from 'react'
-import { css } from 'pretty-lights'
+import { cx, css } from 'pretty-lights'
 import { mana, manaHeader } from '../formatters/table.js'
 import DataGrid from 'react-data-grid'
 import 'react-data-grid/dist/react-data-grid.css'
@@ -16,9 +16,9 @@ const style = css`
   }
 `
 
-const CardList = ({ setLoading, cards, columns, setDeck }) => {
+const CardList = ({ setLoading, cards, columns, setDeck, cname }) => {
   return (
-    <div className={style}>
+    <div className={cx(style, cname)}>
       <DataGrid
         columns={columns ? columns : defaultColumns}
         rows={cards ? cards : []}

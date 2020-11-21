@@ -19,6 +19,7 @@ const style = css`
   background-color: black;
 `
 const logo = css`
+  margin-left: 1em;
   align-self: baseline;
   height: 200px;
   width: 200px;
@@ -48,7 +49,7 @@ const Header = ({ setDeck, setTTSDeck, login }) => {
         const decks = await fetchDecks(reload)
         console.log('clicky', decks)
         setTTSDeck(decks.tts)
-        setDeck(decks.internal)
+        setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
       }
     }
     f()

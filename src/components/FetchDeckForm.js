@@ -22,23 +22,6 @@ const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
   const [loading, setLoading] = React.useState(false)
   const [deckURL, setDeckURL] = React.useState(null)
 
-  const ttsDownload = (hide) => {
-    let classes
-    if (hidden) {
-      classes = cx(hidden, 'button-like')
-    } else {
-      classes = 'buttonLike'
-    }
-    return (
-      <a
-        className={classes}
-        href={`data:text/json;${JSON.stringify(ttsDeck)}`}
-        download="deck.json"
-      >
-        Download
-      </a>
-    )
-  }
   const loadDecks = async (url) => {
     if (!url) return
     setLoading(true)
@@ -59,7 +42,6 @@ const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
       <button onClick={(e) => loadDecks(deckURL)}>Get it</button>
       {ttsDeck && (
         <a
-          className="button-like"
           href={`data:text/json;${JSON.stringify(ttsDeck)}`}
           download="deck.json"
         >
