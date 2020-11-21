@@ -60,7 +60,6 @@ const ImageBox = ({
             <span
               className={cx(card(i + 1, overlap), image(e.image_uris.small))}
               onClick={() => {
-                const name = e.name
                 return setSelected(e.name)
               }}
               key={i}
