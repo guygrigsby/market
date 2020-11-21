@@ -44,7 +44,6 @@ const ImageBox = ({
   const onNestedSelect = (newC) => {
     onChooserSelect(newC, selected)
   }
-  console.log('render image box. selected is ', selected)
   return (
     <div className={cx(box, cname)}>
       {chooserModal && selected ? (
@@ -62,7 +61,6 @@ const ImageBox = ({
               className={cx(card(i + 1, overlap), image(e.image_uris.small))}
               onClick={() => {
                 const name = e.name
-                console.log('name', name)
                 return setSelected(e.name)
               }}
               key={i}

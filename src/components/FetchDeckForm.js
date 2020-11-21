@@ -1,5 +1,5 @@
 import React from 'react'
-import { cx, css } from 'pretty-lights'
+import { css } from 'pretty-lights'
 import { fetchDecks } from '../services/deck.js'
 
 const inputClass = css`
@@ -12,10 +12,6 @@ const baseClass = (loading) => css`
   align-items: center;
   cursor: ${loading ? 'wait' : 'default'};
   padding: 1rem;
-`
-
-const hidden = css`
-  display: none;
 `
 
 const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
