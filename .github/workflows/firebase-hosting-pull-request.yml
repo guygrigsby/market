@@ -7,6 +7,12 @@ jobs:
   build_and_preview:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Deps
+        run: yarn install
+      - name: Build
+        run: yarn build
       - uses: actions/checkout@v2
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
