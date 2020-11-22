@@ -20,14 +20,12 @@ export const getConditions = (userId) => {
     .once('codes')
     .then((snapshot) => {
       const codes = snapshot.val()
-      console.log('codition codes', codes)
       return codes
     })
 }
 
 export const writeUser = (user) => {
   // Add a new document in collection "cities"
-  console.log('writing user', user)
   db.collection(USERS_DB)
     .doc(user.email)
     .set({ name: user.diplayName ? user.displayName : 'user' })

@@ -55,6 +55,7 @@ const ImageBox = ({
       ) : null}
       {deck ? (
         deck.map((e, i) => {
+          console.log('card is ', e)
           return (
             <span
               className={cx(card(i + 1, overlap), image(e.image_uris.small))}

@@ -9,7 +9,6 @@ export const fetchDecks = (url) => {
   })
     .then(async (response) => await response.json())
     .then((res) => {
-      console.log('decks', res)
       return res
     })
     .catch((e) => console.log(e))
@@ -33,7 +32,6 @@ const callAPI = (url, requestOptions) => {
   return fetch(url, requestOptions)
     .then(async (response) => await response.json())
     .then(async (data) => {
-      console.log('setting data', data)
       return data
     })
 }

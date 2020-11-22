@@ -31,9 +31,7 @@ export const naive = (deck, newC, oldName) => {
   console.log('replacing ', oldName, 'with', newC)
   for (let i = 0; i < deck.length; i++) {
     const card = nd[i]
-    console.log('card in remove is', card.name)
     if (oldName === card.name) {
-      console.log('replaced', oldName)
       nd.splice(i, 1, newC)
       break
     }
