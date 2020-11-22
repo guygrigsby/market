@@ -1,5 +1,6 @@
 import React from 'react'
 import ImageChooser from './ImageChooser'
+import Card from './Card.js'
 import { cx, css } from 'pretty-lights'
 
 const box = css`
@@ -64,7 +65,7 @@ const ImageBox = ({
               }}
               key={i}
             >
-              <img width="auto" src={e.image_uris.small} alt={e.name} />
+              <Card card={e} />
             </span>
           )
         })

@@ -1,47 +1,28 @@
 import React from 'react'
 
 const Card = ({ card }) => {
+  console.log('incoming card', card)
   const [flipped, setFlipped] = React.useState(false)
-  const toggleFlipped = () => {
+  const [imageSource, setImageSource] = React.useState(card.image_uris.small)
+  const toggleFlipped = (e) => {
     setFlipped(!flipped)
+    e.stopPropagation()
   }
 
-  const doubleSided = (e) => {
-    return e.card_faces !== null
-  }
-  const front = (e) => {
-    console.log('double sided', e)
-    const faces = e.card_faces[0]
-    console.log('double sided faces', faces)
-    const front = faces.image_uris
-    console.log('double sided front', front)
-    const im = front.small
-    console.log('double sided front im', im)
-    return <img width="auto" src={im} alt={e.name} />
-  }
-  const back = (e) => {
-    console.log('double sided', e)
-    const faces = e.card_faces[1]
-    console.log('double sided faces', faces)
-    const front = faces.image_uris
-    console.log('double sided front', front)
-    const im = front.small
-    console.log('double sided front im', im)
-    return <img width="auto" src={im} alt={e.name} />
-  }
+  React.useEffect(() => {
+    if (card.card_faces) {
+      if (flipped) {
+        setImageSource(card.card_faces[1].image_uris.small)
+      } else {
+        setImageSource(card.card_faces[0].image_uris.small)
+      }
+    } else {
+      setImageSource(card.image_uris.small)
+    }
+  }, [card, flipped])
   return (
     <span>
-      <img
-        width="auto"
-        src={
-          doubleSided(card)
-            ? flipped
-              ? back(card)
-              : front(card)
-            : card.image_uris.small
-        }
-        alt={card.name}
-      />
+      <img width="auto" src={imageSource} alt={card.name} />
     </span>
   )
 }
