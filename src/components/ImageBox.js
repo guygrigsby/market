@@ -48,8 +48,7 @@ const ImageBox = ({
     <div className={cx(box, cname)}>
       {chooserModal && selected ? (
         <ImageChooser
-          prev={selected}
-          onSelect={onNestedSelect}
+          onCardSelect={onNestedSelect}
           onClose={() => setSelected(false)}
           cardName={selected}
         />
@@ -64,7 +63,7 @@ const ImageBox = ({
               }}
               key={i}
             >
-              <img width="200px" src={e.image_uris.small} alt={e.name} />
+              <img width="auto" src={e.image_uris.small} alt={e.name} />
             </span>
           )
         })
