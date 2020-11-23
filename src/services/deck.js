@@ -9,6 +9,7 @@ export const fetchDecks = (url) => {
   })
     .then(async (response) => await response.json())
     .then((res) => {
+      console.log('decks', res)
       return res
     })
     .catch((e) => console.log(e))

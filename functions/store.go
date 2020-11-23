@@ -2,6 +2,7 @@ package cloudfuncs
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -15,13 +16,8 @@ const (
 	collection = "cards"
 )
 
-type Store interface {
-	Get([]string) ([]*mtgfail.Entry, []error)
-	Put(map[string]interface{})
-}
-
 // NewFromFirestoreClient ...
-func NewFirestore(c *firestore.Client, log log15.Logger) Store {
+func NewFirestore(c *firestore.Client, log log15.Logger) mtgfail.CardStore {
 	return &cardStore{c, log}
 }
 
@@ -30,10 +26,25 @@ type cardStore struct {
 	log    log15.Logger
 }
 
-func (c *cardStore) Put(_ map[string]interface{}) {
+func (c *cardStore) PutMany(_ map[string]*mtgfail.Entry) error {
+	return nil
+}
+func (c *cardStore) Put(_ string, _ *mtgfail.Entry) error {
+	return nil
 }
 
-func (c *cardStore) Get(names []string) ([]*mtgfail.Entry, []error) {
+func (c *cardStore) Get(name string) (*mtgfail.Entry, error) {
+	e, err := c.GetMany([]string{name})
+	if err != nil {
+		return nil, err
+	}
+	if len(e) == 0 {
+		return nil, fmt.Errorf("No card available for %s", name)
+	}
+	return e[0], nil
+}
+
+func (c *cardStore) GetMany(names []string) ([]*mtgfail.Entry, error) {
 
 	coll := c.client.Collection(collection)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
@@ -82,7 +93,6 @@ func (c *cardStore) Get(names []string) ([]*mtgfail.Entry, []error) {
 	c.log.Debug("main preparing to gather")
 
 	var cards []*mtgfail.Entry
-	var errors []error
 	for range names {
 		c.log.Debug("gather loop")
 		select {
@@ -91,9 +101,9 @@ func (c *cardStore) Get(names []string) ([]*mtgfail.Entry, []error) {
 			cards = append(cards, entry)
 		case err := <-errs:
 			c.log.Debug("gather error", "err", err)
-			errors = append(errors, err)
+			return nil, err
 		}
 	}
 
-	return cards, errors
+	return cards, nil
 }

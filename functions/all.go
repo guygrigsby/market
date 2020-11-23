@@ -68,15 +68,17 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			return err
 		}
 		ret.TTS = ttsDeck
+		log.Debug("TTS build done", "deck", ttsDeck)
 		return nil
 	})
 	g.Go(func() error {
 		log.Debug("starting internal build")
-		internDeck, errs := BuildInternal(ctx, store, deckList, log)
-		if len(errs) > 0 {
-			return errs[0]
+		internDeck, err := BuildInternal(ctx, store, deckList, log)
+		if err != nil {
+			return err
 		}
 		ret.Intern = internDeck
+		log.Debug("internal build done", "deck", internDeck)
 		return nil
 	})
 	if err := g.Wait(); err != nil {

@@ -19,13 +19,17 @@ const Deck = ({ deck, ttsDeck, setDeck, setTTSDeck, ...rest }) => {
     setDeck(naive(deck, newC, oldC))
   }
 
-  React.useEffect(() => {}, [deck])
+  React.useEffect(() => {
+    setTTSDeck()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deck])
   return (
     <>
       <FetchDeckForm
         deck={deck}
         ttsDeck={ttsDeck}
         setDeck={setDeck}
+        setTTSDeck={setTTSDeck}
         {...rest}
       />
       <div className={box}>

@@ -46,13 +46,13 @@ const Header = ({ setDeck, setTTSDeck, login }) => {
     const f = async () => {
       if (reload) {
         const decks = await fetchDecks(reload)
-        console.log('clicky', decks)
         setTTSDeck(decks.tts)
         setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
       }
     }
     f()
-  }, [reload, setDeck, setTTSDeck])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reload])
 
   return (
     <div className={box}>

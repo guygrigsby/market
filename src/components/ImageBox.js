@@ -15,7 +15,7 @@ const card = (z, overlap) => {
     flex: 1 1 auto;
     height: ${overlap ? '50px' : 'auto'};
     z-index: ${z};
-    overflow: hidden;
+    overflow: visible;
     transition: all 0.15s ease-in-out;
     ${overlap
       ? `&:hover {
@@ -26,11 +26,6 @@ const card = (z, overlap) => {
       : `&:hover {
       transform: scale(101%);
     }`}
-  `
-}
-const image = (uri) => {
-  return css`
-    background-image: ${uri};
   `
 }
 const ImageBox = ({
@@ -56,10 +51,9 @@ const ImageBox = ({
       ) : null}
       {deck ? (
         deck.map((e, i) => {
-          console.log('card is ', e)
           return (
             <span
-              className={cx(card(i + 1, overlap), image(e.image_uris.small))}
+              className={card(i + 1, overlap)}
               onClick={() => {
                 return setSelected(e.name)
               }}

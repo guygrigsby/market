@@ -15,20 +15,26 @@ const baseClass = (loading) => css`
 `
 
 const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
-  const [loading, setLoading] = React.useState(false)
   const [deckURL, setDeckURL] = React.useState(null)
+  const [lastTTS, setLastTTS] = React.useState(ttsDeck)
 
   const loadDecks = async (url) => {
     if (!url) return
-    setLoading(true)
     const decks = await fetchDecks(deckURL)
-    setLoading(false)
     setDeck(decks.internal)
     setTTSDeck(decks.tts)
   }
 
+  React.useEffect(() => {
+    if (ttsDeck) {
+      setLastTTS(ttsDeck)
+    }
+  }, [ttsDeck])
+
+  console.log('ttsdeck', JSON.stringify(lastTTS))
+
   return (
-    <div className={baseClass(loading)}>
+    <div className={baseClass(false)}>
       <label>Deck URL</label>
       <input
         className={inputClass}
@@ -36,9 +42,9 @@ const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
         onChange={(e) => setDeckURL(e.target.value)}
       />
       <button onClick={(e) => loadDecks(deckURL)}>Get it</button>
-      {ttsDeck && (
+      {lastTTS && (
         <a
-          href={`data:text/json;${JSON.stringify(ttsDeck)}`}
+          href={`data:text/json;charset=utf-8,${JSON.stringify(lastTTS)}`}
           download="deck.json"
         >
           <button>Download</button>

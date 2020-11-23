@@ -8,7 +8,7 @@ import (
 )
 
 // BuildDeck ...
-func BuildInternal(ctx context.Context, store Store, deckList map[string]int, log log15.Logger) ([]*mtgfail.Entry, []error) {
+func BuildInternal(ctx context.Context, store mtgfail.CardStore, deckList map[string]int, log log15.Logger) ([]*mtgfail.Entry, error) {
 
 	names := make([]string, len(deckList))
 	counts := make([]int, len(deckList))
@@ -19,6 +19,6 @@ func BuildInternal(ctx context.Context, store Store, deckList map[string]int, lo
 		i++
 
 	}
-	return store.Get(names)
+	return store.GetMany(names)
 
 }
