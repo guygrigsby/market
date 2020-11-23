@@ -51,6 +51,9 @@ const Header = ({ setDeck, setTTSDeck, login }) => {
       }
     }
     f()
+    return () => {
+      setReload(false)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload])
 

@@ -1,5 +1,21 @@
 export const Upstream = 'https://us-central1-snackend.cloudfunctions.net'
 
+export const createTTS = (deck) => {
+  const fullURI = new URL(`${Upstream}/CreateTTSDeckFromInternal`)
+  const headers = new Headers()
+  headers.append('Accept-Encoding', 'gzip')
+  return fetch(fullURI, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(deck),
+  })
+    .then(async (response) => await response.json())
+    .then((res) => {
+      return res
+    })
+    .catch((e) => console.log(e))
+}
+
 export const fetchDecks = (url) => {
   const fullURI = new URL(`${Upstream}/CreateAllFormats?deck=${url}`)
   const headers = new Headers()
@@ -9,7 +25,6 @@ export const fetchDecks = (url) => {
   })
     .then(async (response) => await response.json())
     .then((res) => {
-      console.log('decks', res)
       return res
     })
     .catch((e) => console.log(e))

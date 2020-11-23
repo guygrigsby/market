@@ -2,6 +2,7 @@ import React from 'react'
 import ImageChooser from './ImageChooser'
 import Card from './Card.js'
 import { cx, css } from 'pretty-lights'
+import { naive, updateTTS } from '../services/replace.js'
 
 const box = css`
   display: flex;
@@ -31,22 +32,32 @@ const card = (z, overlap) => {
 const ImageBox = ({
   overlap = true,
   chooserModal = false,
-  onSelect,
-  onChooserSelect,
   deck,
   cname,
+  ttsDeck,
+  setTTSDeck,
+  setDeck,
 }) => {
   const [selected, setSelected] = React.useState(false)
-  const onNestedSelect = (newC) => {
-    onChooserSelect(newC, selected)
+
+  const update = (oldC, newC) => {
+    console.log('replacing', oldC, 'with', newC)
+    setDeck((prev) => {
+      return naive(prev, oldC, newC)
+    })
+    setTTSDeck((prev) => {
+      return updateTTS(prev, oldC, newC)
+    })
   }
   return (
     <div className={cx(box, cname)}>
       {chooserModal && selected ? (
         <ImageChooser
-          onCardSelect={onNestedSelect}
+          onClick={(newCard, oldCard) => {
+            update(newCard, oldCard)
+          }}
           onClose={() => setSelected(false)}
-          cardName={selected}
+          currentCard={selected}
         />
       ) : null}
       {deck ? (
@@ -54,9 +65,7 @@ const ImageBox = ({
           return (
             <span
               className={card(i + 1, overlap)}
-              onClick={() => {
-                return setSelected(e.name)
-              }}
+              onClick={() => setSelected(e)}
               key={i}
             >
               <Card card={e} />

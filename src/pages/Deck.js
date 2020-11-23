@@ -3,7 +3,6 @@ import FetchDeckForm from '../components/FetchDeckForm.js'
 import CardList from '../components/CardList'
 import { css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
-import { naive } from '../services/replace.js'
 const box = css`
   display: flex;
   width: 100%;
@@ -15,14 +14,6 @@ const w50 = css`
 `
 
 const Deck = ({ deck, ttsDeck, setDeck, setTTSDeck, ...rest }) => {
-  const replaceCard = (newC, oldC) => {
-    setDeck(naive(deck, newC, oldC))
-  }
-
-  React.useEffect(() => {
-    setTTSDeck()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deck])
   return (
     <>
       <FetchDeckForm
@@ -37,7 +28,9 @@ const Deck = ({ deck, ttsDeck, setDeck, setTTSDeck, ...rest }) => {
           deck={deck}
           cname={w50}
           chooserModal={true}
-          onChooserSelect={replaceCard}
+          ttsDeck={ttsDeck}
+          setTTSDeck={setTTSDeck}
+          setDeck={setDeck}
         />
         <CardList cards={deck} cname={w50} />
       </div>

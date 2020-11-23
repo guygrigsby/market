@@ -16,16 +16,16 @@ const card = (z) => {
 const imageBoxClass = css`
   height: 50%;
 `
-const ImageChooser = ({ onCardSelect, cardName, onClose }) => {
+const ImageChooser = ({ onClick, currentCard, onClose }) => {
   const [cards, setCards] = React.useState()
+
   React.useEffect(() => {
     const f = async () => {
-      const others = await searchForCard(cardName)
+      const others = await searchForCard(currentCard.name)
       setCards(others.data)
     }
     f()
-  })
-
+  }, [currentCard])
   return (
     <div id="myModal" className={cx('modal', imageBoxClass)} onClick={onClose}>
       <div className="modal-content">
@@ -38,7 +38,7 @@ const ImageChooser = ({ onCardSelect, cardName, onClose }) => {
               <img
                 key={i}
                 className={card(i + 1)}
-                onClick={(event) => onCardSelect(e)}
+                onClick={() => onClick(e, currentCard)}
                 width="40%"
                 src={e.image_uris.normal}
                 alt={e.name}
