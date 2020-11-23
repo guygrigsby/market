@@ -43,17 +43,15 @@ const Header = ({ setDeck, setTTSDeck, login }) => {
   const [reload, setReload] = React.useState(false)
 
   React.useEffect(() => {
+    if (!reload) return
     const f = async () => {
-      if (reload) {
-        const decks = await fetchDecks(reload)
-        setTTSDeck(decks.tts)
-        setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
-      }
+      const decks = await fetchDecks(reload)
+      console.log('decks', decks)
+      setTTSDeck(decks.tts)
+      setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
     }
     f()
-    return () => {
-      setReload(false)
-    }
+    setReload(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload])
 

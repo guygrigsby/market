@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/firestore v1.3.0
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/avast/retry-go v2.6.0+incompatible
+	github.com/gorilla/handlers v1.4.2
 	github.com/guygrigsby/mtgfail v0.3.6
 	github.com/inconshreveable/log15 v0.0.0-20201112154412-8562bdadbbac
 	github.com/stretchr/testify v1.5.1

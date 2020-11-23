@@ -12,14 +12,18 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// CreateAllFormats is an HTTP Cloud Function.
 func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
+
 	log := log15.New()
+
+	log.Debug("created Handler")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+	w.Header().Add("Access-Control-Allow-Methods", "GET")
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Add("Access-Control-Allow-Headers", "Accept-Encoding")
+	w.Header().Set("Access-Control-Max-Age", "3600")
 	if r.Method == http.MethodOptions {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		w.Header().Set("Access-Control-Max-Age", "3600")
 		w.WriteHeader(http.StatusNoContent)
 		log.Debug("CORS preflight")
 		return
@@ -111,6 +115,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 }
 
 type DualDeck struct {

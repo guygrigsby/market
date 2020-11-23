@@ -30,11 +30,16 @@ const menu = [
 
 const App = () => {
   const [deck, setDeck] = React.useState(null)
-  const [ttsDeck, setTTSDeck] = React.useState(null)
+  const [ttsDeck, setTTS] = React.useState(null)
   const [cards, setCards] = React.useState([])
   const [sets, setSets] = React.useState(new Map())
   const [removed, setRemoved] = React.useState([])
   const [added, setAdded] = React.useState([])
+
+  const setTTSDeck = (deck) => {
+    console.log('OINK setting TTS', deck)
+    setTTS(deck)
+  }
 
   const addCard = (card) => {
     console.log('adding card', card, 'to cards list')

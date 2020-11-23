@@ -40,13 +40,20 @@ const ImageBox = ({
 }) => {
   const [selected, setSelected] = React.useState(false)
 
-  const update = (oldC, newC) => {
+  const update = async (oldC, newC) => {
+    if (!oldC || !newC) return
     console.log('replacing', oldC, 'with', newC)
     setDeck((prev) => {
-      return naive(prev, oldC, newC)
+      if (prev) {
+        return naive(prev, oldC, newC)
+      }
+      return naive(deck, oldC, newC)
     })
     setTTSDeck((prev) => {
-      return updateTTS(prev, oldC, newC)
+      if (prev) {
+        return updateTTS(prev, oldC, newC)
+      }
+      return updateTTS(ttsDeck, oldC, newC)
     })
   }
   return (

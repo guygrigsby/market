@@ -23,7 +23,7 @@ export const fetchDecks = (url) => {
   return fetch(fullURI, {
     headers: headers,
   })
-    .then(async (response) => await response.json())
+    .then((response) => response.json())
     .then((res) => {
       return res
     })
