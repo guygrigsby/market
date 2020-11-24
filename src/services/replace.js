@@ -6,28 +6,17 @@ export const updateTTS = (deck, newCard, oldCard) => {
   for (let k = 0; os.ContainedObjects.length; k++) {
     const current = os.ContainedObjects[k]
     if (oldCard.name === current.Nickname) {
+      if (!newCard.image_uris) {
+        os.CustomDeck[k + 1].FaceURL = newCard.card_faces[0].normal
+        os.CustomDeck[k + 1].BackURL = newCard.card_faces[1].normal
+        break
+      }
       os.CustomDeck[k + 1].FaceURL = newCard.image_uris.normal
       break
     }
   }
 
   return deck
-  /*
-   *d
-{…}
-ObjectStates: (1) […]
-0: {…}
-ContainedObjects: (2) […]
-0: Object { CardID: 100, Name: "Card", Nickname: "Phyrexian Arena", … }
-1: Object { CardID: 200, Name: "Card", Nickname: "Opt", … }
-length: 2
-<prototype>: Array []
-CustomDeck: {…}
-1: Object { FaceURL: "https://c1.scryfall.com/file/scryfall-cards/large/front/f/7/f7733d0e-ede5-4efc-a622-514a56d77fde.jpg", BackURL: "https://www.frogtown.me/images/gatherer/CardBack.jpg", NumHeight: 1, … }
-2: Object { FaceURL: "https://c1.scryfall.com/file/scryfall-cards/large/front/c/3/c3669391-8f64-4904-b432-0f0582f30449.jpg", BackURL: "https://www.frogtown.me/images/gatherer/CardBack.jpg", NumHeight: 1, … }
-<prototype>: Object { … }
-DeckIDs: Array [ 100, 200 ]
-   * */
 }
 
 export const binary = (deck, newC, oldName) => {

@@ -62,6 +62,18 @@ const App = () => {
     })
   }
   const auth = useAuth()
+
+  React.useEffect(() => {
+    if (added.size > 0) {
+      writeCardsToCollection(auth, added)
+      setAdded(new Map())
+    }
+    if (removed.size > 0) {
+      removeCardsFromCollection(auth, removed)
+      setRemoved(new Map())
+    }
+  }, [added, removed, auth])
+
   React.useEffect(() => {
     if (added.size > 0) {
       writeCardsToCollection(auth, added)

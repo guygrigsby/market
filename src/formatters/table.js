@@ -17,6 +17,7 @@ export const manaHeader = (str) => {
   return <span className={cellExpand}>{str}</span>
 }
 export const mana = (str) => {
+  if (!str) return null
   let symbols = []
   for (let i = 0; i < str.length; i++) {
     const curr = str[i]

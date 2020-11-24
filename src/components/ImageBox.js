@@ -7,25 +7,21 @@ import { naive, updateTTS } from '../services/replace.js'
 const box = css`
   display: flex;
   flex-wrap: wrap;
-  justify-content: stretch;
-  align-items: flex-start;
   overflow-x: scroll;
 `
 const card = (z, overlap) => {
   return css`
-    flex: 1 1 auto;
     height: ${overlap ? '50px' : 'auto'};
     z-index: ${z};
     overflow: visible;
     transition: all 0.15s ease-in-out;
     ${overlap
       ? `&:hover {
-      z-index: 999;
-      overflow: visible;
-      transform: scale(101%);
+      z-index: ${z + 20};
+      transform: scale(105%);
     }`
       : `&:hover {
-      transform: scale(101%);
+      transform: scale(105%);
     }`}
   `
 }
@@ -42,7 +38,6 @@ const ImageBox = ({
 
   const update = async (oldC, newC) => {
     if (!oldC || !newC) return
-    console.log('replacing', oldC, 'with', newC)
     setDeck((prev) => {
       if (prev) {
         return naive(prev, oldC, newC)
@@ -70,13 +65,12 @@ const ImageBox = ({
       {deck ? (
         deck.map((e, i) => {
           return (
-            <span
-              className={card(i + 1, overlap)}
+            <Card
               onClick={() => setSelected(e)}
+              card={e}
+              cl={card(i, overlap)}
               key={i}
-            >
-              <Card card={e} />
-            </span>
+            />
           )
         })
       ) : (

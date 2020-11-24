@@ -1,20 +1,32 @@
 import React from 'react'
 import { searchForCard } from '../services/scryfall.js'
 import './ImageChooser.css'
-import { cx, css } from 'pretty-lights'
-
-const card = (z) => {
+import { css } from 'pretty-lights'
+import Card from './Card'
+const card = (z, overlap = true) => {
   return css`
-    margin: 1em;
+    height: ${overlap ? '75px' : 'auto'};
     z-index: ${z};
+    overflow: visible;
+    margin: 1em;
     transition: all 0.15s ease-in-out;
-    &:hover {
-      transform: scale(101%);
-    }
+    ${overlap
+      ? `&:hover {
+      z-index: ${z + 20};
+      transform: scale(105%);
+    }`
+      : `&:hover {
+      transform: scale(105%);
+    }`}
   `
 }
-const imageBoxClass = css`
-  height: 50%;
+const box = css`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow: auto;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
 `
 const ImageChooser = ({ onClick, currentCard, onClose }) => {
   const [cards, setCards] = React.useState()
@@ -27,27 +39,29 @@ const ImageChooser = ({ onClick, currentCard, onClose }) => {
     f()
   }, [currentCard])
   return (
-    <div id="myModal" className={cx('modal', imageBoxClass)} onClick={onClose}>
+    <div className="modal" onClick={onClose}>
       <div className="modal-content">
         <span onClick={onClose} className="close">
           &times;
         </span>
-        {cards ? (
-          cards.map((e, i) => {
-            return (
-              <img
-                key={i}
-                className={card(i + 1)}
-                onClick={() => onClick(e, currentCard)}
-                width="40%"
-                src={e.image_uris.normal}
-                alt={e.name}
-              />
-            )
-          })
-        ) : (
-          <div />
-        )}
+        <span className={box}>
+          {cards ? (
+            cards.map((e, i) => {
+              return (
+                <Card
+                  card={e}
+                  size={1}
+                  key={i}
+                  cl={card(i + 1, false)}
+                  onClick={() => onClick(e, currentCard)}
+                  width={'33%'}
+                />
+              )
+            })
+          ) : (
+            <div />
+          )}
+        </span>
       </div>
     </div>
   )
