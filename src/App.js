@@ -29,6 +29,7 @@ const menu = [
 ]
 
 const App = () => {
+  const [deckName, setDeckName] = React.useState('')
   const [deck, setDeck] = React.useState(null)
   const [ttsDeck, setTTS] = React.useState(null)
   const [cards, setCards] = React.useState([])
@@ -37,12 +38,10 @@ const App = () => {
   const [added, setAdded] = React.useState([])
 
   const setTTSDeck = (deck) => {
-    console.log('OINK setting TTS', deck)
     setTTS(deck)
   }
 
   const addCard = (card) => {
-    console.log('adding card', card, 'to cards list')
     setCards((prev) => {
       const m = [...prev]
       m.push(card)
@@ -50,7 +49,6 @@ const App = () => {
     })
   }
   const removeCard = (card) => {
-    console.log('removing card', card, 'from cards list')
     setCards((prev) => {
       var index = prev.indexOf(card)
       const m = prev
@@ -63,16 +61,7 @@ const App = () => {
   }
   const auth = useAuth()
 
-  React.useEffect(() => {
-    if (added.size > 0) {
-      writeCardsToCollection(auth, added)
-      setAdded(new Map())
-    }
-    if (removed.size > 0) {
-      removeCardsFromCollection(auth, removed)
-      setRemoved(new Map())
-    }
-  }, [added, removed, auth])
+  React.useEffect(() => {}, [deck, ttsDeck])
 
   React.useEffect(() => {
     if (added.size > 0) {
@@ -106,6 +95,8 @@ const App = () => {
         </Route>
         <Route path="/decks">
           <Deck
+            deckName={deckName}
+            setDeckName={setDeckName}
             deck={deck}
             ttsDeck={ttsDeck}
             setDeck={setDeck}

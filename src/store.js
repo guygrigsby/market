@@ -5,6 +5,7 @@ import 'firebase/database'
 const USERS_DB = 'users'
 const INVENTORY_DB = 'cards'
 const CONDITIONS_TABLE = '/conditions'
+const USER_DECKS_DB = 'decks'
 
 const db = firebase.firestore()
 var sql = firebase.database()
@@ -73,4 +74,16 @@ export const writeCardsToCollection = (user, cards) => {
   return batch.commit().catch((err) => {
     console.error(err)
   })
+}
+
+export const writeDeck = (user, deck, ttsDeck, name) => {
+  return db
+    .collection(USERS_DB)
+    .doc(user.email)
+    .collection(USER_DECKS_DB)
+    .doc(name)
+    .update({
+      deck,
+      ttsDeck,
+    })
 }

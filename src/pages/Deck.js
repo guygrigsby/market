@@ -13,10 +13,20 @@ const w50 = css`
   width: 50%;
 `
 
-const Deck = ({ deck, ttsDeck, setDeck, setTTSDeck, ...rest }) => {
+const Deck = ({
+  deckName,
+  setDeckName,
+  deck,
+  ttsDeck,
+  setDeck,
+  setTTSDeck,
+  ...rest
+}) => {
   return (
     <>
       <FetchDeckForm
+        deckName={deckName}
+        setDeckName={setDeckName}
         deck={deck}
         ttsDeck={ttsDeck}
         setDeck={setDeck}

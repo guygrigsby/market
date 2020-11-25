@@ -1,6 +1,6 @@
 import React from 'react'
 import { css } from 'pretty-lights'
-import { fetchDecks } from '../services/deck.js'
+import { fetchDecks, getDeckName } from '../services/deck.js'
 
 const inputClass = css`
   margin-left: 1rem;
@@ -14,26 +14,49 @@ const baseClass = (loading) => css`
   padding: 1rem;
 `
 
-const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
+const FetchDeckForm = ({
+  setDeckName,
+  deckName,
+  deck,
+  ttsDeck,
+  setDeck,
+  setTTSDeck,
+}) => {
   const [deckURL, setDeckURL] = React.useState(null)
   const [loadDecks, setLoadDecks] = React.useState(false)
 
   React.useEffect(() => {
-    if (deckURL && loadDecks) {
+    if (deckURL && loadDecks && !deckName) {
       const f = async () => {
-        console.log('loading decks', deckURL, loadDecks)
-        const decks = await fetchDecks(deckURL)
-        setDeck(decks.internal)
-        setTTSDeck(decks.tts)
+        const name = await getDeckName(deckURL)
+
+        console.log('deck name in form', name)
+        setDeckName(name)
       }
       f()
     }
-    setLoadDecks(false)
-  }, [deckURL, setDeck, setTTSDeck, loadDecks])
+  }, [deckURL, loadDecks, setDeckName, deckName])
+
+  React.useEffect(() => {
+    if (deckURL && loadDecks) {
+      const f = async () => {
+        const decks = await fetchDecks(deckURL)
+        setDeck(decks.internal)
+        setTTSDeck(decks.tts)
+        setDeckName(await getDeckName(deckURL))
+      }
+      f()
+      return () => setLoadDecks(false)
+    }
+  }, [deckURL, setDeck, setTTSDeck, loadDecks, setDeckName])
 
   const getDownload = () => {
-    console.log('tts deck download', ttsDeck)
     return JSON.stringify(ttsDeck)
+  }
+
+  const handleURLChange = (val) => {
+    setDeckURL(val)
+    setLoadDecks(false)
   }
 
   return (
@@ -42,17 +65,25 @@ const FetchDeckForm = ({ deck, ttsDeck, setDeck, setTTSDeck }) => {
       <input
         className={inputClass}
         type="url"
-        onChange={(e) => setDeckURL(e.target.value)}
+        onChange={(e) => handleURLChange(e.target.value)}
       />
-      <button onClick={(e) => setLoadDecks(true)}>Get it</button>
-      {ttsDeck && (
+      {ttsDeck && loadDecks ? (
         <a
           href={`data:text/json;charset=utf-8,${getDownload()}`}
           download="deck.json"
         >
           <button>Download</button>
         </a>
+      ) : (
+        <button onClick={(e) => setLoadDecks(true)}>Get it</button>
       )}
+      <label style={{ marginLeft: '1rem' }}>Name</label>
+      <input
+        className={inputClass}
+        type="text"
+        value={deckName}
+        onChange={(e) => setDeckName(e.target.value)}
+      />
     </div>
   )
 }
