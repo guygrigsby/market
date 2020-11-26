@@ -8,11 +8,10 @@ const Card = ({ size, card, cl, ...rest }) => {
   const [flipped, setFlipped] = React.useState(false)
   const [imageSource, setImageSource] = React.useState()
 
-  // const toggleFlipped = (e) => {
-  //   setFlipped(!flipped)
-  //   e.stopPropagation()
-  // }
-  //
+  const toggleFlipped = (e) => {
+    setFlipped(!flipped)
+    e.stopPropagation()
+  }
 
   const ref = React.createRef()
 
@@ -50,7 +49,7 @@ const Card = ({ size, card, cl, ...rest }) => {
 
   return (
     <span ref={ref} className={cx(cl, cardClass)} {...rest}>
-      {/*doubleSided && <span onClick={toggleFlipped} />*/}
+      {doubleSided && <span onClick={toggleFlipped} />}
       <img src={imageSource} alt={card.name} />
     </span>
   )

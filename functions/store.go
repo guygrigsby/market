@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 	"sync"
-	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/mtgfail"
@@ -47,8 +46,7 @@ func (c *cardStore) Get(name string) (*mtgfail.Entry, error) {
 func (c *cardStore) GetMany(names []string) ([]*mtgfail.Entry, error) {
 
 	coll := c.client.Collection(collection)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+	ctx := context.Background()
 	results := make(chan *mtgfail.Entry)
 	errs := make(chan error)
 	var wg sync.WaitGroup
@@ -59,7 +57,6 @@ func (c *cardStore) GetMany(names []string) ([]*mtgfail.Entry, error) {
 		go func() {
 			defer wg.Done()
 
-			c.log.Debug("go read doc", "name", name)
 			if strings.Contains(name, "//") {
 				name = strings.ReplaceAll(name, "//", "")
 			}
@@ -86,18 +83,14 @@ func (c *cardStore) GetMany(names []string) ([]*mtgfail.Entry, error) {
 				errs <- err
 				return
 			}
-			c.log.Debug("go read doc done", "name", name)
 			results <- entry
 		}()
 	}
-	c.log.Debug("main preparing to gather")
 
 	var cards []*mtgfail.Entry
 	for range names {
-		c.log.Debug("gather loop")
 		select {
 		case entry := <-results:
-			c.log.Debug("gather result doc", "name", entry.Name)
 			cards = append(cards, entry)
 		case err := <-errs:
 			c.log.Debug("gather error", "err", err)

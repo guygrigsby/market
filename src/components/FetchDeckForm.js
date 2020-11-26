@@ -9,7 +9,9 @@ const inputClass = css`
 
 const baseClass = (loading) => css`
   display: flex;
+  justify-content: flex-start;
   align-items: center;
+  flex-flow: row wrap;
   cursor: ${loading ? 'wait' : 'default'};
   padding: 1rem;
 `
@@ -22,7 +24,9 @@ const FetchDeckForm = ({
   setDeck,
   setTTSDeck,
 }) => {
-  const [deckURL, setDeckURL] = React.useState(null)
+  const [deckURL, setDeckURL] = React.useState(
+    'https://deckbox.org/sets/2785835',
+  )
   const [loadDecks, setLoadDecks] = React.useState(false)
 
   React.useEffect(() => {
@@ -57,6 +61,7 @@ const FetchDeckForm = ({
   const handleURLChange = (val) => {
     setDeckURL(val)
     setLoadDecks(false)
+    setTTSDeck(null)
   }
 
   return (
@@ -67,23 +72,25 @@ const FetchDeckForm = ({
         type="url"
         onChange={(e) => handleURLChange(e.target.value)}
       />
-      {ttsDeck && loadDecks ? (
-        <a
-          href={`data:text/json;charset=utf-8,${getDownload()}`}
-          download="deck.json"
-        >
-          <button>Download</button>
-        </a>
+      {ttsDeck ? (
+        <>
+          <a
+            href={`data:text/json;charset=utf-8,${getDownload()}`}
+            download="deck.json"
+          >
+            <button>Download</button>
+          </a>
+          <label style={{ marginLeft: '1rem' }}>Name</label>
+          <input
+            className={inputClass}
+            type="text"
+            value={deckName}
+            onChange={(e) => setDeckName(e.target.value)}
+          />
+        </>
       ) : (
         <button onClick={(e) => setLoadDecks(true)}>Get it</button>
       )}
-      <label style={{ marginLeft: '1rem' }}>Name</label>
-      <input
-        className={inputClass}
-        type="text"
-        value={deckName}
-        onChange={(e) => setDeckName(e.target.value)}
-      />
     </div>
   )
 }

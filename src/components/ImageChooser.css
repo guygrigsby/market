@@ -12,12 +12,10 @@
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: #fefefe;
-  margin: 5%;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 60%; /* Could be more or less, depending on screen size */
-  height: 80%;
+  overflow: visible;
+  margin: auto;
+  max-width: 500px;
+  height: 100%;
 }
 
 /* The Close Button */

@@ -5,7 +5,7 @@ import { css } from 'pretty-lights'
 import Card from './Card'
 const card = (z, overlap = true) => {
   return css`
-    height: ${overlap ? '75px' : 'auto'};
+    height: ${overlap ? '50px' : 'auto'};
     z-index: ${z};
     overflow: visible;
     margin: 1em;
@@ -13,17 +13,18 @@ const card = (z, overlap = true) => {
     ${overlap
       ? `&:hover {
       z-index: ${z + 20};
-      transform: scale(105%);
+  cursor: pointer;
     }`
       : `&:hover {
-      transform: scale(105%);
+  cursor: pointer;
     }`}
   `
 }
 const box = css`
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
   overflow: auto;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
@@ -52,9 +53,8 @@ const ImageChooser = ({ onClick, currentCard, onClose }) => {
                   card={e}
                   size={1}
                   key={i}
-                  cl={card(i + 1, false)}
+                  cl={card(cards.length - i, true)}
                   onClick={() => onClick(e, currentCard)}
-                  width={'33%'}
                 />
               )
             })

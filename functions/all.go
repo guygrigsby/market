@@ -3,6 +3,7 @@ package cloudfuncs
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"cloud.google.com/go/firestore"
@@ -60,6 +61,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			"Failed to get firestore client",
 			"err", err,
 		)
+		http.Error(w, "failed to get firestore client", http.StatusBadGateway)
 		return
 	}
 	store := NewFirestore(client, log)
@@ -90,6 +92,8 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			"Cannot build decks",
 			"err", err,
 		)
+
+		http.Error(w, fmt.Sprintf("failed to build deck %v", err), http.StatusInternalServerError)
 		return
 	}
 	b, err := json.Marshal(ret)
