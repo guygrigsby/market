@@ -45,7 +45,7 @@ const selectTheme = (theme) => ({
 })
 
 const toast = (msg) => {
-  return console.log('missing', msg)
+  return 
 }
 
 const CardForm = ({ addCard, removeCard }) => {

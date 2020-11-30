@@ -34,7 +34,6 @@ const FetchDeckForm = ({
       const f = async () => {
         const name = await getDeckName(deckURL)
 
-        console.log('deck name in form', name)
         setDeckName(name)
       }
       f()

@@ -8,7 +8,6 @@ const svgClass = css`
 `
 
 const SetIcon = ({ svg, ...rest }) => {
-  console.log('svg', svg)
   return <InlineSVG src={svg} raw={true} className={svgClass} {...rest} />
 }
 

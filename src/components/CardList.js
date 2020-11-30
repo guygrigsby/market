@@ -1,6 +1,11 @@
 import React from 'react'
 import { cx, css } from 'pretty-lights'
-import { mana, manaHeader, SetFormatter } from '../formatters/table.js'
+import {
+  mana,
+  manaHeader,
+  SetFormatter,
+  priceFormatter,
+} from '../formatters/table.js'
 import DataGrid from 'react-data-grid'
 import 'react-data-grid/dist/react-data-grid.css'
 const style = css`
@@ -36,6 +41,9 @@ const CardList = ({ setLoading, cards, columns, setDeck, cname }) => {
       key: 'prices.usd',
       name: 'Price',
       resizable: true,
+      formatter: ({ row }) => {
+        return <>{row.prices.usd}</>
+      },
     },
     {
       key: 'mana_cost',

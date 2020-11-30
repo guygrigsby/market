@@ -24,16 +24,16 @@ const AuthProvider = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(null)
   const [user, setUser] = useState(false)
   firebase.initializeApp(firebaseConfig)
-  console.log('auth prv')
+  
   const conf = firebase.auth()
   React.useEffect(() => {
     const unsubscribe = conf.onAuthStateChanged((u) => {
       if (u) {
-        console.log('user is logged in', u)
+        
         setUser(u)
         setAuthenticated(true)
       } else {
-        console.log('user is not logged in')
+        
       }
     })
     // Cleanup subscription on unmount

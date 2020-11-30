@@ -9,7 +9,7 @@ export const listItem = async (auth, listing) => {
     .collection('for_sale')
     .add(listing)
     .then(function () {
-      console.log('Document successfully written!')
+      
     })
     .catch(function (error) {
       console.error('Error writing document: ', error)

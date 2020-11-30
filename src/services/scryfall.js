@@ -13,14 +13,14 @@ export const getDeckLocal = (uri) => {
     },
   })
     .then((res) => {
-      console.log('response from deckbox', res)
+      
       getDeck(uri)
       return res
     })
     .then((str) => {
       const body = document.querySelectorAll('body')
       body.forEach((a) => {
-        console.log('element iteration', a)
+        
         return str
       })
     })
@@ -58,7 +58,7 @@ export const searchForCard = async (name) => {
 export const loadCards = async (onErr) => {
   let url = BULK_URL
   if (process.env.NODE_ENV === 'development') {
-    console.log('loading cards from file for local dev')
+    
     url = require('../services/scryfall.js')
   }
   return fetch(url)

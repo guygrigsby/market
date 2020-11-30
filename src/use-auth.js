@@ -57,7 +57,7 @@ function useProvideAuth() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
-        console.log('logged in', response.user)
+        
         setUser(response.user)
         return response.user
       })

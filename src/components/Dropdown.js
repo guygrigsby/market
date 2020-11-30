@@ -38,7 +38,7 @@ const Inner = React.forwardRef(({ close, children, ...rest }, ref) => {
   const [top, setTop] = React.useState(0)
   const [left, setLeft] = React.useState(0)
 
-  console.log('render modal')
+  
 
   React.useEffect(() => {
     if (ref.current) {
@@ -64,7 +64,7 @@ const Modal = ({ children, ...rest }) => {
   const close = () => {
     setVisible(false)
   }
-  console.log('modal', visible)
+  
   return (
     <div className={outer(visible)} ref={ref} close={close}>
       <Inner ref={ref} />
