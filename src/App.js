@@ -15,37 +15,34 @@ import { listItem } from './services/list.js'
 import { writeCardsToCollection, removeCardsFromCollection } from './store.js'
 import { useAuth } from './use-auth'
 
-const menu = [
-  {
-    link: '/decks',
-    content: 'Deck Building',
-  },
-  {
-    link: '/selling',
-    content: 'Selling',
-  },
-  {
-    link: '/singles',
-    content: 'Singles',
-  },
-  {
-    link: '/about',
-    content: 'About',
-  },
-  {
-    link: '/login',
-    content: 'Login',
-  },
-]
-
 const App = () => {
+  const auth = useAuth()
+
+  const menu = [
+    {
+      link: '/decks',
+      content: 'Deck Building',
+    },
+    {
+      link: '/selling',
+      content: 'Selling',
+      authRequired: true,
+    },
+    {
+      link: '/singles',
+      content: 'Singles',
+    },
+    {
+      link: '/about',
+      content: 'About',
+    },
+  ]
   const [deckName, setDeckName] = React.useState('')
   const [deck, setDeck] = React.useState(null)
   const [ttsDeck, setTTS] = React.useState(null)
   const [cards, setCards] = React.useState([])
   const [removed, setRemoved] = React.useState([])
   const [added, setAdded] = React.useState([])
-  const auth = useAuth()
 
   const setTTSDeck = (deck) => {
     setTTS(deck)
@@ -101,7 +98,6 @@ const App = () => {
           />
         </Route>
         <Route path="/login">
-          import React from 'react'
           {auth.user ? <Redirect to="/selling" /> : <LoginPage />}
         </Route>
         <Route exact path="/">

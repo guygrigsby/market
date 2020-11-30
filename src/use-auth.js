@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
-import * as firebaseui from 'firebaseui'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import './firebaseui.css'
@@ -15,26 +14,10 @@ firebase.initializeApp({
   measurementId: 'G-3XFHFT0SZZ',
 })
 
-// This is our firebaseui configuration object
-const uiConfig = {
-  signInSuccessUrl: '/',
-  signInFlow: 'popup',
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-  ],
-  tosUrl: '/terms-of-service', // This doesn't exist yet
-}
-
 // This sets up firebaseui
-const ui = new firebaseui.auth.AuthUI(firebase.auth())
 
 // This adds firebaseui to the page
 // It does everything else on its own
-export const useAuthUI = (elementId) => {
-  ui.start(elementId, uiConfig)
-}
 
 const authContext = createContext()
 // Provider component that wraps your app and makes auth object ...
@@ -57,7 +40,6 @@ function useProvideAuth() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
-        
         setUser(response.user)
         return response.user
       })
