@@ -3,12 +3,26 @@ import { css } from 'pretty-lights'
 import { useAuth } from '../use-auth.js'
 import { writeUser } from '../store.js'
 
+const buttonLike = css`
+  border-radius: 1px;
+  background-color: #333;
+  border: none;
+  color: white;
+  padding: 0.5rem 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 1rem;
+  font-size: 16px;
+`
 const style = css`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 `
 const inputClass = css`
-  margin-left: 1rem;
+  margin: 0.5em;
 `
 
 const Login = () => {
@@ -34,22 +48,30 @@ const Login = () => {
       }
     })
   }
+  const userMsg = `Logged In ${JSON.stringify(auth)}`
   return (
     <form className={style} onSubmit={() => handleLogin(user, pass)}>
-      <input
-        className={inputClass}
-        type="email"
-        placeholder="Email"
-        autoComplete="username"
-        onChange={(e) => setUser(e.target.value)}
-      />
-      <input
-        className={inputClass}
-        type="password"
-        placeholder="Password"
-        autoComplete="current-password"
-        onChange={(e) => setPass(e.target.value)}
-      />
+      {auth.user ? (
+        userMsg
+      ) : (
+        <>
+          <input
+            className={inputClass}
+            type="email"
+            placeholder="Email"
+            autoComplete="username"
+            onChange={(e) => setUser(e.target.value)}
+          />
+          <input
+            className={inputClass}
+            type="password"
+            placeholder="Password"
+            autoComplete="current-password"
+            onChange={(e) => setPass(e.target.value)}
+          />
+          <input className={buttonLike} value="Login" type="submit" />
+        </>
+      )}
     </form>
   )
 }

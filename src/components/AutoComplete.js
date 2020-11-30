@@ -3,20 +3,24 @@ import Autocomplete from 'react-autocomplete'
 import { css } from 'pretty-lights'
 
 const style = css`
-  z-offset: 2;
+  z-offset: 100;
+  position: fixed
   font-size: 1 em;
   padding: 0.5em;
 `
+const onTop = css`
+  font-size: 1 em;
+`
 
-const AsyncAutoComplete = ({ open, handleKeyPress, setCardName, ...rest }) => {
+const AsyncAutoComplete = ({ open, handleKeyPress, setCardName }) => {
   const [cards, setCards] = React.useState([])
-  const [cardLocal, setCardLocal] = React.useState('')
+  const [currentValue, setCurrentValue] = React.useState('')
 
   React.useEffect(() => {
-    if (cardLocal.length < 3) return
+    if (currentValue.length < 3) return
     const aulist = async () => {
       const fullURI = new URL(
-        `https://api.scryfall.com/cards/autocomplete?q=${cardLocal}`,
+        `https://api.scryfall.com/cards/autocomplete?q=${currentValue}`,
       )
       fetch(fullURI)
         .then(async (response) => await response.json())
@@ -28,10 +32,12 @@ const AsyncAutoComplete = ({ open, handleKeyPress, setCardName, ...rest }) => {
         })
     }
     aulist()
-  }, [cardLocal])
+  }, [currentValue])
 
   return (
     <Autocomplete
+      menuStyle={{ position: 'fixed', zIndex: 100 }}
+      className={onTop}
       getItemValue={(item) => item}
       items={cards}
       renderItem={(item, isHighlighted) => (
@@ -43,19 +49,14 @@ const AsyncAutoComplete = ({ open, handleKeyPress, setCardName, ...rest }) => {
           {item}
         </div>
       )}
-      value={cardLocal}
+      value={currentValue}
       onChange={(e) => {
-        if (e.target.value === '') {
-          setCardName(null)
-        }
-        setCardLocal(e.target.value)
+        setCurrentValue(e.target.value)
       }}
       onSelect={(val) => {
-        console.log('value', val)
         setCardName(val)
-        setCardLocal(val)
+        setCurrentValue(val)
       }}
-      {...rest}
     />
   )
 }

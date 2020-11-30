@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@google-cloud/pubsub": "^2.6.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -12,6 +13,7 @@
     "dotenv-expand": "^5.1.0",
     "downloadbutton": "^1.0.0",
     "firebase": "^8.0.1",
+    "firebase-functions": "^3.11.0",
     "firebaseui": "^4.7.1",
     "mana-font": "^1.9.4",
     "pretty-lights": "^0.0.19",
@@ -20,10 +22,12 @@
     "react-data-grid": "^7.0.0-canary.33",
     "react-dom": "^17.0.1",
     "react-firebaseui": "^4.1.0",
+    "react-paypal-button-v2": "^2.6.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-select": "^3.1.0",
+    "svg-inline-react": "^3.2.0",
     "unique-names-generator": "^4.3.1",
     "uuid": "^8.3.1",
     "web-vitals": "^0.2.4"

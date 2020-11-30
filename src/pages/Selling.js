@@ -1,6 +1,5 @@
 import React from 'react'
 import CardForm from '../components/CardForm'
-import setList from '../sets.json'
 import CardList from '../components/CardList'
 const Selling = ({ sets, setSets, cards, addCard, removeCard }) => {
   const columns = [
@@ -25,23 +24,6 @@ const Selling = ({ sets, setSets, cards, addCard, removeCard }) => {
       Header: 'My Price',
     },
   ]
-
-  const loadSets = () => {
-    return new Map(
-      setList.data
-        .sort((a, b) => (a.name > b.name ? 1 : -1))
-        .map((set) => [set.code, set]),
-    )
-  }
-
-  React.useEffect(() => {
-    const f = () => {
-      const s = loadSets()
-      setSets(s)
-    }
-    f()
-  }, [setSets])
-
   return (
     <>
       <CardForm sets={sets} addCard={addCard} removeCard={removeCard} />

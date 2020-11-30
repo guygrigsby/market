@@ -1,11 +1,17 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom'
 import Header from './components/Header.js'
 import Nav from './components/Nav.js'
 import Home from './pages/Home.js'
 import Deck from './pages/Deck.js'
 import Selling from './pages/Selling.js'
-import Body from './components/Body.js'
+import LoginPage from './pages/Login.js'
+import { listItem } from './services/list.js'
 import { writeCardsToCollection, removeCardsFromCollection } from './store.js'
 import { useAuth } from './use-auth'
 
@@ -26,6 +32,10 @@ const menu = [
     link: '/about',
     content: 'About',
   },
+  {
+    link: '/login',
+    content: 'Login',
+  },
 ]
 
 const App = () => {
@@ -33,20 +43,16 @@ const App = () => {
   const [deck, setDeck] = React.useState(null)
   const [ttsDeck, setTTS] = React.useState(null)
   const [cards, setCards] = React.useState([])
-  const [sets, setSets] = React.useState(new Map())
   const [removed, setRemoved] = React.useState([])
   const [added, setAdded] = React.useState([])
+  const auth = useAuth()
 
   const setTTSDeck = (deck) => {
     setTTS(deck)
   }
 
   const addCard = (card) => {
-    setCards((prev) => {
-      const m = [...prev]
-      m.push(card)
-      return m
-    })
+    listItem(auth, card)
   }
   const removeCard = (card) => {
     setCards((prev) => {
@@ -59,9 +65,6 @@ const App = () => {
       return m
     })
   }
-  const auth = useAuth()
-
-  React.useEffect(() => {}, [deck, ttsDeck])
 
   React.useEffect(() => {
     if (added.size > 0) {
@@ -85,13 +88,7 @@ const App = () => {
       <Nav items={menu} />
       <Switch>
         <Route path="/selling">
-          <Selling
-            cards={cards}
-            sets={sets}
-            setSets={setSets}
-            addCard={addCard}
-            removeCard={removeCard}
-          />
+          <Selling cards={cards} addCard={addCard} removeCard={removeCard} />
         </Route>
         <Route path="/decks">
           <Deck
@@ -103,8 +100,9 @@ const App = () => {
             setTTSDeck={setTTSDeck}
           />
         </Route>
-        <Route path="/singles">
-          <Body>{'singles'}</Body>
+        <Route path="/login">
+          import React from 'react'
+          {auth.user ? <Redirect to="/selling" /> : <LoginPage />}
         </Route>
         <Route exact path="/">
           <Home />

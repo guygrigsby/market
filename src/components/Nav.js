@@ -2,8 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
-import { useAuth } from '../use-auth.js'
-import Login from './Login.js'
 
 const style = css`
   display: flex;
@@ -27,7 +25,6 @@ const link = css`
 `
 
 const Nav = ({ items }) => {
-  const auth = useAuth()
   return (
     <nav className={style}>
       {items.map((e, idx) => {
@@ -37,19 +34,6 @@ const Nav = ({ items }) => {
           </Link>
         )
       })}
-      <span
-        className={link}
-        onClick={() => auth.signup('guy@grigsby.dev', 'password')}
-      >
-        Sign Up
-      </span>
-      {!auth.user ? (
-        <Login />
-      ) : (
-        <span className={link} onClick={() => auth.logout()}>
-          Log Out
-        </span>
-      )}
     </nav>
   )
 }

@@ -1,20 +1,44 @@
 import { cx, css } from 'pretty-lights'
+import SetIcon from '../components/SetIcon'
+import { useSets } from '../use-sets'
 
 const cellExpand = css`
-  flex: 1;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: auto;
 `
 const ml1 = css`
   margin-left: 2px;
 `
+const white = css`
+  height: 85%;
+  fill: white;
+`
+const centerHeader = css`
+  justify-content: center;
+  align-items: center;
+`
+export const SetFormatter = ({ abrv }) => {
+  const sets = useSets()
+  return (
+    <div key={`set-${abrv}`} className={cx(white, cellExpand)}>
+      <SetIcon svg={sets.get(abrv).logo} className={cx(white, cellExpand)} />
+    </div>
+  )
+}
+export const setHeader = (str) => {
+  return (
+    <span key={`header-${str}`} className={cx(cellExpand, centerHeader)}>
+      {str}
+    </span>
+  )
+}
 export const manaHeader = (str) => {
-  return <span className={cellExpand}>{str}</span>
+  return (
+    <span key={`header-${str}`} className={cx(cellExpand, centerHeader)}>
+      {str}
+    </span>
+  )
 }
 export const mana = (str) => {
   if (!str) return null

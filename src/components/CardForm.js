@@ -1,8 +1,10 @@
 import React from 'react'
+import AsyncAutoComplete from './AutoComplete'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
-import Select from 'react-select'
-import CardChooser from './CardChooser'
+import { searchForCard } from '../services/scryfall.js'
+import { useSets } from '../use-sets'
+import Select from 'react-select/async'
 
 const setCell = css`
   display: flex;
@@ -42,71 +44,50 @@ const selectTheme = (theme) => ({
   borderRadius: '1px',
 })
 
-const CardForm = ({ sets, addCard, removeCard }) => {
-  const [matches, setMatches] = React.useState([])
+const toast = (msg) => {
+  return console.log('missing', msg)
+}
+
+const CardForm = ({ addCard, removeCard }) => {
   const [card, setCard] = React.useState({})
-  const [filteredSets, setFilteredSets] = React.useState([])
   const [condition, setCondition] = React.useState()
   const [price, setPrice] = React.useState(0)
+  const [cardName, setCardName] = React.useState('')
 
-  const setCardVersion = (set) => {
-    for (let i = 0; i < matches.length; i++) {
-      const card = matches[i]
-      if (card.set === set.code) {
-        console.log('found exact card', set, card)
-        setCard(card)
-        setPrice(card.prices.usd)
-        return
-      }
-    }
+  const allSets = useSets()
+
+  const setCardVersion = (card) => {
+    setCard(card)
+    setPrice(card.prices.usd)
   }
 
   const handleSubmit = (e) => {
-    if (!card) alert('No card')
-    if (!condition) alert('No condition')
-    if (!price) alert('No price')
+    if (!card) toast('No card')
+    if (!condition) toast('No condition')
+    if (!price) toast('No price')
     const listing = {
       card,
       condition,
       price,
     }
     addCard(listing)
-    clear()
     e.preventDefault()
+    return () => {
+      clear()
+    }
   }
 
   const clear = () => {
-    setMatches([])
     setCard({})
-    setFilteredSets([])
     setCondition('')
     setPrice(0)
   }
 
-  React.useEffect(() => {
-    if ((filteredSets && !matches) || matches.length === 0) return
-    let acc = []
-    if (!matches || matches.length < 1) {
-      acc = Array.from(sets.values())
-    } else {
-      for (let i = 0; i < matches.length; i++) {
-        const match = matches[i]
-        const set = sets.get(match.set)
-        console.log('filtering', set)
-        set && acc.push(set)
-      }
-    }
-    setFilteredSets(acc.sort((a, b) => (a.name > b.name ? 1 : -1)))
-  }, [matches, sets, filteredSets])
   return (
     <form className={box} onSubmit={(e) => handleSubmit(e)}>
       <div className={entry}>
         <label>Card Name</label>
-        <CardChooser
-          className={entry}
-          setMatches={setMatches}
-          setCard={setCard}
-        />
+        <AsyncAutoComplete setCardName={setCardName} />
       </div>
       <div className={entry}>
         <label>Set</label>
@@ -114,7 +95,7 @@ const CardForm = ({ sets, addCard, removeCard }) => {
         <Select
           className={setSelectClass}
           onChange={(val) => setCardVersion(val)}
-          getOptionValue={(v) => {
+d         getOptionValue={(v) => {
             return v.code
           }}
           getOptionLabel={(v) => {
@@ -130,7 +111,8 @@ const CardForm = ({ sets, addCard, removeCard }) => {
               </div>
             )
           }}
-          options={filteredSets}
+          loadOptions={() => searchForCard(cardName)}
+          defaultOptions={Array.from(allSets.values())}
           theme={selectTheme}
         />
       </div>
@@ -155,6 +137,7 @@ const CardForm = ({ sets, addCard, removeCard }) => {
     </form>
   )
 }
+
 const customStyles = {
   input: (provided, state) => ({
     ...provided,
