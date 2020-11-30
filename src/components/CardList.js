@@ -4,7 +4,6 @@ import {
   mana,
   manaHeader,
   SetFormatter,
-  priceFormatter,
 } from '../formatters/table.js'
 import DataGrid from 'react-data-grid'
 import 'react-data-grid/dist/react-data-grid.css'
@@ -35,14 +34,6 @@ const CardList = ({ setLoading, cards, columns, setDeck, cname }) => {
       headerRenderer: () => manaHeader('Set'),
       formatter: ({ row }) => {
         return <SetFormatter abrv={row.set} />
-      },
-    },
-    {
-      key: 'prices.usd',
-      name: 'Price',
-      resizable: true,
-      formatter: ({ row }) => {
-        return <>{row.prices.usd}</>
       },
     },
     {

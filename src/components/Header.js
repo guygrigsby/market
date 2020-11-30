@@ -20,7 +20,6 @@ const style = css`
 `
 const logo = css`
   margin-left: 1em;
-  align-self: baseline;
   height: 100px;
   width: 100px;
 `
@@ -46,7 +45,7 @@ const Header = ({ setDeck, setTTSDeck, login }) => {
     if (!reload) return
     const f = async () => {
       const decks = await fetchDecks(reload)
-      
+
       setTTSDeck(decks.tts)
       setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
     }

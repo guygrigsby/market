@@ -11,7 +11,7 @@ const ml1 = css`
   margin-left: 2px;
 `
 const white = css`
-  height: 85%;
+  height: 75%;
   fill: white;
 `
 const centerHeader = css`

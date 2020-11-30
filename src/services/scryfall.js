@@ -5,6 +5,10 @@ const BULK_URL =
 const SEARCH_URL = 'https://api.scryfall.com/cards/search'
 const SETS_URL = 'https://api.scryfall.com/sets'
 
+const CONST_HEADERS = new Headers()
+CONST_HEADERS.append('Accept-Encoding', 'gzip')
+CONST_HEADERS.append('Origin', 'https://mtg.fail')
+
 export const getDeckLocal = (uri) => {
   const text = `${uri}/export`
   fetch(text, {
@@ -13,14 +17,12 @@ export const getDeckLocal = (uri) => {
     },
   })
     .then((res) => {
-      
       getDeck(uri)
       return res
     })
     .then((str) => {
       const body = document.querySelectorAll('body')
       body.forEach((a) => {
-        
         return str
       })
     })
@@ -46,29 +48,31 @@ export const getDeck = (names) => {
 const collection = async (uri, cards) => {
   return await fetch(uri, {
     method: 'POST',
+    headers: CONST_HEADERS,
     body: JSON.stringify(new Collection(cards)),
   }).then(async (res) => await res.json)
 }
 
 export const searchForCard = async (name) => {
   const uri = `${SEARCH_URL}?q=${name}&unique=prints`
-  return fetch(uri).then(async (res) => await res.json())
+  return fetch(uri, {
+    headers: CONST_HEADERS,
+  }).then(async (res) => await res.json())
 }
 
 export const loadCards = async (onErr) => {
   let url = BULK_URL
   if (process.env.NODE_ENV === 'development') {
-    
     url = require('../services/scryfall.js')
   }
-  return fetch(url)
+  return fetch(url, { header: CONST_HEADERS })
     .then(async (res) => {
       return await res.json()
     })
     .catch((e) => (onErr ? onErr(e) : null))
 }
 export const sets = () => {
-  return fetch(SETS_URL)
+  return fetch(SETS_URL, { headers: CONST_HEADERS })
     .then(async (r) => await r.json())
     .then((j) => j.data)
 }
@@ -79,7 +83,9 @@ export const search = (text, onErr) => {
 
   url.search = new URLSearchParams(params).toString()
 
-  return fetch(url).then(async (res) => await res.json)
+  return fetch(url, { headers: CONST_HEADERS }).then(
+    async (res) => await res.json,
+  )
 }
 /*
  *{

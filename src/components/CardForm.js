@@ -4,7 +4,8 @@ import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import { searchForCard } from '../services/scryfall.js'
 import { useSets } from '../use-sets'
-import Select from 'react-select/async'
+import AsyncSelect from 'react-select/async'
+import Select from 'react-select'
 
 const setCell = css`
   display: flex;
@@ -45,7 +46,7 @@ const selectTheme = (theme) => ({
 })
 
 const toast = (msg) => {
-  return 
+  return
 }
 
 const CardForm = ({ addCard, removeCard }) => {
@@ -58,7 +59,6 @@ const CardForm = ({ addCard, removeCard }) => {
 
   const setCardVersion = (card) => {
     setCard(card)
-    setPrice(card.prices.usd)
   }
 
   const handleSubmit = (e) => {
@@ -92,10 +92,11 @@ const CardForm = ({ addCard, removeCard }) => {
       <div className={entry}>
         <label>Set</label>
 
-        <Select
+        <AsyncSelect
           className={setSelectClass}
           onChange={(val) => setCardVersion(val)}
-d         getOptionValue={(v) => {
+          d
+          getOptionValue={(v) => {
             return v.code
           }}
           getOptionLabel={(v) => {
@@ -123,6 +124,7 @@ d         getOptionValue={(v) => {
           onChange={(val) => setCondition(val)}
           styles={customStyles}
           theme={selectTheme}
+          options={conditionList}
         />
       </div>
       <div className={entry}>
@@ -144,7 +146,6 @@ const customStyles = {
   }),
 }
 CardForm.propTypes = {
-  sets: PropTypes.instanceOf(Map).isRequired,
   addCard: PropTypes.func,
   removeCard: PropTypes.func,
 }
