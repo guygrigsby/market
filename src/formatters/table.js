@@ -3,6 +3,7 @@ import SetIcon from '../components/SetIcon'
 import { useSets } from '../use-sets'
 
 const cellExpand = css`
+  height: 80%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -10,21 +11,13 @@ const cellExpand = css`
 const ml1 = css`
   margin-left: 2px;
 `
-const white = css`
-  height: 75%;
-  fill: white;
-`
 const centerHeader = css`
   justify-content: center;
   align-items: center;
 `
-export const SetFormatter = ({ abrv }) => {
+export const SetFormatter = ({ abrv, cl}) => {
   const sets = useSets()
-  return (
-    <div key={`set-${abrv}`} className={cx(white, cellExpand)}>
-      <SetIcon svg={sets.get(abrv).logo} className={cx(white, cellExpand)} />
-    </div>
-  )
+  return <SetIcon svg={sets.get(abrv).logo} className={cl} />
 }
 export const setHeader = (str) => {
   return (

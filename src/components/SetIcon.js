@@ -1,4 +1,4 @@
-import { css } from 'pretty-lights'
+import { cx, css } from 'pretty-lights'
 import InlineSVG from 'svg-inline-react'
 
 const svgClass = css`
@@ -7,8 +7,10 @@ const svgClass = css`
   align-self: center;
 `
 
-const SetIcon = ({ svg, ...rest }) => {
-  return <InlineSVG src={svg} raw={true} className={svgClass} {...rest} />
+const SetIcon = ({ svg, cl, ...rest }) => {
+  return (
+    <InlineSVG src={svg} raw={true} className={cx(cl, svgClass)} {...rest} />
+  )
 }
 
 export default SetIcon

@@ -2,24 +2,9 @@ import React from 'react'
 import AsyncAutoComplete from './AutoComplete'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
-import { searchForCard } from '../services/scryfall.js'
-import { useSets } from '../use-sets'
-import AsyncSelect from 'react-select/async'
 import Select from 'react-select'
+import SetSelect from './SetSelect'
 
-const setCell = css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.8em;
-`
-const logoClass = css`
-  padding-right: 7px;
-`
-
-const setSelectClass = css`
-  min-width: 300px;
-`
 const entry = css`
   flex: 0 1 200px;
   padding: 10px;
@@ -55,8 +40,6 @@ const CardForm = ({ addCard, removeCard }) => {
   const [price, setPrice] = React.useState(0)
   const [cardName, setCardName] = React.useState('')
 
-  const allSets = useSets()
-
   const setCardVersion = (card) => {
     setCard(card)
   }
@@ -82,7 +65,6 @@ const CardForm = ({ addCard, removeCard }) => {
     setCondition('')
     setPrice(0)
   }
-
   return (
     <form className={box} onSubmit={(e) => handleSubmit(e)}>
       <div className={entry}>
@@ -91,30 +73,13 @@ const CardForm = ({ addCard, removeCard }) => {
       </div>
       <div className={entry}>
         <label>Set</label>
+        <SetSelect
+          cardName={cardName}
+          onSelect={(val) => {
+            console.log('card verfsion', val)
 
-        <AsyncSelect
-          className={setSelectClass}
-          onChange={(val) => setCardVersion(val)}
-          d
-          getOptionValue={(v) => {
-            return v.code
+            setCardVersion(val)
           }}
-          getOptionLabel={(v) => {
-            return (
-              <div className={setCell}>
-                <span style={{ marginRight: '.5em' }}>{v.name}</span>
-                <img
-                  className={logoClass}
-                  src={v.icon_svg_uri}
-                  alt={`${v.name} logo`}
-                  height="15px"
-                />
-              </div>
-            )
-          }}
-          loadOptions={() => searchForCard(cardName)}
-          defaultOptions={Array.from(allSets.values())}
-          theme={selectTheme}
         />
       </div>
       <div className={entry}>
@@ -124,13 +89,13 @@ const CardForm = ({ addCard, removeCard }) => {
           onChange={(val) => setCondition(val)}
           styles={customStyles}
           theme={selectTheme}
-          options={conditionList}
         />
       </div>
       <div className={entry}>
         <label>My Price</label>
         <input
           id="price"
+          type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />

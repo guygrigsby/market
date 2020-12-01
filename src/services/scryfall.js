@@ -33,11 +33,13 @@ const collection = async (uri, cards) => {
   }).then(async (res) => await res.json)
 }
 
-export const searchForCard = async (name) => {
-  const uri = `${SEARCH_URL}?q=${name}&unique=prints`
+export const searchForCard = (name) => {
+  const uri = `${SEARCH_URL}?q=${name}&unique=prints&order=sets`
   return fetch(uri, {
     headers: CONST_HEADERS,
-  }).then(async (res) => await res.json())
+  })
+    .then((res) => res.json())
+    .then((j) => j.data)
 }
 
 export const sets = () => {

@@ -77,6 +77,7 @@ export const writeCardsToCollection = (user, cards) => {
 }
 
 export const writeDeck = (user, deck, ttsDeck, name) => {
+  console.log('user', user, 'deck', deck, 'name', name)
   return db
     .collection(USERS_DB)
     .doc(user.email)

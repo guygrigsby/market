@@ -1,10 +1,6 @@
 import React from 'react'
 import { cx, css } from 'pretty-lights'
-import {
-  mana,
-  manaHeader,
-  SetFormatter,
-} from '../formatters/table.js'
+import { mana, manaHeader, SetFormatter } from '../formatters/table.js'
 import DataGrid from 'react-data-grid'
 import 'react-data-grid/dist/react-data-grid.css'
 const style = css`
@@ -19,7 +15,19 @@ const style = css`
     background-color: #000080;
   }
 `
+const white = css`
+  padding-right: auto;
+  align-self: center;
+  height: 75%;
+  fill: white;
+`
 
+const cellExpand = css`
+  height: 80%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`
 const CardList = ({ setLoading, cards, columns, setDeck, cname }) => {
   const defaultColumns = [
     {
@@ -33,7 +41,11 @@ const CardList = ({ setLoading, cards, columns, setDeck, cname }) => {
       width: 50,
       headerRenderer: () => manaHeader('Set'),
       formatter: ({ row }) => {
-        return <SetFormatter abrv={row.set} />
+        return (
+          <div className={cellExpand}>
+            <SetFormatter abrv={row.set} cl={white} />
+          </div>
+        )
       },
     },
     {
