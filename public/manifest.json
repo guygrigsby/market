@@ -1,15 +1,10 @@
 {
-  "short_name": "mtg.fail Marketplace",
-  "name": "mtg.fail Marketplace for Magic: The Gathering Cards",
+  "short_name": "mtg.fail",
+  "name": "mtg.fail Deckbuilder and Marketplace for Magic: The Gathering Cards",
   "icons": [
     {
-      "src": "mtgfail_white192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "mtgfail_white512x512.png",
-      "sizes": "512x512",
+      "src": "mtgfail_red.png",
+      "sizes": "64x64 32x32 24x24 16x16 192x192 512x512",
       "type": "image/png"
     }
   ],
