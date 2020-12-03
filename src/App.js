@@ -11,12 +11,12 @@ import Home from './pages/Home.js'
 import Deck from './pages/Deck.js'
 import Selling from './pages/Selling.js'
 import LoginPage from './pages/Login.js'
-import { listItem } from './services/list.js'
-import { writeCardsToCollection, removeCardsFromCollection } from './store.js'
+import { useStore } from './use-store.js'
 import { useAuth } from './use-auth'
 
 const App = () => {
   const auth = useAuth()
+  const store = useStore()
 
   const menu = [
     {
@@ -40,7 +40,6 @@ const App = () => {
   const [deckName, setDeckName] = React.useState('')
   const [deck, setDeck] = React.useState(null)
   const [ttsDeck, setTTS] = React.useState(null)
-  const [cards, setCards] = React.useState([])
   const [removed, setRemoved] = React.useState([])
   const [added, setAdded] = React.useState([])
 
@@ -49,10 +48,14 @@ const App = () => {
   }
 
   const addCard = (card) => {
-    listItem(auth, card)
+    setAdded((prev) => {
+      const n = [...prev]
+      n.push(card)
+      return n
+    })
   }
   const removeCard = (card) => {
-    setCards((prev) => {
+    setRemoved((prev) => {
       var index = prev.indexOf(card)
       const m = prev
       if (index !== -1) {
@@ -64,15 +67,15 @@ const App = () => {
   }
 
   React.useEffect(() => {
-    if (added.size > 0) {
-      writeCardsToCollection(auth, added)
-      setAdded(new Map())
+    if (added.length > 0) {
+      store.writeCardsToCollection(auth.user, [...added])
+      setAdded([])
     }
-    if (removed.size > 0) {
-      removeCardsFromCollection(auth, removed)
-      setRemoved(new Map())
+    if (removed.length > 0) {
+      store.removeCardsFromCollection(auth.user, [...removed])
+      setRemoved([])
     }
-  }, [added, removed, auth])
+  }, [added, removed])
 
   return (
     <Router>
@@ -85,7 +88,7 @@ const App = () => {
       <Nav items={menu} />
       <Switch>
         <Route path="/selling">
-          <Selling cards={cards} addCard={addCard} removeCard={removeCard} />
+          <Selling addCard={addCard} removeCard={removeCard} />
         </Route>
         <Route path="/decks">
           <Deck

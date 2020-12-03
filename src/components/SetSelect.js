@@ -1,5 +1,4 @@
 import React from 'react'
-import { SetFormatter } from '../formatters/table.js'
 import { css } from 'pretty-lights'
 import { searchForCard } from '../services/scryfall.js'
 import { useSets } from '../use-sets'
@@ -26,43 +25,59 @@ const selectTheme = (theme) => ({
   ...theme,
   borderRadius: '1px',
 })
-const SetSelect = ({ cardName, onSelect }) => {
+const SetSelect = ({ cardName, onSelect, selected, setSelected }) => {
   const allSets = useSets()
   const [sets, setSets] = React.useState(Array.from(allSets.values()))
+  const [matchingCards, setMatchingCards] = React.useState(null)
 
-  const resetSets = React.useCallback(() => Array.from(allSets.values()), [
-    allSets,
-  ])
   React.useEffect(() => {
-    if (!cardName) return setSets(resetSets())
+    if (!cardName) return setSets(Array.from(allSets.values()))
     const f = async () => {
       const c = await searchForCard(cardName)
-      console.log('cards', c)
       const s = c.map((card) => allSets.get(card.set))
-      console.log('sets', s)
+      console.log('settings sets', s)
       setSets(s)
+      setMatchingCards(c)
     }
     f()
-  }, [cardName, resetSets, setSets, allSets])
+  }, [cardName, setSets, allSets])
 
-  console.log('sets', sets)
+  const handleChange = (set) => {
+    console.log('change', set, 'matched ', matchingCards)
+    for (let i = 0; i < matchingCards.length; i++) {
+      const c = matchingCards[i]
+      if (c.set === set.code) {
+        console.log('found match ', c)
+        onSelect(c)
+        setSelected(set)
+        return
+      }
+    }
+  }
+
   return (
     <Select
       className={setSelectClass}
-      onChange={onSelect}
+      value={selected}
+      onChange={(val) => handleChange(val)}
       getOptionValue={(set) => {
         return set.name
       }}
       getOptionLabel={(set) => {
         return (
           <div className={setCell}>
-            <span>{set.name}</span>
-            <SetIcon svg={set.logo} className={selectSVG} />
+            {set && set.logo ? (
+              <>
+                <span>{set.name}</span>
+                <SetIcon svg={set.logo} className={selectSVG} />
+              </>
+            ) : null}
           </div>
         )
       }}
       options={sets ? sets : []}
       theme={selectTheme}
+      clearable
     />
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import CardForm from '../components/CardForm'
 import CardList from '../components/CardList'
-const Selling = ({ sets, setSets, cards, addCard, removeCard }) => {
+const Selling = ({ sets, setSets, addCard, removeCard }) => {
   const columns = [
     {
       accessor: 'id',
@@ -27,7 +27,7 @@ const Selling = ({ sets, setSets, cards, addCard, removeCard }) => {
   return (
     <>
       <CardForm sets={sets} addCard={addCard} removeCard={removeCard} />
-      <CardList cards={cards} columns={columns} />
+      <CardList columns={columns} />
     </>
   )
 }

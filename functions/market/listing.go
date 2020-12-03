@@ -1,4 +1,4 @@
-package cloudfuncs
+package listing
 
 import (
 	"context"
@@ -9,7 +9,9 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
+	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
+	"google.golang.org/api/option"
 )
 
 func CORS(w http.ResponseWriter, r *http.Request, log log15.Logger) bool {
@@ -38,9 +40,10 @@ const (
 )
 
 type Listing struct {
-	ID        string
+	Card      *mtgfail.Entry
 	Condition Condition
 	Price     int
+	Count     int
 }
 
 func ListItem(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +92,7 @@ func ListItem(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*10)
 	defer cancel()
 
-	id, err := Publish(ctx, "snackend", "projects/snackend/topics/listings", b)
+	id, err := Publish(ctx, "snackend", "projects/snackend/topics/listings", b, "")
 	if err != nil {
 		msg := "cannot publish listing"
 		log.Error(
@@ -112,14 +115,20 @@ func ListItem(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(b)
 
 }
-func Publish(ctx context.Context, projectID string, topicID string, msg interface{}) (string, error) {
+func Publish(ctx context.Context, projectID string, topicID string, msg interface{}, credPath string) (string, error) {
 
 	b, err := json.Marshal(msg)
 	if err != nil {
 		return "", fmt.Errorf("Can't marshal: %v", err)
 	}
+	var client *pubsub.Client
+	if credPath == "" {
 
-	client, err := pubsub.NewClient(ctx, projectID)
+		client, err = pubsub.NewClient(ctx, projectID)
+	} else {
+
+		client, err = pubsub.NewClient(ctx, projectID, option.WithCredentialsFile(credPath))
+	}
 	if err != nil {
 		return "", fmt.Errorf("pubsub.NewClient: %v", err)
 	}

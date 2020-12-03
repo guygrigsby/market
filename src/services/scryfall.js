@@ -1,8 +1,7 @@
 import Collection from '../components/Collection'
 
-const BULK_URL =
-  'https://c2.scryfall.com/file/scryfall-bulk/default-cards/default-cards-20201114100433.json'
 const SEARCH_URL = 'https://api.scryfall.com/cards/search'
+const NAMED_URL = 'https://api.scryfall.com/cards/named'
 const SETS_URL = 'https://api.scryfall.com/sets'
 
 const CONST_HEADERS = new Headers()
@@ -32,7 +31,14 @@ const collection = async (uri, cards) => {
     body: JSON.stringify(new Collection(cards)),
   }).then(async (res) => await res.json)
 }
-
+export const getExactCard = (name, set) => {
+  const uri = `${NAMED_URL}?exact=${name}&set=${set.code}`
+  return fetch(uri, {
+    headers: CONST_HEADERS,
+  })
+    .then((res) => res.json())
+    .then((j) => j.data)
+}
 export const searchForCard = (name) => {
   const uri = `${SEARCH_URL}?q=${name}&unique=prints&order=sets`
   return fetch(uri, {

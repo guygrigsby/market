@@ -5,8 +5,8 @@ import 'firebase/auth'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyCRmb76McESvNi440lZx24PazPsql9H-zk',
-  authDomain: 'marketplace-c87d0.firebaseapp.com',
-  databaseURL: 'https://marketplace-c87d0.firebaseio.com',
+  //authDomain: 'marketplace-c87d0.firebaseapp.com',
+  //databaseURL: 'https://marketplace-c87d0.firebaseio.com',
   projectId: 'marketplace-c87d0',
   storageBucket: 'marketplace-c87d0.appspot.com',
   messagingSenderId: '847837735961',

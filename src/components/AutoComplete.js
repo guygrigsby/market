@@ -12,7 +12,7 @@ const onTop = css`
   font-size: 1 em;
 `
 
-const AsyncAutoComplete = ({ open, handleKeyPress, setCardName }) => {
+const AsyncAutoComplete = ({ cardName, setCardName }) => {
   const [cards, setCards] = React.useState([])
   const [currentValue, setCurrentValue] = React.useState('')
 

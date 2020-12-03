@@ -1,24 +1,11 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import firebase from 'firebase/app'
+import 'firebase/firestore'
 import 'firebase/auth'
 import './firebaseui.css'
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyCRmb76McESvNi440lZx24PazPsql9H-zk',
-  authDomain: 'marketplace-c87d0.firebaseapp.com',
-  databaseURL: 'https://marketplace-c87d0.firebaseio.com',
-  projectId: 'marketplace-c87d0',
-  storageBucket: 'marketplace-c87d0.appspot.com',
-  messagingSenderId: '847837735961',
-  appId: '1:847837735961:web:2e3f177db742e483334e88',
-  measurementId: 'G-3XFHFT0SZZ',
-})
-
-// This sets up firebaseui
-
 // This adds firebaseui to the page
 // It does everything else on its own
-
 const authContext = createContext()
 // Provider component that wraps your app and makes auth object ...
 // ... available to any child component that calls useAuth().
@@ -32,12 +19,13 @@ export const useAuth = () => {
 }
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
+  const fbAuth = firebase.auth()
   const [user, setUser] = useState(null)
+
   // Wrap any Firebase methods we want to use making sure ...
   // ... to save the user to state.
   const login = (email, password) => {
-    return firebase
-      .auth()
+    return fbAuth
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
         setUser(response.user)
@@ -46,8 +34,7 @@ function useProvideAuth() {
   }
 
   const signup = (email, password) => {
-    return firebase
-      .auth()
+    return fbAuth
       .createUserWithEmailAndPassword(email, password)
       .then((response) => {
         setUser(response.user)
@@ -56,30 +43,26 @@ function useProvideAuth() {
   }
 
   const logout = () => {
-    return firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        setUser(false)
-      })
+    return fbAuth.signOut().then(() => {
+      setUser(false)
+    })
   }
 
   const sendPasswordResetEmail = (email) => {
-    return firebase
-      .auth()
-      .sendPasswordResetEmail(email)
-      .then(() => {
-        return true
-      })
+    return fbAuth.sendPasswordResetEmail(email).then(() => {
+      return true
+    })
   }
 
   const confirmPasswordReset = (code, password) => {
-    return firebase
-      .auth()
-      .confirmPasswordReset(code, password)
-      .then(() => {
-        return true
-      })
+    return fbAuth.confirmPasswordReset(code, password).then(() => {
+      return true
+    })
+  }
+  const onAuthStateChanged = (cb) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      cb(user)
+    })
   }
   // Subscribe to user on mount
   // Because this sets state in the callback it will cause any ...
@@ -104,5 +87,6 @@ function useProvideAuth() {
     logout,
     sendPasswordResetEmail,
     confirmPasswordReset,
+    onAuthStateChanged,
   }
 }

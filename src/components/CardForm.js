@@ -35,51 +35,49 @@ const toast = (msg) => {
 }
 
 const CardForm = ({ addCard, removeCard }) => {
-  const [card, setCard] = React.useState({})
+  const [set, setSet] = React.useState(null)
+  const [card, setCard] = React.useState(null)
   const [condition, setCondition] = React.useState()
   const [price, setPrice] = React.useState(0)
   const [cardName, setCardName] = React.useState('')
 
-  const setCardVersion = (card) => {
-    setCard(card)
-  }
-
   const handleSubmit = (e) => {
-    if (!card) toast('No card')
-    if (!condition) toast('No condition')
-    if (!price) toast('No price')
+    if (!card) return toast('No card')
+    if (!condition) return toast('No condition')
+    if (!price) return toast('No price')
     const listing = {
       card,
       condition,
       price,
     }
     addCard(listing)
+    clear()
     e.preventDefault()
-    return () => {
-      clear()
-    }
+    e.stopPropagation()
   }
 
   const clear = () => {
-    setCard({})
-    setCondition('')
+    setCard(null)
+    setCardName('')
+    setCondition(conditionList[1])
     setPrice(0)
   }
+
   return (
     <form className={box} onSubmit={(e) => handleSubmit(e)}>
       <div className={entry}>
         <label>Card Name</label>
-        <AsyncAutoComplete setCardName={setCardName} />
+        <AsyncAutoComplete cardName={cardName} setCardName={setCardName} />
       </div>
       <div className={entry}>
         <label>Set</label>
         <SetSelect
           cardName={cardName}
           onSelect={(val) => {
-            console.log('card verfsion', val)
-
-            setCardVersion(val)
+            setCard(val)
           }}
+          selected={set}
+          setSelected={setSet}
         />
       </div>
       <div className={entry}>
@@ -100,7 +98,9 @@ const CardForm = ({ addCard, removeCard }) => {
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
-      <button type="submit">Add</button>
+      <button type="submit" disabled={!card || !condition || price === 0}>
+        Add
+      </button>
     </form>
   )
 }

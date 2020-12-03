@@ -2,6 +2,8 @@ import React from 'react'
 import { cx, css } from 'pretty-lights'
 import { mana, manaHeader, SetFormatter } from '../formatters/table.js'
 import DataGrid from 'react-data-grid'
+import { useStore } from '../use-store'
+import { useAuth } from '../use-auth'
 import 'react-data-grid/dist/react-data-grid.css'
 const style = css`
   display: flex;
@@ -28,7 +30,18 @@ const cellExpand = css`
   justify-content: space-evenly;
   align-items: center;
 `
-const CardList = ({ setLoading, cards, columns, setDeck, cname }) => {
+const CardList = ({ setLoading, columns, setDeck, cname }) => {
+  const auth = useAuth()
+  const store = useStore()
+
+  //  const f = (user) => {
+  //    if (!user) return
+  //    const listings = store.allListings(user)
+  //    setCards(listings)
+  //  }
+  //  auth.onAuthStateChanged(f)
+
+  const [cards, setCards] = React.useState([])
   const defaultColumns = [
     {
       key: 'name',

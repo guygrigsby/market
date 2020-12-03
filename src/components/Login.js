@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from 'pretty-lights'
 import { useAuth } from '../use-auth.js'
-import { writeUser } from '../store.js'
+import { useStore } from '../use-store.js'
 
 const buttonLike = css`
   border-radius: 1px;
@@ -29,9 +29,12 @@ const Login = () => {
   const [user, setUser] = React.useState()
   const [pass, setPass] = React.useState()
 
+  const store = useStore()
+
   const auth = useAuth()
 
-  const handleLogin = (user, pass) => {
+  const handleLogin = (e, user, pass) => {
+    e.preventDefault()
     auth.login(user, pass).catch((e) => {
       switch (e.code) {
         case 'auth/weak-password':
@@ -40,7 +43,7 @@ const Login = () => {
         case 'auth/user-not-found':
           console.error('Login Error', e, 'user not found attempting to signup')
           auth.signup(user, pass).then((user) => {
-            writeUser(user)
+            store.writeUser(user)
           })
           break
         default:
@@ -50,7 +53,7 @@ const Login = () => {
   }
   const userMsg = `Logged In ${JSON.stringify(auth)}`
   return (
-    <form className={style} onSubmit={() => handleLogin(user, pass)}>
+    <form className={style} onSubmit={(e) => handleLogin(e, user, pass)}>
       {auth.user ? (
         userMsg
       ) : (

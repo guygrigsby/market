@@ -4,7 +4,7 @@ import CardList from '../components/CardList'
 import { css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
 import { useAuth } from '../use-auth'
-import { writeDeck } from '../store.js'
+import { useStore } from '../use-store.js'
 const box = css`
   display: flex;
   width: 100%;
@@ -24,17 +24,19 @@ const Deck = ({
   setTTSDeck,
   ...rest
 }) => {
+  const store = useStore()
   const auth = useAuth()
   const noSave = !deck || !deckName || !auth.user
+  const write = store.writeDeck
   React.useEffect(() => {
     if (noSave) return
     const f = async () => {
-      writeDeck(auth.user.email, deck, ttsDeck, deckName).catch((e) =>
+      write(auth.user.email, deck, ttsDeck, deckName).catch((e) =>
         console.error('failed to write deck', deck),
       )
     }
     f()
-  }, [auth, deckName, deck, ttsDeck, noSave])
+  }, [write, auth, deckName, deck, ttsDeck, noSave])
   return (
     <>
       <FetchDeckForm
