@@ -26,17 +26,17 @@ const Deck = ({
 }) => {
   const store = useStore()
   const auth = useAuth()
-  const noSave = !deck || !deckName || !auth.user
+  const save = deck && deckName && auth.user && deck && ttsDeck
   const write = store.writeDeck
   React.useEffect(() => {
-    if (noSave) return
+    if (!save) return
     const f = async () => {
-      write(auth.user.email, deck, ttsDeck, deckName).catch((e) =>
+      write(auth.user, deck, ttsDeck, deckName).catch((e) =>
         console.error('failed to write deck', deck),
       )
     }
     f()
-  }, [write, auth, deckName, deck, ttsDeck, noSave])
+  }, [write, auth, deckName, deck, ttsDeck, save])
   return (
     <>
       <FetchDeckForm

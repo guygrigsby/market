@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { css } from 'pretty-lights'
 import PropTypes from 'prop-types'
-import { useAuth, loginPopup, uiConfig } from '../use-auth'
+import { useAuth } from '../use-auth'
 
 const style = css`
   display: flex;
@@ -37,13 +37,22 @@ const Nav = ({ items }) => {
         ) : null
       })}
       {auth.user ? (
-        <div className={link} onClick={auth.logout}>
-          Logout
-        </div>
+        auth.user.isAnonymous ? (
+          <div className={link} onClick={auth.signup}>
+            Signup
+          </div>
+        ) : (
+          <div className={link} onClick={auth.logout}>
+            Logout {auth.user.email}
+          </div>
+        )
       ) : (
-        <Link to="/login" className={link}>
+        <div className={link} onClick={auth.login}>
+          {/*
+        This shouldn't happen unless something goes wrong, but have it just in case
+        */}
           Login
-        </Link>
+        </div>
       )}
     </nav>
   )

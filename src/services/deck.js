@@ -47,7 +47,6 @@ export const getDeckName = (url) => {
       sel = `#body > div:nth-child(6) > div > div.col-lg-9.col-md-8 > div:nth-child(1) > div > div > h2`
       break
     default:
-      
       return
   }
 
@@ -59,7 +58,7 @@ export const getDeckName = (url) => {
       const parser = new DOMParser()
       const htmlDoc = parser.parseFromString(res, 'text/html')
       const title = htmlDoc.querySelector(sel).innerText
-      
+
       return cleanup(title)
     })
     .catch((e) => {

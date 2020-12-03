@@ -3,14 +3,12 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
 } from 'react-router-dom'
 import Header from './components/Header.js'
 import Nav from './components/Nav.js'
 import Home from './pages/Home.js'
 import Deck from './pages/Deck.js'
 import Selling from './pages/Selling.js'
-import LoginPage from './pages/Login.js'
 import { useStore } from './use-store.js'
 import { useAuth } from './use-auth'
 
@@ -66,16 +64,23 @@ const App = () => {
     })
   }
 
+  let userId
+  if (!auth.name) {
+    const user = auth.loginAnon()
+    userId = user.uid
+  } else {
+    userId = auth.user.uid
+  }
   React.useEffect(() => {
     if (added.length > 0) {
-      store.writeCardsToCollection(auth.user, [...added])
+      store.writeCardsToCollection(userId, [...added])
       setAdded([])
     }
     if (removed.length > 0) {
-      store.removeCardsFromCollection(auth.user, [...removed])
+      store.removeCardsFromCollection(userId, [...removed])
       setRemoved([])
     }
-  }, [added, removed])
+  }, [added, removed, userId, store])
 
   return (
     <Router>
@@ -99,9 +104,6 @@ const App = () => {
             setDeck={setDeck}
             setTTSDeck={setTTSDeck}
           />
-        </Route>
-        <Route path="/login">
-          {auth.user ? <Redirect to="/selling" /> : <LoginPage />}
         </Route>
         <Route exact path="/">
           <Home />
