@@ -5,7 +5,7 @@ import { css } from 'pretty-lights'
 import Card from './Card'
 const card = (z, overlap = true) => {
   return css`
-    height: ${overlap ? '50px' : 'auto'};
+    height: ${overlap ? '6em' : 'auto'};
     z-index: ${z};
     overflow: visible;
     margin: 1em;
@@ -20,15 +20,6 @@ const card = (z, overlap = true) => {
     }`}
   `
 }
-const box = css`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row-reverse;
-  justify-content: flex-end;
-  overflow: auto;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-`
 const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
   React.useEffect(() => {
     const f = async () => {
@@ -45,24 +36,21 @@ const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
         <span onClick={onClose} className="close">
           &times;
         </span>
-        <span className={box}>
-          {cards ? (
-            cards.map((e, i) => {
-              console.log('card', card)
-              return (
-                <Card
-                  card={e}
-                  size={1}
-                  key={i}
-                  cl={card(cards.length - i, true)}
-                  onClick={() => onClick(e, currentCard)}
-                />
-              )
-            })
-          ) : (
-            <div />
-          )}
-        </span>
+        {cards ? (
+          cards.map((e, i) => {
+            return (
+              <Card
+                card={e}
+                size={1}
+                key={i}
+                cl={card(cards.length - i, true)}
+                onClick={() => onClick(e, currentCard)}
+              />
+            )
+          })
+        ) : (
+          <div />
+        )}
       </div>
     </div>
   )

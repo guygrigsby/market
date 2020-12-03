@@ -37,7 +37,7 @@ function useProvideAuth() {
         return response.user
       })
       .catch((error) => {
-        console.log('Error logging in', error)
+        console.error('Error logging in', error)
       })
   }
 
@@ -46,7 +46,6 @@ function useProvideAuth() {
       .auth()
       .getRedirectResult()
       .then(function (result) {
-        console.log('redirect', result)
         if (result.credential) {
           const token = result.credential.accessToken
           const credential = firebase.auth.GoogleAuthProvider.credential(token)
@@ -56,14 +55,12 @@ function useProvideAuth() {
             .then((usercred) => {
               const user = usercred.user
               setUser(user)
-              console.log('Anonymous account successfully upgraded', user)
               return user
             })
             .catch((error) => {
-              console.log('Error upgrading anonymous account', error)
+              console.error('Error upgrading anonymous account', error)
             })
 
-          console.log('credentials', credential)
           return credential
         }
       })
@@ -79,7 +76,7 @@ function useProvideAuth() {
         setUser(false)
       })
       .catch((error) => {
-        console.log('Error logging out account', error)
+        console.error('Error logging out account', error)
       })
   }
 
@@ -92,7 +89,7 @@ function useProvideAuth() {
         return response.user
       })
       .catch((error) => {
-        console.log('Error logging intoanonymous account', error)
+        console.error('Error logging intoanonymous account', error)
       })
   }
   const onAuthStateChanged = (cb) => {
@@ -106,7 +103,6 @@ function useProvideAuth() {
   // ... latest auth object.
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      console.log('auth state changed', user)
       if (user) {
         setUser(user)
       } else {
