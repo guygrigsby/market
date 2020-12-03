@@ -19,6 +19,7 @@
     "pretty-lights": "^0.0.19",
     "react": "^17.0.1",
     "react-autocomplete": "^1.8.1",
+    "react-card-flip": "^1.0.11",
     "react-data-grid": "^7.0.0-canary.33",
     "react-dom": "^17.0.1",
     "react-firebaseui": "^4.1.0",

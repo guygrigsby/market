@@ -44,12 +44,12 @@ const FetchDeckForm = ({
     if (deckURL && loadDecks) {
       const f = async () => {
         const decks = await fetchDecks(deckURL)
-        setDeck(decks.internal)
+        setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
         setTTSDeck(decks.tts)
         setDeckName(await getDeckName(deckURL))
       }
       f()
-      return () => setLoadDecks(false)
+      setLoadDecks(false)
     }
   }, [deckURL, setDeck, setTTSDeck, loadDecks, setDeckName])
 

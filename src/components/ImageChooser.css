@@ -14,14 +14,12 @@
 .modal-content {
   overflow: visible;
   margin: 5%;
-  padding: 20px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row-reverse;
   justify-content: flex-start;
   margin: auto;
-  height: 90%;
-  width: 60%;
+  width: 30%;
 }
 
 /* The Close Button */

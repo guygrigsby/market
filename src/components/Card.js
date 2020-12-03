@@ -6,16 +6,17 @@ const cardClass = css`
   overflow: visible;
 `
 const flip = css`
+  display: inline-block;
   position: relative;
   height: auto;
   width: auto;
 `
 const flipper = css`
   position: absolute;
-  bottom: 3em;
-  right: 6em;
-  height: 4em;
-  width: 6em;
+  bottom: 8%;
+  right: 10%;
+  height: 10%;
+  width: 20%;
   background-image: url(${flipIcon});
 `
 
