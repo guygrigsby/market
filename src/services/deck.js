@@ -5,6 +5,7 @@ import {
   animals,
 } from 'unique-names-generator'
 export const Upstream = 'https://us-central1-snackend.cloudfunctions.net'
+const corsProxy = 'https://cors-anywhere.herokuapp.com'
 
 export const createTTS = (deck) => {
   const fullURI = new URL(`${Upstream}/CreateTTSDeckFromInternal`)
@@ -35,7 +36,7 @@ export const fetchDecks = (url) => {
 }
 
 export const getDeckName = (url) => {
-  const domain = getDomain(url)
+  const domain = getDomain(`${corsProxy}}/url`)
   let sel
   let cleanup
   switch (domain) {

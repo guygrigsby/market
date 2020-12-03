@@ -25,7 +25,7 @@ const FetchDeckForm = ({
   setTTSDeck,
 }) => {
   const [deckURL, setDeckURL] = React.useState(
-    'https://deckbox.org/sets/2785835',
+    'https://cors-anywhere.herokuapp.com/https://deckbox.org/sets/2785835',
   )
   const [loadDecks, setLoadDecks] = React.useState(false)
 
