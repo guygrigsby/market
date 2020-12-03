@@ -12,7 +12,6 @@
 
 /* Modal Content/Box */
 .modal-content {
-  overflow: visible;
   margin: auto;
   max-width: 500px;
   height: 100%;

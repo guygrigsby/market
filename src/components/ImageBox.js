@@ -35,6 +35,7 @@ const ImageBox = ({
   setDeck,
 }) => {
   const [selected, setSelected] = React.useState(false)
+  const [alternateCards, setAlternateCards] = React.useState()
 
   const update = async (oldC, newC) => {
     if (!oldC || !newC) return
@@ -50,6 +51,7 @@ const ImageBox = ({
       }
       return updateTTS(ttsDeck, oldC, newC)
     })
+    console.log('ImageBox', selected)
   }
   return (
     <div className={cx(box, cname)}>
@@ -60,6 +62,8 @@ const ImageBox = ({
           }}
           onClose={() => setSelected(false)}
           currentCard={selected}
+          setCards={setAlternateCards}
+          cards={alternateCards}
         />
       ) : null}
       {deck ? (

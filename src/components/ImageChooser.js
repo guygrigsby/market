@@ -29,16 +29,16 @@ const box = css`
   width: 100%; /* Full width */
   height: 100%; /* Full height */
 `
-const ImageChooser = ({ onClick, currentCard, onClose }) => {
-  const [cards, setCards] = React.useState()
-
+const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
   React.useEffect(() => {
     const f = async () => {
       const others = await searchForCard(currentCard.name)
-      setCards(others.data)
+      console.log('getting matching cards', currentCard, others)
+      setCards(others)
     }
     f()
-  }, [currentCard])
+  }, [currentCard, cards, setCards])
+  console.log('rendering ImageChooser', cards)
   return (
     <div className="modal" onClick={onClose}>
       <div className="modal-content">
@@ -48,6 +48,7 @@ const ImageChooser = ({ onClick, currentCard, onClose }) => {
         <span className={box}>
           {cards ? (
             cards.map((e, i) => {
+              console.log('card', card)
               return (
                 <Card
                   card={e}
