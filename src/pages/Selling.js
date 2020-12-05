@@ -26,7 +26,13 @@ const Selling = ({ sets, setSets, addCard, removeCard }) => {
   ]
   return (
     <>
-      <CardForm sets={sets} addCard={addCard} removeCard={removeCard} />
+      <CardForm
+        submitText="Add"
+        sets={sets}
+        setSets={setSets}
+        addCard={addCard}
+        removeCard={removeCard}
+      />
       <CardList columns={columns} />
     </>
   )

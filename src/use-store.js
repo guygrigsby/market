@@ -7,25 +7,10 @@ const INVENTORY_DB = 'cards'
 const CONDITIONS_TABLE = '/conditions'
 const USER_DECKS_DB = 'decks'
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyCRmb76McESvNi440lZx24PazPsql9H-zk',
-  authDomain: 'marketplace-c87d0.firebaseapp.com',
-  databaseURL: 'https://marketplace-c87d0.firebaseio.com',
-  projectId: 'marketplace-c87d0',
-  storageBucket: 'marketplace-c87d0.appspot.com',
-  messagingSenderId: '847837735961',
-  appId: '1:847837735961:web:2e3f177db742e483334e88',
-  measurementId: 'G-3XFHFT0SZZ',
-})
-
 if (process.env.NODE_ENV === 'development') {
-  console.log('dev', process.env.NODE_ENV)
-  firebase.auth().useEmulator('http://localhost:9099/')
   firebase.firestore().useEmulator('localhost', 8080)
 } else {
-  console.log('not dev', process.env.NODE_ENV)
 }
-
 const storeContext = createContext()
 export function ProvideStore({ children }) {
   const store = useFirebaseStore()
@@ -46,6 +31,25 @@ const useFirebaseStore = () => {
         const codes = snapshot.val()
         return codes
       })
+  }
+  // used to copy user data from anon user to permanent user
+  const mergeUsers = (temp, user) => {
+    return db
+      .collection(USERS_DB)
+      .doc(temp.uid)
+      .get()
+      .then((tmpDoc) => {
+        const ret = db
+          .collection(USERS_DB)
+          .doc(user.uid)
+          .update(tmpDoc)
+          .then(() => console.log('users merged', temp.uid, user.uid))
+          .catch((e) => {
+            console.error('failed to merge users', temp.uid, user.uid)
+          })
+        return ret
+      })
+      .catch((e) => console.error('failed to get anon user docs'))
   }
 
   const writeUser = (user) => {
@@ -118,6 +122,7 @@ const useFirebaseStore = () => {
       .catch((err) => console.error('error writing deck', err))
   }
   return {
+    mergeUsers,
     getConditions,
     writeUser,
     writeUserData,

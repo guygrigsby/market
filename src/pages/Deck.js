@@ -3,8 +3,6 @@ import FetchDeckForm from '../components/FetchDeckForm.js'
 import CardList from '../components/CardList'
 import { css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
-import { useAuth } from '../use-auth'
-import { useStore } from '../use-store.js'
 const box = css`
   display: flex;
   width: 100%;
@@ -22,21 +20,10 @@ const Deck = ({
   ttsDeck,
   setDeck,
   setTTSDeck,
+  onError,
   ...rest
 }) => {
-  const store = useStore()
-  const auth = useAuth()
-  const save = deck && deckName && auth.user && deck && ttsDeck
-  const write = store.writeDeck
-  React.useEffect(() => {
-    if (!save) return
-    const f = async () => {
-      write(auth.user, deck, ttsDeck, deckName).catch((e) =>
-        console.error('failed to write deck', deck),
-      )
-    }
-    f()
-  }, [write, auth, deckName, deck, ttsDeck, save])
+  console.log('selling')
   return (
     <>
       <FetchDeckForm

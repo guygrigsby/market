@@ -1,6 +1,6 @@
 import React from 'react'
 import { fetchDecks } from '../services/deck.js'
-import { css } from 'pretty-lights'
+import { cx, css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import { B, U, R, G, W } from '../Mana.js'
 import { MTGFailLogoWhite as MTGFailLogo } from '../MTGFailLogo.js'
@@ -28,8 +28,20 @@ const image = css`
   transition: transform 0.15s;
   width: 45px;
   z-offset: 99;
+`
+const mountain = css`
   &:hover {
     transform: scale(1.1);
+    border-radius: 100%;
+    animation: growshadow 0.15s 1 forwards;
+  }
+  @keyframes growshadow {
+    from {
+    }
+    to {
+      box-shadow: 0 0 10px 6px #000 inset;
+      box-shadow: 0 0 10px 3px #ddd;
+    }
   }
 `
 const log = css`
@@ -64,7 +76,7 @@ const Header = ({ setDeck, setTTSDeck, login }) => {
         <U style={image} />
         <W style={image} />
         <span onClick={() => setReload(OMNOM)}>
-          <R style={image} />
+          <R style={cx(mountain, image)} />
         </span>
         <G style={image} />
         {login && <div className={log}>{login} </div>}

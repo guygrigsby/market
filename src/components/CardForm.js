@@ -34,7 +34,7 @@ const toast = (msg) => {
   return
 }
 
-const CardForm = ({ addCard, removeCard }) => {
+const CardForm = ({ submitText, addCard, removeCard }) => {
   const [set, setSet] = React.useState(null)
   const [card, setCard] = React.useState(null)
   const [condition, setCondition] = React.useState()
@@ -99,7 +99,7 @@ const CardForm = ({ addCard, removeCard }) => {
         />
       </div>
       <button type="submit" disabled={!card || !condition || price === 0}>
-        Add
+        {submitText}
       </button>
     </form>
   )

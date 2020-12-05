@@ -1,45 +1,20 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Header from './components/Header.js'
 import Nav from './components/Nav.js'
-import Home from './pages/Home.js'
+import Buying from './pages/Buying.js'
+import LoginPage from './pages/Login.js'
 import Deck from './pages/Deck.js'
 import Selling from './pages/Selling.js'
-import { useStore } from './use-store.js'
-import { useAuth } from './use-auth'
+import 'firebase/auth'
 
 const App = () => {
-  const auth = useAuth()
-  const store = useStore()
-
-  const menu = [
-    {
-      link: '/decks',
-      content: 'Deck Building',
-    },
-    {
-      link: '/selling',
-      content: 'Selling',
-      authRequired: true,
-    },
-    {
-      link: '/singles',
-      content: 'Singles',
-    },
-    {
-      link: '/about',
-      content: 'About',
-    },
-  ]
   const [deckName, setDeckName] = React.useState('')
+  const [sets, setSets] = React.useState(null)
   const [deck, setDeck] = React.useState(null)
   const [ttsDeck, setTTS] = React.useState(null)
-  const [removed, setRemoved] = React.useState([])
-  const [added, setAdded] = React.useState([])
+  const [setRemoved] = React.useState(null)
+  const [, setAdded] = React.useState(null)
 
   const setTTSDeck = (deck) => {
     setTTS(deck)
@@ -63,25 +38,9 @@ const App = () => {
       return m
     })
   }
-
-  let userId
-  if (!auth.name) {
-    const user = auth.loginAnon()
-    userId = user.uid
-  } else {
-    userId = auth.user.uid
+  const onError = (msg) => {
+    console.log(msg)
   }
-  React.useEffect(() => {
-    if (added.length > 0) {
-      store.writeCardsToCollection(userId, [...added])
-      setAdded([])
-    }
-    if (removed.length > 0) {
-      store.removeCardsFromCollection(userId, [...removed])
-      setRemoved([])
-    }
-  }, [added, removed, userId, store])
-
   return (
     <Router>
       <Header
@@ -90,13 +49,16 @@ const App = () => {
         setTTSDeck={setTTSDeck}
         setDeck={setDeck}
       />
-      <Nav items={menu} />
+      <Nav />
       <Switch>
         <Route path="/selling">
           <Selling addCard={addCard} removeCard={removeCard} />
         </Route>
         <Route path="/decks">
           <Deck
+            onError={onError}
+            sets={sets}
+            setSets={setSets}
             deckName={deckName}
             setDeckName={setDeckName}
             deck={deck}
@@ -105,8 +67,14 @@ const App = () => {
             setTTSDeck={setTTSDeck}
           />
         </Route>
+        <Route path="/buying">
+          <Buying sets={sets} />
+        </Route>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
         <Route exact path="/">
-          <Home />
+          <Buying sets={sets} />
         </Route>
       </Switch>
     </Router>

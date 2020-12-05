@@ -7,37 +7,26 @@ import { useAuth } from '../AuthProvider.js'
 const style = css`
   display: flex;
   background-color: #333;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-evenly;
   overflow: hidden;
-  padding: 0 2em 0 2em;
 `
 
 const link = css`
-  padding: 1rem;
+  display: inline-block;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  vertical-align: middle;
   color: #f2f2f2;
   text-align: center;
   text-decoration: none;
-  &:hover {
-    cursor: pointer;
+  &:hover: {
+    background-color: #ddd;
+    color: black;
   }
 `
-
-const backgroundGlow = css`
-  &:hover {
-    cursor: pointer;
-    animation: growshadow 0.25s 1 forwards;
-  }
-  @keyframes growshadow {
-    from {
-    }
-    to {
-      color: #000;
-      background-color: #ddd;
-    }
-  }
+const gear = css`
+  font-size: 2em;
 `
-const gear = css``
 
 const Nav = () => {
   const items = [
@@ -57,33 +46,25 @@ const Nav = () => {
     {
       link: '/login',
       content: 'Login',
-      exclusiveNoAuth: true,
+      authRequired: true,
     },
     {
       authRequired: true,
       element: (
-        <div
-          key="logout-link"
-          className={cx(backgroundGlow, link)}
-          onClick={() => auth.logout()}
-        >
+        <button key='logout-link' className={link} onClick={() => auth.logout()}>
           Logout
-        </div>
+        </button>
       ),
     },
-    //{
-    //  link: '/settings',
-    //  authRequired: true,
-    //  element: (
-    //    <Link
-    //      className={cx(gear, cx(backgroundGlow, link))}
-    //      key="settings-link"
-    //      to="/settings}"
-    //    >
-    //      &#9881;
-    //    </Link>
-    //  ),
-    //},
+    {
+      link: '/settings',
+      authRequired: true,
+      element: (
+        <Link key='settings-link'className={cx(gear, link)} to="/settings}">
+          &#9881;
+        </Link>
+      ),
+    },
   ]
   const auth = useAuth()
   return (
@@ -99,11 +80,13 @@ const Nav = () => {
           e.element ? (
             e.element
           ) : (
-            <Link key={idx} to={e.link} className={cx(backgroundGlow, link)}>
+            <Link key={idx} to={e.link} className={link}>
               {e.content}
             </Link>
           ),
         )}
+      <span></span>
+      )}
     </nav>
   )
 }
