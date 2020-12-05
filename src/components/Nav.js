@@ -37,8 +37,6 @@ const backgroundGlow = css`
     }
   }
 `
-const gear = css``
-
 const Nav = () => {
   const items = [
     {
