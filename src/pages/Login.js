@@ -1,6 +1,7 @@
 import React from 'react'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase'
+import { css } from 'pretty-lights'
 
 // Configure FirebaseUI.
 const uiConfig = {
@@ -15,11 +16,13 @@ const uiConfig = {
   ],
 }
 
+const page = css`
+  padding-top: 3em;
+`
+
 const Login = () => {
   return (
-    <div>
-      <h1>My App</h1>
-      <p>Please sign-in:</p>
+    <div className={page}>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   )

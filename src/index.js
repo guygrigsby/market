@@ -1,18 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './firebase.js' // This order matters
 import App from './App'
-import AuthProvider from './AuthProvider.js'
-import { ProvideStore } from './use-store.js'
+import FirebaseProvider from './AuthProvider.js'
 import { ProvideShoppingCart } from './use-cart.js'
 import './index.css'
-
 ReactDOM.render(
-  <AuthProvider>
+  <FirebaseProvider>
     <ProvideShoppingCart>
-      <ProvideStore>
-        <App />
-      </ProvideStore>
+      <App />
     </ProvideShoppingCart>
-  </AuthProvider>,
+  </FirebaseProvider>,
   document.getElementById('root'),
 )

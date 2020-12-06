@@ -23,7 +23,6 @@ const Deck = ({
   onError,
   ...rest
 }) => {
-  console.log('selling')
   return (
     <>
       <FetchDeckForm

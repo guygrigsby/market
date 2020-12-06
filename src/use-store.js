@@ -53,6 +53,7 @@ const useFirebaseStore = () => {
   }
 
   const writeUser = (user) => {
+    firebase.analytics().logEvent('user_created')
     db.collection(USERS_DB)
       .doc(user.uid)
       .set({

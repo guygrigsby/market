@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import { cx, css } from 'pretty-lights'
 import PropTypes from 'prop-types'
 import { useAuth } from '../AuthProvider.js'
+import firebase from 'firebase/app'
 
 const style = css`
   display: flex;
   background-color: #333;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   overflow: hidden;
   padding: 0 2em 0 2em;
@@ -37,74 +38,67 @@ const backgroundGlow = css`
     }
   }
 `
+
 const Nav = () => {
-  const items = [
+  const [loggedIn, setLoggedIn] = React.useState(false)
+  const auth = useAuth()
+  React.useEffect(() => {
+    firebase.auth().onAuthStateChanged(
+      (u) => {
+        if (u) {
+          setLoggedIn(true)
+        } else {
+          setLoggedIn(false)
+        }
+      },
+      function (error) {
+        console.error('error on auth state change', error)
+      },
+    )
+  }, [auth])
+  const items = genItems(loggedIn)
+  return (
+    <nav className={style}>
+      {items.map((e, idx) =>
+        e.element ? (
+          e.element
+        ) : (
+          <Link key={idx} to={e.link} className={cx(backgroundGlow, link)}>
+            {e.content}
+          </Link>
+        ),
+      )}
+      {loggedIn ? (
+        <div onClick={auth.logout} className={cx(backgroundGlow, link)}>
+          Logout
+        </div>
+      ) : (
+        <Link to="/login" className={cx(backgroundGlow, link)}>
+          Login
+        </Link>
+      )}
+    </nav>
+  )
+}
+
+const genItems = (loggedIn) =>
+  [
     {
       link: '/decks',
       content: 'Deck Building',
+      authRequired: false,
     },
     {
       link: '/selling',
       content: 'Selling',
-      authRequired: true,
+      authRequired: false,
     },
     {
       link: '/buying',
       content: 'Buy',
+      authRequired: false,
     },
-    {
-      link: '/login',
-      content: 'Login',
-      exclusiveNoAuth: true,
-    },
-    {
-      authRequired: true,
-      element: (
-        <div
-          key="logout-link"
-          className={cx(backgroundGlow, link)}
-          onClick={() => auth.logout()}
-        >
-          Logout
-        </div>
-      ),
-    },
-    //{
-    //  link: '/settings',
-    //  authRequired: true,
-    //  element: (
-    //    <Link
-    //      className={cx(gear, cx(backgroundGlow, link))}
-    //      key="settings-link"
-    //      to="/settings}"
-    //    >
-    //      &#9881;
-    //    </Link>
-    //  ),
-    //},
-  ]
-  const auth = useAuth()
-  return (
-    <nav className={style}>
-      {items
-        .filter(
-          (e) =>
-            (e.authRequired && auth.user) ||
-            !e.authRequired ||
-            (e.exclusiveNoAuth && !auth.user),
-        )
-        .map((e, idx) =>
-          e.element ? (
-            e.element
-          ) : (
-            <Link key={idx} to={e.link} className={cx(backgroundGlow, link)}>
-              {e.content}
-            </Link>
-          ),
-        )}
-    </nav>
-  )
-}
+  ].filter((e) => (e.authRequired && loggedIn) || !e.authRequired || !e.hide)
 
 Nav.propTypes = {
   items: PropTypes.array,
