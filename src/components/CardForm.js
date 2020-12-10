@@ -45,12 +45,9 @@ const CardForm = ({ submitText, addCard, removeCard }) => {
     if (!card) return toast('No card')
     if (!condition) return toast('No condition')
     if (!price) return toast('No price')
-    const listing = {
-      card,
-      condition,
-      price,
-    }
-    addCard(listing)
+    card.condition = condition
+    card.price = price
+    addCard(card)
     clear()
     e.preventDefault()
     e.stopPropagation()

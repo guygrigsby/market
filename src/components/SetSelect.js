@@ -35,7 +35,6 @@ const SetSelect = ({ cardName, onSelect, selected, setSelected }) => {
     const f = async () => {
       const c = await searchForCard(cardName)
       const s = c.map((card) => allSets.get(card.set))
-      console.log('settings sets', s)
       setSets(s)
       setMatchingCards(c)
     }
@@ -43,11 +42,9 @@ const SetSelect = ({ cardName, onSelect, selected, setSelected }) => {
   }, [cardName, setSets, allSets])
 
   const handleChange = (set) => {
-    console.log('change', set, 'matched ', matchingCards)
     for (let i = 0; i < matchingCards.length; i++) {
       const c = matchingCards[i]
       if (c.set === set.code) {
-        console.log('found match ', c)
         onSelect(c)
         setSelected(set)
         return

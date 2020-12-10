@@ -1,20 +1,11 @@
 import React from 'react'
-import { cx, css } from 'pretty-lights'
+import { css } from 'pretty-lights'
 import { mana, manaHeader, SetFormatter } from '../formatters/table.js'
-import DataGrid from 'react-data-grid'
-import 'react-data-grid/dist/react-data-grid.css'
-const style = css`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit'
+import BootstrapTable from 'react-bootstrap-table-next'
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 
-  > .rdg {
-    flex: 1;
-  }
-  .highlight:hover .rdg-cell {
-    background-color: #000080;
-  }
-`
+const { SearchBar } = Search
 const white = css`
   padding-right: auto;
   align-self: center;
@@ -28,19 +19,19 @@ const cellExpand = css`
   justify-content: space-evenly;
   align-items: center;
 `
-const CardList = ({ cards, setLoading, columns, cname }) => {
+const CardList = ({ cards, setLoading, columns, ctext }) => {
   const defaultColumns = [
     {
-      key: 'name',
-      name: 'Name',
+      dataField: 'text',
+      text: 'Name',
       resizable: true,
     },
     {
-      key: 'set',
-      name: 'Set',
+      dataField: 'set',
+      text: 'Set',
       width: 50,
       headerRenderer: () => manaHeader('Set'),
-      formatter: ({ row }) => {
+      formatter: (cell, row) => {
         return (
           <div className={cellExpand}>
             <SetFormatter abrv={row.set} cl={white} />
@@ -49,39 +40,50 @@ const CardList = ({ cards, setLoading, columns, cname }) => {
       },
     },
     {
-      key: 'mana_cost',
-      name: 'Cost',
+      dataField: 'mana_cost',
+      text: 'Cost',
       resizable: true,
       width: 100,
       headerRenderer: () => manaHeader('Cost'),
-      formatter: ({ row }) => {
-        return mana(row.mana_cost, row.nickname)
+      formatter: (cell, row) => {
+        return mana(row.mana_cost, row.nicktext)
       },
     },
     {
-      key: 'type_line',
-      name: 'Type',
+      dataField: 'type_line',
+      text: 'Type',
       resizable: true,
     },
     {
-      key: 'cmc',
-      name: 'Cmc',
+      dataField: 'cmc',
+      text: 'Cmc',
       width: 100,
       resizable: true,
     },
     {
-      key: 'rarity',
-      name: 'Rarity',
+      dataField: 'rarity',
+      text: 'Rarity',
       resizable: true,
     },
   ]
+  console.log('cards', cards)
   return (
-    <div className={cx(style, cname)}>
-      <DataGrid
-        columns={columns ? columns : defaultColumns}
-        rows={cards ? cards : []}
-      />
-    </div>
+    <ToolkitProvider
+      keyField="id"
+      data={cards ? cards : []}
+      columns={defaultColumns}
+      search
+      bootstrap4
+    >
+      {(props) => (
+        <div>
+          <h3>Input something at below input field:</h3>
+          <SearchBar {...props.searchProps} />
+          <hr />
+          <BootstrapTable {...props.baseProps} />
+        </div>
+      )}
+    </ToolkitProvider>
   )
 }
 

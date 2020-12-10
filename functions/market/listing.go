@@ -9,36 +9,29 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
+	"github.com/guygrigsby/market/functions/middleware"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 	"google.golang.org/api/option"
 )
 
-func CORS(w http.ResponseWriter, r *http.Request, log log15.Logger) bool {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST")
-	w.Header().Add("Access-Control-Allow-Methods", "GET")
-	w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
-	w.Header().Add("Access-Control-Allow-Headers", "Accept-Encoding")
-	w.Header().Set("Access-Control-Max-Age", "3600")
-	if r.Method == http.MethodOptions {
-		w.WriteHeader(http.StatusNoContent)
-		log.Debug("CORS preflight")
-		return true
-	}
-	return false
-}
-
+// Condition ...
 type Condition int
 
 const (
+	// M Mint
 	M Condition = iota
+	// NM Near Mint
 	NM
+	// LP Lightly Played
 	LP
+	// MP Moderately Played
 	MP
+	// HP Heavily Played
 	HP
 )
 
+// Listing ...
 type Listing struct {
 	Card      *mtgfail.Entry
 	Condition Condition
@@ -46,9 +39,10 @@ type Listing struct {
 	Count     int
 }
 
+// ListItem ...
 func ListItem(w http.ResponseWriter, r *http.Request) {
 	log := log15.New()
-	if CORS(w, r, log) {
+	if middleware.CORS(w, r, log) {
 		return
 	}
 
@@ -115,6 +109,8 @@ func ListItem(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(b)
 
 }
+
+// Publish ...
 func Publish(ctx context.Context, projectID string, topicID string, msg interface{}, credPath string) (string, error) {
 
 	b, err := json.Marshal(msg)

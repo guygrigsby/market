@@ -1,4 +1,4 @@
-package cloudfuncs
+package deck
 
 import (
 	"context"
