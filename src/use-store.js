@@ -1,4 +1,3 @@
-import React, { useContext, createContext } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
@@ -11,14 +10,9 @@ if (process.env.NODE_ENV === 'development') {
   firebase.firestore().useEmulator('localhost', 8080)
 } else {
 }
-const storeContext = createContext()
-export function ProvideStore({ children }) {
-  const store = useFirebaseStore()
-  return <storeContext.Provider value={store}>{children}</storeContext.Provider>
-}
 
 export const useStore = () => {
-  return useContext(storeContext)
+  return useFirebaseStore()
 }
 
 const useFirebaseStore = () => {
@@ -53,6 +47,7 @@ const useFirebaseStore = () => {
   }
 
   const writeUser = (user) => {
+    firebase.analytics().logEvent('user_created')
     db.collection(USERS_DB)
       .doc(user.uid)
       .set({

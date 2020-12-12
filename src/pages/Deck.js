@@ -9,8 +9,8 @@ const box = css`
   height: 100%;
 `
 
-const w50 = css`
-  width: 50%;
+const w70 = css`
+  flex: 0 0 70%;
 `
 
 const Deck = ({
@@ -23,28 +23,33 @@ const Deck = ({
   onError,
   ...rest
 }) => {
-  console.log('selling')
+  const [loading, setLoading] = React.useState(false)
   return (
     <>
       <FetchDeckForm
         deckName={deckName}
         setDeckName={setDeckName}
         deck={deck}
+        setLoading={setLoading}
         ttsDeck={ttsDeck}
         setDeck={setDeck}
         setTTSDeck={setTTSDeck}
         {...rest}
       />
       <div className={box}>
-        <ImageBox
-          deck={deck}
-          cname={w50}
-          chooserModal={true}
-          ttsDeck={ttsDeck}
-          setTTSDeck={setTTSDeck}
-          setDeck={setDeck}
-        />
-        <CardList cards={deck} cname={w50} />
+        <div>
+          <ImageBox
+            deck={deck}
+            loading={loading}
+            chooserModal={true}
+            ttsDeck={ttsDeck}
+            setTTSDeck={setTTSDeck}
+            setDeck={setDeck}
+          />
+        </div>
+        <div className={w70}>
+          <CardList cards={deck} />
+        </div>
       </div>
     </>
   )

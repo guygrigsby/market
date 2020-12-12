@@ -1,86 +1,89 @@
 import React from 'react'
-import { cx, css } from 'pretty-lights'
+import { css } from 'pretty-lights'
 import { mana, manaHeader, SetFormatter } from '../formatters/table.js'
-import DataGrid from 'react-data-grid'
-import 'react-data-grid/dist/react-data-grid.css'
-const style = css`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import BootstrapTable from 'react-bootstrap-table-next'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
+import styles from './CardList.module.css'
 
-  > .rdg {
-    flex: 1;
-  }
-  .highlight:hover .rdg-cell {
-    background-color: #000080;
-  }
+const box = css`
+  width: 100%;
 `
-const white = css`
+const black = css`
   padding-right: auto;
   align-self: center;
-  height: 75%;
-  fill: white;
+  height: 20px;
+  fill: black;
 `
-
 const cellExpand = css`
   height: 80%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 `
-const CardList = ({ cards, setLoading, columns, cname }) => {
+const CardList = ({ cards, setLoading, columns, loading }) => {
   const defaultColumns = [
     {
-      key: 'name',
-      name: 'Name',
-      resizable: true,
+      dataField: 'name',
+      text: 'Name',
+      sort: true,
     },
     {
-      key: 'set',
-      name: 'Set',
-      width: 50,
-      headerRenderer: () => manaHeader('Set'),
-      formatter: ({ row }) => {
+      dataField: 'set',
+      text: 'Set',
+      sort: true,
+      formatter: (cell, row) => {
         return (
           <div className={cellExpand}>
-            <SetFormatter abrv={row.set} cl={white} />
+            <SetFormatter abrv={row.set} cl={black} />
           </div>
         )
       },
     },
     {
-      key: 'mana_cost',
-      name: 'Cost',
-      resizable: true,
-      width: 100,
-      headerRenderer: () => manaHeader('Cost'),
-      formatter: ({ row }) => {
-        return mana(row.mana_cost, row.nickname)
+      dataField: 'mana_cost',
+      text: 'Cost',
+      sort: true,
+      headerFormatter: () => manaHeader('Cost'),
+      formatter: (cell, row) => {
+        return mana(row.mana_cost, row.nicktext)
       },
     },
     {
-      key: 'type_line',
-      name: 'Type',
-      resizable: true,
+      dataField: 'type_line',
+      text: 'Type',
+      sort: true,
+      headerStyle: { maxWidth: '14em' },
     },
     {
-      key: 'cmc',
-      name: 'Cmc',
-      width: 100,
-      resizable: true,
-    },
-    {
-      key: 'rarity',
-      name: 'Rarity',
-      resizable: true,
+      dataField: 'rarity',
+      sort: true,
+      text: 'Rarity',
     },
   ]
+  console.log('cards', cards)
   return (
-    <div className={cx(style, cname)}>
-      <DataGrid
-        columns={columns ? columns : defaultColumns}
-        rows={cards ? cards : []}
-      />
+    <div className={box}>
+      <ToolkitProvider
+        keyField="id"
+        data={cards ? cards : []}
+        columns={defaultColumns}
+        search
+        bootstrap4
+      >
+        {(props) => (
+          <div className={styles.cardlist}>
+            <BootstrapTable
+              bordered={false}
+              condensed
+              remote
+              loading={loading}
+              {...props.baseProps}
+            />
+          </div>
+        )}
+      </ToolkitProvider>
     </div>
   )
 }

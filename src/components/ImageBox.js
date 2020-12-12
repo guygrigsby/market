@@ -5,6 +5,7 @@ import { cx, css } from 'pretty-lights'
 import { naive, updateTTS } from '../services/replace.js'
 
 const box = css`
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   overflow-x: scroll;
@@ -15,14 +16,10 @@ const card = (z, overlap) => {
     z-index: ${z};
     overflow: visible;
     transition: all 0.15s ease-in-out;
-    ${overlap
-      ? `&:hover {
+    &:hover {
       z-index: ${z + 20};
-      transform: scale(105%);
-    }`
-      : `&:hover {
-      transform: scale(105%);
-    }`}
+      transform: scale(102%);
+    }}
   `
 }
 const ImageBox = ({
@@ -51,7 +48,6 @@ const ImageBox = ({
       }
       return updateTTS(ttsDeck, oldC, newC)
     })
-    console.log('ImageBox', selected)
   }
   return (
     <div className={cx(box, cname)}>

@@ -15,13 +15,15 @@ const useProvideCart = () => {
   const [items, setItems] = React.useState(null)
   const add = (item) => {
     setItems((prev) => {
-      const n = [...prev]
+      const n = prev ? [...prev] : []
       n.push(item)
       setItems(n)
     })
   }
   const remove = (item) => {
+    if (!items) return
     setItems((prev) => {
+      if (!prev) return
       const n = [...prev]
       const i = prev.indexOf(item)
       n.splice(i, 1)

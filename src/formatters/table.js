@@ -15,10 +15,13 @@ const centerHeader = css`
   justify-content: center;
   align-items: center;
 `
-export const SetFormatter = ({ abrv, cl}) => {
+export const SetFormatter = ({ abrv, cl }) => {
   const sets = useSets()
   return <SetIcon svg={sets.get(abrv).logo} className={cl} />
 }
+export const header = (str, width) => (
+  <span style={{ maxWidth: width }}>{str}</span>
+)
 export const setHeader = (str) => {
   return (
     <span key={`header-${str}`} className={cx(cellExpand, centerHeader)}>

@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/firestore"
+	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
@@ -62,7 +63,7 @@ func CreateTTSDeckFromInternal(w http.ResponseWriter, r *http.Request) {
 
 	deckList := getDecklistFromInternal(deck)
 
-	store := NewFirestore(client, log)
+	store := store.NewFirestore(client, log)
 	log.Debug("starting TTS build")
 	ttsDeck, err := tabletopsimulator.BuildDeck(ctx, store, deckList, log)
 	if err != nil {

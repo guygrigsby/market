@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/firestore"
+	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
@@ -64,7 +65,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to get firestore client", http.StatusBadGateway)
 		return
 	}
-	store := NewFirestore(client, log)
+	store := store.NewFirestore(client, log)
 	ret := &DualDeck{}
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {

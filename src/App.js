@@ -13,31 +13,13 @@ const App = () => {
   const [sets, setSets] = React.useState(null)
   const [deck, setDeck] = React.useState(null)
   const [ttsDeck, setTTS] = React.useState(null)
-  const [setRemoved] = React.useState(null)
-  const [, setAdded] = React.useState(null)
+  const [listings, setListings] = React.useState(null)
 
   const setTTSDeck = (deck) => {
+    console.log('setting TTS deck in APP')
     setTTS(deck)
   }
 
-  const addCard = (card) => {
-    setAdded((prev) => {
-      const n = [...prev]
-      n.push(card)
-      return n
-    })
-  }
-  const removeCard = (card) => {
-    setRemoved((prev) => {
-      var index = prev.indexOf(card)
-      const m = prev
-      if (index !== -1) {
-        const m = [...prev]
-        m.splice(index, 1)
-      }
-      return m
-    })
-  }
   const onError = (msg) => {
     console.log(msg)
   }
@@ -52,7 +34,7 @@ const App = () => {
       <Nav />
       <Switch>
         <Route path="/selling">
-          <Selling addCard={addCard} removeCard={removeCard} />
+          <Selling listings={listings} setListings={setListings} />
         </Route>
         <Route path="/decks">
           <Deck
