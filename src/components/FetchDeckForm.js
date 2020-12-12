@@ -9,9 +9,8 @@ const inputClass = css`
 
 const baseClass = (loading) => css`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: baseline;
   cursor: ${loading ? 'wait' : 'default'};
   padding: 1rem;
 `
@@ -65,31 +64,26 @@ const FetchDeckForm = ({
 
   return (
     <div className={baseClass(false)}>
-      <label>Deck URL</label>
-      <input
-        className={inputClass}
-        type="url"
-        onChange={(e) => handleURLChange(e.target.value)}
-      />
-      {ttsDeck ? (
-        <>
-          <a
-            href={`data:text/json;charset=utf-8,${getDownload()}`}
-            download="deck.json"
-          >
-            <button>Download</button>
-          </a>
-          <label style={{ marginLeft: '1rem' }}>Name</label>
-          <input
-            className={inputClass}
-            type="text"
-            value={deckName}
-            onChange={(e) => setDeckName(e.target.value)}
-          />
-        </>
-      ) : (
-        <button onClick={(e) => setLoadDecks(true)}>Get it</button>
-      )}
+      <div>
+        <label>Deck URL</label>
+        <input
+          className={inputClass}
+          type="url"
+          onChange={(e) => handleURLChange(e.target.value)}
+        />
+        {ttsDeck ? (
+          <>
+            <a
+              href={`data:text/json;charset=utf-8,${getDownload()}`}
+              download="deck.json"
+            >
+              <button>Download</button>
+            </a>
+          </>
+        ) : (
+          <button onClick={(e) => setLoadDecks(true)}>Get it</button>
+        )}
+      </div>
     </div>
   )
 }
