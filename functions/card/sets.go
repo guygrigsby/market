@@ -8,20 +8,16 @@ import (
 	"sync"
 
 	"cloud.google.com/go/firestore"
+	"github.com/guygrigsby/market/functions/store"
 	"github.com/inconshreveable/log15"
 	"golang.org/x/sync/errgroup"
 )
-
-// PubSubMessage is the payload of a Pub/Sub event. We don't care about it.
-type PubSubMessage struct {
-	Data []byte `json:"data"`
-}
 
 const (
 	setsURL = "https://api.scryfall.com/sets"
 )
 
-func SyncSets(ctx context.Context, m PubSubMessage) error {
+func SyncSets(ctx context.Context, m store.PubSubMessage) error {
 	log := log15.New()
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, setsURL, nil)
 	if err != nil {

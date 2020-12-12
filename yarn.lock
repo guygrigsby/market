@@ -3394,7 +3394,7 @@ boolbase@^1.0.0, boolbase@~1.0.0:
 
 bootstrap4@^0.0.1-security:
   version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/bootstrap4/-/bootstrap4-0.0.1-security.tgz"
+  resolved "https://registry.yarnpkg.com/bootstrap4/-/bootstrap4-0.0.1-security.tgz#598920d54afcb2ae3ad7351acabc57e3942d9c49"
   integrity sha1-WYkg1Ur8sq461zUayrxX45QtnEk=
 
 bootstrap@^4.5.3:

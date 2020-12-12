@@ -1,4 +1,4 @@
-package cloudfuncs
+package store
 
 import (
 	"context"

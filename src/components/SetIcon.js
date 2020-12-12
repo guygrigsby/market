@@ -5,6 +5,7 @@ const svgClass = css`
   display: block;
   margin: auto;
   align-self: center;
+  transform: scale(0.1);
 `
 
 const SetIcon = ({ svg, cl, ...rest }) => {

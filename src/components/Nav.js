@@ -12,6 +12,7 @@ const style = css`
   align-items: center;
   overflow: hidden;
   padding: 0 2em 0 2em;
+  font-style: bold;
 `
 
 const link = css`

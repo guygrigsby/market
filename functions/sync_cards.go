@@ -11,12 +11,13 @@ import (
 	"sync"
 
 	"cloud.google.com/go/firestore"
+	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 	"google.golang.org/api/option"
 )
 
-func SyncCards(ctx context.Context, m PubSubMessage) error {
+func SyncCards(ctx context.Context, m store.PubSubMessage) error {
 
 	log := log15.New()
 	res, err := http.DefaultClient.Get("https://c2.scryfall.com/file/scryfall-bulk/default-cards/default-cards-20201110220438.json")
