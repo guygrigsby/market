@@ -12,7 +12,12 @@ const style = css`
   align-items: center;
   overflow: hidden;
   padding: 0 2em 0 2em;
-  font-style: bold;
+  font-weight: bold;
+  z-index: 1000;
+`
+
+const stickyClass = css`
+  position: sticky;
 `
 
 const link = css`
@@ -40,7 +45,7 @@ const backgroundGlow = css`
   }
 `
 
-const Nav = () => {
+const Nav = ({ sticky }) => {
   const [loggedIn, setLoggedIn] = React.useState(false)
   const auth = useAuth()
   React.useEffect(() => {
@@ -59,7 +64,7 @@ const Nav = () => {
   }, [auth])
   const items = genItems(loggedIn)
   return (
-    <nav className={style}>
+    <nav className={cx(style, sticky ? stickyClass : '')}>
       {items.map((e, idx) =>
         e.element ? (
           e.element

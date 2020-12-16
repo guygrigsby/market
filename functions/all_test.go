@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	firebase "firebase.google.com/go"
+	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 	"github.com/stretchr/testify/require"
@@ -20,7 +21,7 @@ func TestAll(t *testing.T) {
 	require.NoError(t, err)
 	client, err := app.Firestore(ctx)
 	require.NoError(t, err)
-	store := NewFirestore(client, log)
+	store := store.NewFirestore(client, log)
 
 	log.Debug("fetching deck")
 	rc, err := FetchDeck("https://deckbox.org/sets/2785835", log)
@@ -44,9 +45,9 @@ func TestAll(t *testing.T) {
 	})
 	g.Go(func() error {
 		log.Debug("go intern, decklist", "deck", deckList)
-		internDeck, errs := BuildInternal(ctx, store, deckList, log)
-		if len(errs) > 0 {
-			return errs[0]
+		internDeck, err := BuildInternal(ctx, store, deckList, log)
+		if err != nil {
+			return err
 		}
 		ret.Intern = internDeck
 		return nil

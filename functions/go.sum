@@ -121,8 +121,10 @@ github.com/googleapis/gax-go/v2 v2.0.5 h1:sjZBwGj9Jlw33ImPtvFviGYvseOtDM7hkSKB7+
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/gorilla/handlers v1.4.2/go.mod h1:Qkdc/uu4tH4g6mTK6auzZ766c4CA0Ng8+o/OAirnOIQ=
 github.com/gorilla/mux v1.7.4/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
-github.com/guygrigsby/mtgfail v0.3.6 h1:FiA9DniChJvqK1l4+pB7/bGePqQPgVKqYaMlWksm1SA=
-github.com/guygrigsby/mtgfail v0.3.6/go.mod h1:fqPCzcltFHUqiesWPGoHtGAhGUU8edRe1HoS7nuXaYU=
+github.com/guygrigsby/mtgfail v0.3.8 h1:UdJISXQNjUBBHOX5lDMPGpfD28D2fI56QDXrdr5dg5s=
+github.com/guygrigsby/mtgfail v0.3.8/go.mod h1:fqPCzcltFHUqiesWPGoHtGAhGUU8edRe1HoS7nuXaYU=
+github.com/guygrigsby/mtgfail v0.3.9 h1:s0hEulm3BRAD2xw9aqm1ndRXx1DhCLjOUBhRjxrYCX0=
+github.com/guygrigsby/mtgfail v0.3.9/go.mod h1:fqPCzcltFHUqiesWPGoHtGAhGUU8edRe1HoS7nuXaYU=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=

@@ -31,7 +31,7 @@ const App = () => {
         setTTSDeck={setTTSDeck}
         setDeck={setDeck}
       />
-      <Nav />
+      <Nav sticky />
       <Switch>
         <Route path="/selling">
           <Selling listings={listings} setListings={setListings} />

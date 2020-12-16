@@ -1,20 +1,26 @@
 import React from 'react'
-import { css } from 'pretty-lights'
+import { cx, css } from 'pretty-lights'
 import { mana, manaHeader, SetFormatter } from '../formatters/table.js'
 import ToolkitProvider from 'react-bootstrap-table2-toolkit'
 import BootstrapTable from 'react-bootstrap-table-next'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import styles from './CardList.module.css'
 
 const box = css`
   width: 100%;
+  height: auto;
+  overflow-y: visible;
 `
-const black = css`
+const setClass = css`
   padding-right: auto;
   align-self: center;
   height: 20px;
+`
+const black = css`
   fill: black;
+`
+const white = css`
+  fill: white;
 `
 const cellExpand = css`
   height: 80%;
@@ -22,7 +28,13 @@ const cellExpand = css`
   justify-content: space-evenly;
   align-items: center;
 `
-const CardList = ({ cards, setLoading, columns, loading }) => {
+
+const truncateType = (typeName) => {
+  const arr = typeName.split(' ')
+  console.log('truncate', typeName, 'arr', arr)
+  return arr[0]
+}
+const CardList = ({ cards, setLoading, columns, loading, name, dark }) => {
   const defaultColumns = [
     {
       dataField: 'name',
@@ -36,7 +48,10 @@ const CardList = ({ cards, setLoading, columns, loading }) => {
       formatter: (cell, row) => {
         return (
           <div className={cellExpand}>
-            <SetFormatter abrv={row.set} cl={black} />
+            <SetFormatter
+              abrv={row.set}
+              cl={cx(dark ? white : black, setClass)}
+            />
           </div>
         )
       },
@@ -55,28 +70,36 @@ const CardList = ({ cards, setLoading, columns, loading }) => {
       text: 'Type',
       sort: true,
       headerStyle: { maxWidth: '14em' },
+      formatter: (cell, row) => (dark ? truncateType(cell) : cell),
     },
-    {
+  ]
+
+  if (dark) {
+    console.log('pushing rarity', dark)
+    defaultColumns.push({
       dataField: 'rarity',
       sort: true,
       text: 'Rarity',
-    },
-  ]
-  console.log('cards', cards)
+    })
+  }
   return (
     <div className={box}>
+      <div> {name && name}</div>
       <ToolkitProvider
         keyField="id"
         data={cards ? cards : []}
         columns={defaultColumns}
         search
-        bootstrap4
       >
         {(props) => (
           <div className={styles.cardlist}>
             <BootstrapTable
               bordered={false}
               condensed
+              classes={dark ? styles.cardlistTableDark : styles.cardlistTable}
+              wrapperClasses={
+                dark ? styles.cardlistTableDark : styles.cardlistTable
+              }
               remote
               loading={loading}
               {...props.baseProps}

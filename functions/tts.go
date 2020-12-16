@@ -128,7 +128,7 @@ func BuildTTS(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]i
 		i++
 
 	}
-	cards, err := bulk.GetMany(names)
+	cards, err := bulk.GetMany(names, log)
 	if err != nil {
 		log.Error(
 			"can't get card names",

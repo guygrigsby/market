@@ -3,7 +3,6 @@ package store
 import (
 	"context"
 	"fmt"
-	"strings"
 	"sync"
 
 	"cloud.google.com/go/firestore"
@@ -25,15 +24,31 @@ type cardStore struct {
 	log    log15.Logger
 }
 
-func (c *cardStore) PutMany(_ map[string]*mtgfail.Entry) error {
+func (c *cardStore) PutMany(_ map[string]*mtgfail.Entry, _ log15.Logger) error {
 	return nil
 }
-func (c *cardStore) Put(_ string, _ *mtgfail.Entry) error {
+func (c *cardStore) Put(_ string, _ *mtgfail.Entry, _ log15.Logger) error {
 	return nil
 }
 
-func (c *cardStore) Get(name string) (*mtgfail.Entry, error) {
-	e, err := c.GetMany([]string{name})
+func NormalizeCard(card *mtgfail.Entry, log log15.Logger) {
+	card.Name = NormalizeCardName(card.Name, log)
+}
+
+func NormalizeCardName(name string, log log15.Logger) string {
+	var prev rune
+	for i, r := range name {
+		if r == '/' && prev == '/' {
+			return name[:i-2]
+		}
+		prev = r
+
+	}
+	return name
+}
+
+func (c *cardStore) Get(name string, log log15.Logger) (*mtgfail.Entry, error) {
+	e, err := c.GetMany([]string{name}, log)
 	if err != nil {
 		return nil, err
 	}
@@ -42,8 +57,7 @@ func (c *cardStore) Get(name string) (*mtgfail.Entry, error) {
 	}
 	return e[0], nil
 }
-
-func (c *cardStore) GetMany(names []string) ([]*mtgfail.Entry, error) {
+func (c *cardStore) GetMany(names []string, log log15.Logger) ([]*mtgfail.Entry, error) {
 
 	coll := c.client.Collection(collection)
 	ctx := context.Background()
@@ -51,15 +65,12 @@ func (c *cardStore) GetMany(names []string) ([]*mtgfail.Entry, error) {
 	errs := make(chan error)
 	var wg sync.WaitGroup
 
-	for _, name := range names {
+	for _, n := range names {
 		wg.Add(1)
-		name := name
+		n := n
 		go func() {
 			defer wg.Done()
-
-			if strings.Contains(name, "//") {
-				name = strings.ReplaceAll(name, "//", "")
-			}
+			name := NormalizeCardName(n, log)
 			doc := coll.Doc(name)
 			docsnap, err := doc.Get(ctx)
 			if err != nil {
@@ -93,7 +104,7 @@ func (c *cardStore) GetMany(names []string) ([]*mtgfail.Entry, error) {
 		case entry := <-results:
 			cards = append(cards, entry)
 		case err := <-errs:
-			c.log.Debug("gather error", "err", err)
+			c.log.Error("gather error", "err", err)
 			return nil, err
 		}
 	}

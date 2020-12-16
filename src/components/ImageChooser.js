@@ -28,27 +28,25 @@ const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
   }, [currentCard, cards, setCards])
   return (
     <div className="cardmodal" onClick={onClose}>
-      <div className="outside-click">
-        <div className="cardmodal-content">
-          <span onClick={onClose} className="close">
-            &times;
-          </span>
-          {cards ? (
-            cards.map((e, i) => {
-              return (
-                <Card
-                  card={e}
-                  size={1}
-                  key={i}
-                  cl={card(cards.length - i, true)}
-                  onClick={() => onClick(e, currentCard)}
-                />
-              )
-            })
-          ) : (
-            <div />
-          )}
-        </div>
+      <span onClick={onClose} className="close">
+        &times;
+      </span>
+      <div className="cardmodal-content">
+        {cards ? (
+          cards.map((e, i) => {
+            return (
+              <Card
+                card={e}
+                size={1}
+                key={i}
+                cl={card(cards.length - i, true)}
+                onClick={() => onClick(e, currentCard)}
+              />
+            )
+          })
+        ) : (
+          <div />
+        )}
       </div>
     </div>
   )

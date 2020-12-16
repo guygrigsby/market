@@ -1,3 +1,10 @@
+.image-box {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: scroll;
+}
+
 .cardmodal {
   position: fixed; /* Stay in place */
   z-index: 1000; /* Sit on top */
@@ -9,15 +16,26 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
 }
 
 /* Modal Content/Box */
 .cardmodal-content {
-  position: relative;
+  position: absolute;
   flex: 1 1 50%;
   margin-top: 5%;
-  overflow: visible;
+  overflow: auto;
   width: 50%;
+}
+
+@media only screen and (max-width: 768px) {
+  .cardmodal-content {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .cardmodal {
+
+  }
 }
 
 /* The Close Button */

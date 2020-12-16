@@ -3,13 +3,8 @@ import ImageChooser from './ImageChooser'
 import Card from './Card.js'
 import { cx, css } from 'pretty-lights'
 import { naive, updateTTS } from '../services/replace.js'
+import './ImageChooser.css'
 
-const box = css`
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  overflow-x: scroll;
-`
 const card = (z, overlap) => {
   return css`
     height: ${overlap ? '50px' : 'auto'};
@@ -26,7 +21,7 @@ const ImageBox = ({
   overlap = true,
   chooserModal = false,
   deck,
-  cname,
+  classes,
   ttsDeck,
   setTTSDeck,
   setDeck,
@@ -50,7 +45,7 @@ const ImageBox = ({
     })
   }
   return (
-    <div className={cx(box, cname)}>
+    <div className={cx('image-box', classes)}>
       {chooserModal && selected ? (
         <ImageChooser
           onClick={(newCard, oldCard) => {
@@ -74,7 +69,7 @@ const ImageBox = ({
           )
         })
       ) : (
-        <div className={cname} />
+        <div className={classes} />
       )}
     </div>
   )

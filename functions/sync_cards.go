@@ -17,7 +17,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func SyncCards(ctx context.Context, m store.PubSubMessage) error {
+func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
 
 	log := log15.New()
 	res, err := http.DefaultClient.Get("https://c2.scryfall.com/file/scryfall-bulk/default-cards/default-cards-20201110220438.json")
@@ -66,10 +66,12 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 	done := make(chan struct{})
 	go func() {
 		for _, card := range bulk {
+
 			ch <- card
 		}
 		close(ch)
 		wg.Wait()
+
 		done <- struct{}{}
 	}()
 	cards := client.Collection("cards")
@@ -78,17 +80,18 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 		go func() {
 			defer wg.Done()
 			for card := range ch {
-				name := card.Name
+				name := store.NormalizeCardName(card.Name, log)
 				if strings.Contains(name, "//") {
-					name = strings.ReplaceAll(name, "//", "")
+
+					panic(name)
 				}
 				doc := cards.Doc(name)
-				wr, err := doc.Set(ctx, card)
+				_, err := doc.Set(ctx, card)
 				if err != nil {
 					log.Error(
 						"cannot create document skipping",
+						"name", card.Name,
 						"err", err,
-						"res", wr,
 					)
 				}
 
@@ -99,6 +102,7 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 	case <-ctx.Done():
 		return ctx.Err()
 	case <-done:
+
 	}
 	return nil
 }

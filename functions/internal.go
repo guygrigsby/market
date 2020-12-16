@@ -19,6 +19,6 @@ func BuildInternal(ctx context.Context, store mtgfail.CardStore, deckList map[st
 		i++
 
 	}
-	return store.GetMany(names)
+	return store.GetMany(names, log)
 
 }

@@ -9,10 +9,16 @@ const page = css`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  overflow-y: auto;
 `
 const box = css`
   display: flex;
+  width: 100%;
+  height: 100%;
+`
+const tabs = css`
+  display: flex;
+  color: white;
   width: 100%;
   height: 100%;
 `
@@ -57,8 +63,8 @@ const Deck = ({
           setTTSDeck={setTTSDeck}
           {...rest}
         />
-        <div>deckName</div>
       </div>
+
       {size.width < 786 ? (
         <div className="tab-menu">
           <div>
@@ -71,21 +77,24 @@ const Deck = ({
           </div>
         </div>
       ) : null}
-      <div className={box}>
-        <div className={col30()}>
-          <ImageBox
-            deck={deck}
-            loading={loading}
-            chooserModal={true}
-            ttsDeck={ttsDeck}
-            setTTSDeck={setTTSDeck}
-            setDeck={setDeck}
-          />
+      {deck && (
+        <div className={small ? tabs : box}>
+          <div className={col30()}>
+            <ImageBox
+              deck={deck}
+              loading={loading}
+              chooserModal={true}
+              ttsDeck={ttsDeck}
+              setTTSDeck={setTTSDeck}
+              setDeck={setDeck}
+              dark={small ? true : false}
+            />
+          </div>
+          <div className={col70()}>
+            <CardList name={deckName} cards={deck} />
+          </div>
         </div>
-        <div className={col70()}>
-          <CardList cards={deck} />
-        </div>
-      </div>
+      )}
     </div>
   )
 }
