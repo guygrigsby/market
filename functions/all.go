@@ -56,7 +56,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Debug("parsed deck")
-	client, err := firestore.NewClient(ctx, "snackend")
+	client, err := firestore.NewClient(ctx, "marketplace-c87d0")
 	if err != nil {
 		log.Error(
 			"Failed to get firestore client",
