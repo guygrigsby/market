@@ -3,6 +3,7 @@ package cloudfuncs
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -142,6 +143,7 @@ func BuildTTS(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]i
 	for _, c := range cards {
 		deck[c] = deckList[c.Name]
 	}
+	log.Debug(fmt.Sprintf("done with deck Map %+v", deck))
 
 	return tabletopsimulator.BuildStacks(log, deck), nil
 
