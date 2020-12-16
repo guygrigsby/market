@@ -145,6 +145,6 @@ func BuildTTS(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]i
 	}
 	log.Debug(fmt.Sprintf("done with deck Map %+v", deck))
 
-	return tabletopsimulator.BuildStacks(log, deck), nil
+	return tabletopsimulator.BuildStacks(log, deck)
 
 }
