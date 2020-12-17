@@ -9,18 +9,21 @@ const page = css`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   overflow-y: auto;
 `
 const box = css`
   display: flex;
   width: 100%;
   height: 100%;
+  overflow: visible;
 `
 const tabs = css`
   display: flex;
   color: white;
   width: 100%;
   height: 100%;
+  overflow: visible;
 `
 
 const Deck = ({

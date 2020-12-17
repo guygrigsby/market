@@ -50,6 +50,7 @@ const ImageBox = ({
         <ImageChooser
           onClick={(newCard, oldCard) => {
             update(newCard, oldCard)
+            setAlternateCards(null)
           }}
           onClose={() => setSelected(false)}
           currentCard={selected}

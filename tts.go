@@ -1,4 +1,4 @@
-package tabletopsimulator
+package cloudfuncs
 
 import (
 	"context"
