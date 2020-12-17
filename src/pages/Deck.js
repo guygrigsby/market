@@ -5,6 +5,9 @@ import { useWindowDimensions } from '../components/use-window-dimensions.js'
 import { css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
 import { naive, updateTTS } from '../services/replace.js'
+import ImageChooser from '../components/ImageChooser'
+import '../components/ImageChooser.css'
+import '../components/ImageChooser.js'
 import './Deck.css'
 const page = css`
   display: flex;
@@ -98,33 +101,33 @@ const Deck = ({
           </div>
         </div>
       ) : null}
+      {selected ? (
+        <ImageChooser
+          onClick={(newCard, oldCard) => {
+            update(newCard, oldCard)
+            setAlternateCards(null)
+          }}
+          onClose={() => setSelected(false)}
+          currentCard={selected}
+          setCards={setAlternateCards}
+          cards={alternateCards}
+        />
+      ) : null}
       {deck && (
         <div className={small ? tabs : box}>
           <div className={col30()}>
             <ImageBox
               deck={deck}
-              loading={loading}
-              chooserModal={true}
-              ttsDeck={ttsDeck}
-              setTTSDeck={setTTSDeck}
-              setDeck={setDeck}
               dark={small ? true : false}
-              selected={selected}
               setSelected={setSelected}
-              alternateCards={alternateCards}
-              setAlternateCards={setAlternateCards}
-              update={update}
             />
           </div>
           <div className={col70()}>
             <CardList
-              selected={selected}
+              loading={loading}
               setSelected={setSelected}
-              alternateCards={alternateCards}
-              setAlternateCards={setAlternateCards}
               name={deckName}
               cards={deck}
-              update={update}
             />
           </div>
         </div>

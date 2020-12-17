@@ -34,7 +34,20 @@ const truncateType = (typeName) => {
   console.log('truncate', typeName, 'arr', arr)
   return arr[0]
 }
-const CardList = ({ cards, setLoading, columns, loading, name, dark }) => {
+const CardList = ({
+  setSelected,
+  cards,
+  setLoading,
+  columns,
+  loading,
+  name,
+  dark,
+}) => {
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      setSelected(row)
+    },
+  }
   const defaultColumns = [
     {
       dataField: 'name',
@@ -94,6 +107,7 @@ const CardList = ({ cards, setLoading, columns, loading, name, dark }) => {
         {(props) => (
           <div className={styles.cardlist}>
             <BootstrapTable
+              rowEvents={rowEvents}
               bordered={false}
               condensed
               classes={dark ? styles.cardlistTableDark : styles.cardlistTable}

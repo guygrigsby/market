@@ -1,8 +1,6 @@
 import React from 'react'
-import ImageChooser from './ImageChooser'
 import Card from './Card.js'
 import { cx, css } from 'pretty-lights'
-import './ImageChooser.css'
 
 const card = (z, overlap) => {
   return css`
@@ -16,34 +14,9 @@ const card = (z, overlap) => {
     }}
   `
 }
-const ImageBox = ({
-  overlap = true,
-  chooserModal = false,
-  deck,
-  classes,
-  ttsDeck,
-  setTTSDeck,
-  setDeck,
-  selected,
-  setSelected,
-  alternateCards,
-  setAlternateCards,
-  update,
-}) => {
+const ImageBox = ({ overlap = true, deck, classes, setSelected }) => {
   return (
     <div className={cx('image-box', classes)}>
-      {chooserModal && selected ? (
-        <ImageChooser
-          onClick={(newCard, oldCard) => {
-            update(newCard, oldCard)
-            setAlternateCards(null)
-          }}
-          onClose={() => setSelected(false)}
-          currentCard={selected}
-          setCards={setAlternateCards}
-          cards={alternateCards}
-        />
-      ) : null}
       {deck ? (
         deck.map((e, i) => {
           return (
