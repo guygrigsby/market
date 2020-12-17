@@ -4,6 +4,7 @@ import CardList from '../components/CardList'
 import { useWindowDimensions } from '../components/use-window-dimensions.js'
 import { css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
+import { naive, updateTTS } from '../services/replace.js'
 import './Deck.css'
 const page = css`
   display: flex;
@@ -38,6 +39,8 @@ const Deck = ({
 }) => {
   const [loading, setLoading] = React.useState(false)
   const [visible, setVisible] = React.useState(0)
+  const [selected, setSelected] = React.useState(false)
+  const [alternateCards, setAlternateCards] = React.useState()
   const size = useWindowDimensions()
   const small = size.width < 768
   const col30 = () => css`
@@ -53,6 +56,21 @@ const Deck = ({
     padding: 0.5em;
     margin: 0.5em;
   `
+  const update = async (oldC, newC) => {
+    if (!oldC || !newC) return
+    setDeck((prev) => {
+      if (prev) {
+        return naive(prev, oldC, newC)
+      }
+      return naive(deck, oldC, newC)
+    })
+    setTTSDeck((prev) => {
+      if (prev) {
+        return updateTTS(prev, oldC, newC)
+      }
+      return updateTTS(ttsDeck, oldC, newC)
+    })
+  }
   return (
     <div className={page}>
       <div className={pageHeader}>
@@ -91,10 +109,23 @@ const Deck = ({
               setTTSDeck={setTTSDeck}
               setDeck={setDeck}
               dark={small ? true : false}
+              selected={selected}
+              setSelected={setSelected}
+              alternateCards={alternateCards}
+              setAlternateCards={setAlternateCards}
+              update={update}
             />
           </div>
           <div className={col70()}>
-            <CardList name={deckName} cards={deck} />
+            <CardList
+              selected={selected}
+              setSelected={setSelected}
+              alternateCards={alternateCards}
+              setAlternateCards={setAlternateCards}
+              name={deckName}
+              cards={deck}
+              update={update}
+            />
           </div>
         </div>
       )}

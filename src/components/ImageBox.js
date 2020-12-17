@@ -2,7 +2,6 @@ import React from 'react'
 import ImageChooser from './ImageChooser'
 import Card from './Card.js'
 import { cx, css } from 'pretty-lights'
-import { naive, updateTTS } from '../services/replace.js'
 import './ImageChooser.css'
 
 const card = (z, overlap) => {
@@ -25,25 +24,12 @@ const ImageBox = ({
   ttsDeck,
   setTTSDeck,
   setDeck,
+  selected,
+  setSelected,
+  alternateCards,
+  setAlternateCards,
+  update,
 }) => {
-  const [selected, setSelected] = React.useState(false)
-  const [alternateCards, setAlternateCards] = React.useState()
-
-  const update = async (oldC, newC) => {
-    if (!oldC || !newC) return
-    setDeck((prev) => {
-      if (prev) {
-        return naive(prev, oldC, newC)
-      }
-      return naive(deck, oldC, newC)
-    })
-    setTTSDeck((prev) => {
-      if (prev) {
-        return updateTTS(prev, oldC, newC)
-      }
-      return updateTTS(ttsDeck, oldC, newC)
-    })
-  }
   return (
     <div className={cx('image-box', classes)}>
       {chooserModal && selected ? (

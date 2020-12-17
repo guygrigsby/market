@@ -76,12 +76,18 @@ const FetchDeckForm = ({
             <a
               href={`data:text/json;charset=utf-8,${getDownload()}`}
               download="deck.json"
+              style={{ marginLeft: '10px' }}
             >
               <button>Download</button>
             </a>
           </>
         ) : (
-          <button onClick={(e) => setLoadDecks(true)}>Get it</button>
+          <button
+            style={{ marginLeft: '10px' }}
+            onClick={(e) => setLoadDecks(true)}
+          >
+            Get it
+          </button>
         )}
       </div>
     </div>
