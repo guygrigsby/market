@@ -16,7 +16,6 @@ const App = () => {
   const [listings, setListings] = React.useState(null)
 
   const setTTSDeck = (deck) => {
-    console.log('setting TTS deck in APP')
     setTTS(deck)
   }
 

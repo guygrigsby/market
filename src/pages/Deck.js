@@ -73,6 +73,7 @@ const Deck = ({
       }
       return updateTTS(ttsDeck, oldC, newC)
     })
+    setSelected(false)
   }
   return (
     <div className={page}>
@@ -106,8 +107,9 @@ const Deck = ({
           onClick={(newCard, oldCard) => {
             update(newCard, oldCard)
             setAlternateCards(null)
+            setSelected(false)
           }}
-          onClose={() => setSelected(false)}
+          onClose={() => setSelected(false) && setAlternateCards(null)}
           currentCard={selected}
           setCards={setAlternateCards}
           cards={alternateCards}

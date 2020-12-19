@@ -21,11 +21,16 @@ const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
     if (cards && cards.length > 0 && cards[0].name === currentCard.name) return
     const f = async () => {
       const others = await searchForCard(currentCard.name)
-      console.log('getting matching cards', currentCard, others)
       setCards(others)
     }
     f()
   }, [currentCard, cards, setCards])
+
+  React.useEffect(() => {
+    if (!currentCard) {
+      setCards(null)
+    }
+  }, [currentCard, setCards])
   return (
     <div className="cardmodal" onClick={onClose}>
       <span onClick={onClose} className="close">

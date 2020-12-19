@@ -1,4 +1,5 @@
 export const updateTTS = (deck, newCard, oldCard) => {
+  console.log('newcard', newCard, 'oldCard', oldCard)
   const os = deck.ObjectStates[0]
   console.log('deck Object States', os)
   console.log('deck Object State Contained Objects', os.ContainedObjects)
@@ -7,13 +8,17 @@ export const updateTTS = (deck, newCard, oldCard) => {
     const current = os.ContainedObjects[k]
     console.log('current', current)
     if (oldCard.name === current.Nickname) {
-      console.log('replacing TTS', oldCard.name)
+      console.log('match, replacing', oldCard.name, 'in tts with', newCard)
+      let face
       if (!newCard.image_uris) {
-        os.CustomDeck[k + 1].FaceURL = newCard.card_faces[0].normal
-        os.CustomDeck[k + 1].BackURL = newCard.card_faces[1].normal
-        break
+        face = newCard.card_faces[0].image_uris.png
+        //os.CustomDeck[k + 1].BackURL = newCard.card_faces[1].normal
+      } else {
+        face = newCard.image_uris.png
       }
-      os.CustomDeck[k + 1].FaceURL = newCard.image_uris.normal
+
+      os.CustomDeck[k + 1].FaceURL = face.split('?')[0]
+      console.log('new image', os.CustomDeck[k + 1].FaceURL)
       break
     }
   }

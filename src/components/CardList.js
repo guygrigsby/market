@@ -58,6 +58,7 @@ const CardList = ({
       dataField: 'set',
       text: 'Set',
       sort: true,
+      headerStyle: { width: '100px' },
       formatter: (cell, row) => {
         return (
           <div className={cellExpand}>
@@ -73,6 +74,7 @@ const CardList = ({
       dataField: 'mana_cost',
       text: 'Cost',
       sort: true,
+      headerStyle: { width: '12%' },
       headerFormatter: () => manaHeader('Cost'),
       formatter: (cell, row) => {
         return mana(row.mana_cost, row.nicktext)
@@ -87,8 +89,7 @@ const CardList = ({
     },
   ]
 
-  if (dark) {
-    console.log('pushing rarity', dark)
+  if (!dark) {
     defaultColumns.push({
       dataField: 'rarity',
       sort: true,
