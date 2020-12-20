@@ -3,8 +3,7 @@ import { cx, css } from 'pretty-lights'
 import { mana, manaHeader, SetFormatter } from '../formatters/table.js'
 import ToolkitProvider from 'react-bootstrap-table2-toolkit'
 import BootstrapTable from 'react-bootstrap-table-next'
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
-import styles from './CardList.module.css'
+import './Cardlist.css'
 
 const box = css`
   width: 100%;
@@ -29,6 +28,10 @@ const cellExpand = css`
   align-items: center;
 `
 
+const rowClasses = css`
+  margin-top: 3px;
+`
+
 const truncateType = (typeName) => {
   const arr = typeName.split(' ')
   console.log('truncate', typeName, 'arr', arr)
@@ -37,11 +40,11 @@ const truncateType = (typeName) => {
 const CardList = ({
   setSelected,
   cards,
-  setLoading,
   columns,
   loading,
   name,
   dark,
+  setExportCSV,
 }) => {
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
@@ -53,6 +56,7 @@ const CardList = ({
       dataField: 'name',
       text: 'Name',
       sort: true,
+      headerStyle: { textAlign: 'left' },
     },
     {
       dataField: 'set',
@@ -84,7 +88,7 @@ const CardList = ({
       dataField: 'type_line',
       text: 'Type',
       sort: true,
-      headerStyle: { maxWidth: '14em' },
+      headerStyle: { maxWidth: '14em', textAlign: 'left' },
       formatter: (cell, row) => (dark ? truncateType(cell) : cell),
     },
   ]
@@ -93,6 +97,7 @@ const CardList = ({
     defaultColumns.push({
       dataField: 'rarity',
       sort: true,
+      headerStyle: { textAlign: 'left' },
       text: 'Rarity',
     })
   }
@@ -104,17 +109,17 @@ const CardList = ({
         data={cards ? cards : []}
         columns={defaultColumns}
         search
+        exportCSV
       >
         {(props) => (
-          <div className={styles.cardlist}>
+          <div className="cardlist">
+            {setExportCSV(props.onExport)}
             <BootstrapTable
               rowEvents={rowEvents}
+              rowClasses={rowClasses}
               bordered={false}
-              condensed
-              classes={dark ? styles.cardlistTableDark : styles.cardlistTable}
-              wrapperClasses={
-                dark ? styles.cardlistTableDark : styles.cardlistTable
-              }
+              classes={dark ? 'cardlistTableDark' : 'cardlistTable'}
+              wrapperClasses={dark ? 'cardlistTableDark' : 'cardlistTable'}
               remote
               loading={loading}
               {...props.baseProps}

@@ -44,20 +44,16 @@ const Deck = ({
   const [visible, setVisible] = React.useState(0)
   const [selected, setSelected] = React.useState(false)
   const [alternateCards, setAlternateCards] = React.useState()
+  const [exportCSV, setExportCSV] = React.useState()
   const size = useWindowDimensions()
   const small = size.width < 768
   const col30 = () => css`
     width: ${small ? (visible === 0 ? '100%' : '0') : '30%'};
+    margin-left: 1em;
   `
   const col70 = () => css`
     width: ${small ? (visible === 1 ? '100%' : '0') : '70%'};
-  `
-  const pageHeader = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 0.5em;
-    margin: 0.5em;
+    margin-right: 1em;
   `
   const update = async (oldC, newC) => {
     if (!oldC || !newC) return
@@ -77,18 +73,17 @@ const Deck = ({
   }
   return (
     <div className={page}>
-      <div className={pageHeader}>
-        <FetchDeckForm
-          deckName={deckName}
-          setDeckName={setDeckName}
-          deck={deck}
-          setLoading={setLoading}
-          ttsDeck={ttsDeck}
-          setDeck={setDeck}
-          setTTSDeck={setTTSDeck}
-          {...rest}
-        />
-      </div>
+      <FetchDeckForm
+        deckName={deckName}
+        setDeckName={setDeckName}
+        deck={deck}
+        setLoading={setLoading}
+        ttsDeck={ttsDeck}
+        setDeck={setDeck}
+        setTTSDeck={setTTSDeck}
+        exportCSV={exportCSV}
+        {...rest}
+      />
 
       {size.width < 786 ? (
         <div className="tab-menu">
@@ -126,6 +121,7 @@ const Deck = ({
           </div>
           <div className={col70()}>
             <CardList
+              setExportCSV={setExportCSV}
               loading={loading}
               setSelected={setSelected}
               name={deckName}

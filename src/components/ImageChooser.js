@@ -31,8 +31,17 @@ const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
       setCards(null)
     }
   }, [currentCard, setCards])
+
+  const handleClose = () => {
+    setCards(null)
+    onClose()
+  }
+  const handleCardClick = (newCard) => {
+    setCards(null)
+    onClick(newCard, currentCard)
+  }
   return (
-    <div className="cardmodal" onClick={onClose}>
+    <div className="cardmodal" onClick={handleClose}>
       <span onClick={onClose} className="close">
         &times;
       </span>
@@ -45,7 +54,7 @@ const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
                 size={1}
                 key={i}
                 cl={card(cards.length - i, true)}
-                onClick={() => onClick(e, currentCard)}
+                onClick={() => handleCardClick(e)}
               />
             )
           })

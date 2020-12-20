@@ -12,3 +12,12 @@
 .cardlistTableDark {
   background-color: #333;
 }
+
+tr:hover {
+  background-color: #f5f5f5;
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd;
+}

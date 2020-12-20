@@ -3,14 +3,15 @@ import { css } from 'pretty-lights'
 import { fetchDecks, getDeckName } from '../services/deck.js'
 
 const inputClass = css`
-  margin-left: 1rem;
   min-width: 301px;
 `
-
+const buttonClass = css`
+  margin-left: 1em;
+`
 const baseClass = (loading) => css`
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-evenly;
   cursor: ${loading ? 'wait' : 'default'};
   padding: 1rem;
 `
@@ -22,6 +23,8 @@ const FetchDeckForm = ({
   ttsDeck,
   setDeck,
   setTTSDeck,
+  loading,
+  exportCSV,
 }) => {
   const [deckURL, setDeckURL] = React.useState(
     'https://cors-anywhere.herokuapp.com/https://deckbox.org/sets/2785835',
@@ -63,33 +66,30 @@ const FetchDeckForm = ({
   }
 
   return (
-    <div className={baseClass(false)}>
-      <div>
-        <label>Deck URL</label>
-        <input
-          className={inputClass}
-          type="url"
-          onChange={(e) => handleURLChange(e.target.value)}
-        />
-        {ttsDeck ? (
-          <>
-            <a
-              href={`data:text/json;charset=utf-8,${getDownload()}`}
-              download="deck.json"
-              style={{ marginLeft: '10px' }}
-            >
-              <button>Download</button>
-            </a>
-          </>
-        ) : (
-          <button
-            style={{ marginLeft: '10px' }}
-            onClick={(e) => setLoadDecks(true)}
-          >
-            Get it
-          </button>
-        )}
-      </div>
+    <div className={baseClass(loading)}>
+      <input
+        className={inputClass}
+        placeholder="Deck URL"
+        type="url"
+        onChange={(e) => handleURLChange(e.target.value)}
+      />
+      {
+        <button className={buttonClass} onClick={(e) => setLoadDecks(true)}>
+          Fetch {ttsDeck ? 'New ' : ''}Deck
+        </button>
+      }
+
+      {ttsDeck && (
+        <a
+          href={`data:text/json;charset=utf-8,${getDownload()}`}
+          download="deck.json"
+          className={buttonClass}
+        >
+          <button>Download TTS</button>
+        </a>
+      )}
+
+      {ttsDeck && <button className={buttonClass}>Export CSV</button>}
     </div>
   )
 }
