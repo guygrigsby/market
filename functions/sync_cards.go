@@ -82,10 +82,6 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 			defer wg.Done()
 			for card := range ch {
 				name := store.NormalizeCardName(card.Name, log)
-				if strings.Contains(name, "//") {
-
-					panic(name)
-				}
 				doc := cards.Doc(name)
 				_, err := doc.Set(ctx, card)
 				if err != nil {
@@ -153,10 +149,6 @@ func parse(r io.Reader, log log15.Logger) (map[string]*mtgfail.Entry, error) {
 			card.ImageUris.Png = strings.Split(card.ImageUris.Png, "?")[0]
 			bulk[card.Name] = card
 		default:
-			log.Debug(
-				"skipping non English card",
-				"lang", lang,
-			)
 			continue
 		}
 
