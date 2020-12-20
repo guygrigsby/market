@@ -144,7 +144,33 @@ func BuildTTS(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]i
 		deck[c] = deckList[c.Name]
 	}
 	log.Debug(fmt.Sprintf("done with deck Map %+v", deck))
+	tokenDeck := make(map[*mtgfail.Entry]int)
 
+	for name, count := range deckList {
+		entry, err := bulk.Get(name, log)
+		if err != nil {
+			log.Error(
+				"failed to contact store to get card",
+				"err", err,
+			)
+			return nil, err
+		}
+		if entry.CardFaces == nil {
+			token, err := tabletopsimulator.CreateTokenEntry(*entry, log)
+			if err != nil {
+				return nil, err
+			}
+			tokenDeck[entry] = count
+			entry = token
+
+		}
+
+		deck[entry] = count
+
+	}
+	if len(tokenDeck) > 0 {
+		return tabletopsimulator.BuildStacks(log, deck, tokenDeck)
+	}
 	return tabletopsimulator.BuildStacks(log, deck)
 
 }
