@@ -4,10 +4,15 @@ import {
   colors,
   animals,
 } from 'unique-names-generator'
-//export const Upstream = 'https://us-central1-snackend.cloudfunctions.net'
-export const Upstream =
-  'https://us-central1-marketplace-c87d0.cloudfunctions.net/CreateAllFormats'
+
 const corsProxy = 'https://cors-anywhere.herokuapp.com'
+
+export let Upstream
+if (process.env.NODE_ENV === 'development') {
+  Upstream = 'http://localhost:8080'
+} else {
+  Upstream = 'https://us-central1-marketplace-c87d0.cloudfunctions.net'
+}
 
 export const createTTS = (deck) => {
   const fullURI = new URL(`${Upstream}/CreateTTSDeckFromInternal`)

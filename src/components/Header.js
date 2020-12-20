@@ -29,7 +29,7 @@ const image = css`
   width: 45px;
   z-offset: 99;
 `
-const mountain = css`
+const grow = css`
   &:hover {
     transform: scale(1.1);
     border-radius: 100%;
@@ -49,6 +49,7 @@ const log = css`
 `
 
 const OMNOM = 'https://deckbox.org/sets/2785835'
+const SHORT_FAIRY = 'https://deckbox.org/sets/2811132'
 
 const Header = ({ setDeck, setTTSDeck, login }) => {
   const [reload, setReload] = React.useState(false)
@@ -72,11 +73,13 @@ const Header = ({ setDeck, setTTSDeck, login }) => {
         <MTGFailLogo style={logo} />
       </Link>
       <div className={style}>
-        <B style={image} />
+        <span onClick={() => setReload(SHORT_FAIRY)}>
+          <B style={cx(grow, image)} />
+        </span>
         <U style={image} />
         <W style={image} />
         <span onClick={() => setReload(OMNOM)}>
-          <R style={cx(mountain, image)} />
+          <R style={cx(grow, image)} />
         </span>
         <G style={image} />
         {login && <div className={log}>{login} </div>}

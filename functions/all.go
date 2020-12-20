@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/market/functions/store"
@@ -12,6 +13,7 @@ import (
 	"github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
 	"golang.org/x/sync/errgroup"
+	"google.golang.org/api/option"
 )
 
 func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +58,11 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Debug("parsed deck")
-	client, err := firestore.NewClient(ctx, "marketplace-c87d0")
+	c := os.Getenv("FIREBASE_CONFIG")
+	client, err := firestore.NewClient(
+		ctx,
+		"marketplace-c87d0",
+		option.WithCredentialsJSON([]byte(c)))
 	if err != nil {
 		log.Error(
 			"Failed to get firestore client",

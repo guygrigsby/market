@@ -3,11 +3,11 @@ package cloudfuncs
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
 	"cloud.google.com/go/firestore"
+	"github.com/getlantern/deepcopy"
 	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/guygrigsby/mtgfail/tabletopsimulator"
@@ -129,22 +129,9 @@ func BuildTTS(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]i
 		i++
 
 	}
-	cards, err := bulk.GetMany(names, log)
-	if err != nil {
-		log.Error(
-			"can't get card names",
-			"err", err,
-		)
-		return nil, err
-	}
 
-	deck := make(map[*mtgfail.Entry]int)
-	log.Debug("preparing deck map")
-	for _, c := range cards {
-		deck[c] = deckList[c.Name]
-	}
-	log.Debug(fmt.Sprintf("done with deck Map %+v", deck))
 	tokenDeck := make(map[*mtgfail.Entry]int)
+	deck := make(map[*mtgfail.Entry]int)
 
 	for name, count := range deckList {
 		entry, err := bulk.Get(name, log)
@@ -155,13 +142,20 @@ func BuildTTS(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]i
 			)
 			return nil, err
 		}
-		if entry.CardFaces != nil {
-			token, err := tabletopsimulator.CreateTokenEntry(*entry, log)
+		if entry.CardFaces != nil && entry.CardFaces[0].ImageUris.Png != "" {
+			var proxy mtgfail.Entry
+			err := deepcopy.Copy(&proxy, entry)
 			if err != nil {
+				log.Error(
+					"failed to create card copy for double sided card",
+					"err", err,
+				)
 				return nil, err
 			}
 			tokenDeck[entry] = count
-			entry = token
+			proxy.ImageUris = entry.CardFaces[0].ImageUris
+			proxy.CardFaces = nil
+			entry = &proxy
 
 		}
 

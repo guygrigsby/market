@@ -6,11 +6,6 @@ const INVENTORY_DB = 'cards'
 const CONDITIONS_TABLE = '/conditions'
 const USER_DECKS_DB = 'decks'
 
-if (process.env.NODE_ENV === 'development') {
-  firebase.firestore().useEmulator('localhost', 8080)
-} else {
-}
-
 export const useStore = () => {
   return useFirebaseStore()
 }

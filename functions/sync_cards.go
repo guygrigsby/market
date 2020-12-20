@@ -6,7 +6,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -15,7 +14,6 @@ import (
 	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
-	"google.golang.org/api/option"
 )
 
 func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
@@ -40,8 +38,7 @@ func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
 		return err
 	}
 
-	c := os.Getenv("FIREBASE_CONFIG")
-	client, err := firestore.NewClient(ctx, "marketplace-c87d0", option.WithCredentialsJSON([]byte(c)))
+	client, err := firestore.NewClient(ctx, "marketplace-c87d0")
 	if err != nil {
 		log.Error(
 			"cannot connect to firestore",
