@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	collection = "cards"
+	collection = "deck_builder_cards"
 )
 
 // NewFromFirestoreClient ...

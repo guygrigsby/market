@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/market/functions/store"
@@ -74,7 +75,7 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 
 		done <- struct{}{}
 	}()
-	cards := client.Collection("cards")
+	cards := client.Collection("deck_builder_cards")
 	for i := 0; i < cc; i++ {
 		wg.Add(1)
 		go func() {
@@ -134,13 +135,72 @@ func parse(r io.Reader, log log15.Logger) (map[string]*mtgfail.Entry, error) {
 			)
 			continue
 		}
-		//TODO it's gross, but scryfall adds the time of download as a param at the end and tts no likey
-		card.ImageUris.Small = strings.Split(card.ImageUris.Small, "?")[0]
-		card.ImageUris.Normal = strings.Split(card.ImageUris.Normal, "?")[0]
-		card.ImageUris.Large = strings.Split(card.ImageUris.Large, "?")[0]
-		card.ImageUris.Png = strings.Split(card.ImageUris.Png, "?")[0]
-		bulk[card.Name] = card
+		lang := card.Lang
+		switch lang {
+		case "px": // Phyrexian
+			fallthrough
+		case "en":
+			if entry, ok := bulk[card.Name]; ok { // already exists. Pick the better version.
+				if !prettierCard(card, entry) {
+					continue
+				}
+
+			}
+			// it's gross, but scryfall adds the time of download as a param at the end and tts no likey
+			card.ImageUris.Small = strings.Split(card.ImageUris.Small, "?")[0]
+			card.ImageUris.Normal = strings.Split(card.ImageUris.Normal, "?")[0]
+			card.ImageUris.Large = strings.Split(card.ImageUris.Large, "?")[0]
+			card.ImageUris.Png = strings.Split(card.ImageUris.Png, "?")[0]
+			bulk[card.Name] = card
+		default:
+			log.Debug(
+				"skipping non English card",
+				"lang", lang,
+			)
+			continue
+		}
 
 	}
 	return bulk, nil
+}
+
+const (
+	releaseDateFormat = "2006-01-02" //  reference time Mon Jan 2 15:04:05 -0700 MST 2006
+)
+
+// prettierCard compares entry against card to determine if entry is prettier than card.
+// Essentially the first argument `card` is considered to be better unless certain criteria are met
+// Assumptions in order
+// borders other other than black or white are rejected
+// alpha and beta cards are the prettiest
+// full art is prettier than non-full art regardless of release
+// black bordered cards are prettier
+// newer is prettier
+//
+func prettierCard(card, entry *mtgfail.Entry) bool {
+	if !(entry.BorderColor == "black" || entry.BorderColor == "white") {
+		return false
+	}
+	if entry.SetName == "alpha" || entry.SetName == "beta" {
+		return true
+	}
+	if card.FullArt {
+		return false
+	}
+	if entry.FullArt {
+		return true
+	}
+	if entry.BorderColor == "black" && card.BorderColor != "black" {
+		return true
+	}
+	cardRelease, err := time.Parse(releaseDateFormat, card.ReleasedAt)
+	if err == nil {
+		entryRelease, err := time.Parse(releaseDateFormat, entry.ReleasedAt)
+		if err == nil {
+			if entryRelease.After(cardRelease) && entry.BorderColor == "black" {
+				return true
+			}
+		}
+	}
+	return false
 }
