@@ -6,6 +6,11 @@ import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
 import { ProvideShoppingCart } from './use-cart.js'
 import './index.css'
+
+if (module.hot) {
+  module.hot.accept()
+}
+
 ReactDOM.render(
   <ErrorBoundary>
     <ProvideShoppingCart>

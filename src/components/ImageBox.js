@@ -1,6 +1,7 @@
 import React from 'react'
 import Card from './Card.js'
 import { cx, css } from 'pretty-lights'
+import './ImageBox.css'
 
 const card = (z, overlap) => {
   return css`
@@ -16,7 +17,7 @@ const card = (z, overlap) => {
 }
 const ImageBox = ({ overlap = true, deck, classes, setSelected }) => {
   return (
-    <div className={cx('image-box', classes)}>
+    <div className={cx('image-box', classes)} style={{ overflow: 'visible' }}>
       {deck ? (
         deck.map((e, i) => {
           return (
