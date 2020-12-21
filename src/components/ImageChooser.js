@@ -16,7 +16,14 @@ const card = (z) => {
       cursor: pointer;
     `
 }
-const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
+const ImageChooser = ({
+  cards,
+  setCards,
+  onClick,
+  currentCard,
+  setCurrentCard,
+  onClose,
+}) => {
   React.useEffect(() => {
     if (cards && cards.length > 0 && cards[0].name === currentCard.name) return
     const f = async () => {
@@ -34,11 +41,13 @@ const ImageChooser = ({ cards, setCards, onClick, currentCard, onClose }) => {
 
   const handleClose = () => {
     setCards(null)
+    setCurrentCard(false)
     onClose()
   }
   const handleCardClick = (newCard) => {
     setCards(null)
     onClick(newCard, currentCard)
+    setCurrentCard(false)
   }
   return (
     <div className="cardmodal" onClick={handleClose}>

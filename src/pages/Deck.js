@@ -106,6 +106,7 @@ const Deck = ({
           }}
           onClose={() => setSelected(false) && setAlternateCards(null)}
           currentCard={selected}
+          setCurrentCard={setSelected}
           setCards={setAlternateCards}
           cards={alternateCards}
         />
