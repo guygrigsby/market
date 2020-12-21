@@ -55,7 +55,17 @@ const App = () => {
           <LoginPage />
         </Route>
         <Route exact path="/">
-          <Buying sets={sets} />
+          <Deck
+            onError={onError}
+            sets={sets}
+            setSets={setSets}
+            deckName={deckName}
+            setDeckName={setDeckName}
+            deck={deck}
+            ttsDeck={ttsDeck}
+            setDeck={setDeck}
+            setTTSDeck={setTTSDeck}
+          />
         </Route>
       </Switch>
     </Router>
