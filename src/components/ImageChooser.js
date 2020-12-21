@@ -33,11 +33,19 @@ const ImageChooser = ({
     f()
   }, [currentCard, cards, setCards])
 
-  React.useEffect(() => {
-    if (!currentCard) {
-      setCards(null)
+  const handleEscape = (event) => {
+    if (event.keyCode === 27) {
+      handleClose()
     }
-  }, [currentCard, setCards])
+  }
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleEscape, false)
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape, false)
+    }
+  })
 
   const handleClose = () => {
     setCards(null)

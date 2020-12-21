@@ -33,15 +33,6 @@ const grow = css`
   &:hover {
     transform: scale(1.1);
     border-radius: 100%;
-    animation: growshadow 0.15s 1 forwards;
-  }
-  @keyframes growshadow {
-    from {
-    }
-    to {
-      box-shadow: 0 0 10px 6px #000 inset;
-      box-shadow: 0 0 10px 3px #ddd;
-    }
   }
 `
 const log = css`
