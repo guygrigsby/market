@@ -14,6 +14,7 @@ const style = css`
   padding: 0 2em 0 2em;
   font-weight: bold;
   z-index: 1000;
+  min-height: 2em;
 `
 
 const stickyClass = css`
@@ -74,15 +75,17 @@ const Nav = ({ sticky }) => {
           </Link>
         ),
       )}
-      {loggedIn ? (
-        <div onClick={auth.logout} className={cx(backgroundGlow, link)}>
-          Logout
-        </div>
-      ) : (
-        <Link to="/login" className={cx(backgroundGlow, link)}>
-          Login
-        </Link>
-      )}
+      {
+        //loggedIn ? (
+        //<div onClick={auth.logout} className={cx(backgroundGlow, link)}>
+        //Logout
+        //</div>
+        //) : (
+        //<Link to="/login" className={cx(backgroundGlow, link)}>
+        //Login
+        //</Link>
+        //)
+      }
     </nav>
   )
 }
@@ -93,18 +96,21 @@ const genItems = (loggedIn) =>
       link: '/decks',
       content: 'Deck Building',
       authRequired: false,
+      hide: true,
     },
     {
       link: '/selling',
       content: 'Selling',
       authRequired: false,
+      hide: true,
     },
     {
       link: '/buying',
       content: 'Buy',
       authRequired: false,
+      hide: true,
     },
-  ].filter((e) => (e.authRequired && loggedIn) || !e.authRequired || !e.hide)
+  ].filter((e) => (e.authRequired && loggedIn) || (!e.authRequired && !e.hide))
 
 Nav.propTypes = {
   items: PropTypes.array,
