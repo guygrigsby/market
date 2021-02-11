@@ -28,7 +28,7 @@ const box = css`
   height: 100%;
   width: auto;
 `
-const Card = ({ onClick, size, card, cl }) => {
+const Card = ({ onClick, size, card, cl, onError }) => {
   const [flipped, setFlipped] = React.useState(false)
   const [imageSource, setImageSource] = React.useState()
 
@@ -50,6 +50,10 @@ const Card = ({ onClick, size, card, cl }) => {
     } else {
       images = card.image_uris
     }
+    if (!images) {
+      onError('No image found.')
+      return
+    }
     let src
     switch (size) {
       case 0:
@@ -67,7 +71,7 @@ const Card = ({ onClick, size, card, cl }) => {
     }
 
     setImageSource(src)
-  }, [size, card, flipped, doubleSided, setImageSource])
+  }, [size, card, flipped, doubleSided, setImageSource, onError])
 
   return (
     <div className={cx(cl, cardClass)} onClick={onClick}>

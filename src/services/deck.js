@@ -4,6 +4,7 @@ import {
   colors,
   animals,
 } from 'unique-names-generator'
+import { decodeResponse } from '../errors/display.js'
 
 const corsProxy = 'https://cors-anywhere.herokuapp.com'
 
@@ -13,6 +14,16 @@ if (process.env.NODE_ENV === 'development') {
   //Upstream = 'http://localhost:8080'
 } else {
   Upstream = 'https://us-central1-marketplace-c87d0.cloudfunctions.net'
+}
+const handleErrors = async (response) => {
+  if (!response.ok) {
+    const res = await response.text()
+    if (res) {
+      throw Error(`${response.statusText}: ${decodeResponse(res)}`)
+    }
+    throw Error(response.statusText)
+  }
+  return response
 }
 
 export const createTTS = (deck) => {
@@ -38,9 +49,8 @@ export const fetchDecks = (url) => {
   return fetch(fullURI, {
     headers: headers,
   })
+    .then(handleErrors)
     .then((response) => response.json())
-
-    .catch((e) => console.error(e))
 }
 
 export const getDeckName = (url) => {
@@ -126,6 +136,7 @@ export const fetchDeck = async (url) => {
 
 const callAPI = (url, requestOptions) => {
   return fetch(url, requestOptions)
+    .then(handleErrors)
     .then(async (response) => await response.json())
     .then(async (data) => {
       return data

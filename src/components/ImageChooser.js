@@ -23,15 +23,20 @@ const ImageChooser = ({
   currentCard,
   setCurrentCard,
   onClose,
+  onError,
 }) => {
   React.useEffect(() => {
     if (cards && cards.length > 0 && cards[0].name === currentCard.name) return
     const f = async () => {
-      const others = await searchForCard(currentCard.name)
-      setCards(others)
+      try {
+        const others = await searchForCard(currentCard.name)
+        setCards(others)
+      } catch (e) {
+        onError(e)
+      }
     }
     f()
-  }, [currentCard, cards, setCards])
+  }, [currentCard, cards, setCards, onError])
 
   const handleEscape = (event) => {
     if (event.keyCode === 27) {
@@ -72,6 +77,7 @@ const ImageChooser = ({
                 key={i}
                 cl={card(cards.length - i, true)}
                 onClick={() => handleCardClick(e)}
+                onError={onError}
               />
             )
           })

@@ -49,7 +49,7 @@ const Header = ({ setDeck, setTTSDeck, login, onError }) => {
     if (!reload) return
     const f = async () => {
       try {
-        const decks = await fetchDecks(reload)
+        const decks = await fetchDecks(reload, onError)
 
         setTTSDeck(decks.tts)
         setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))

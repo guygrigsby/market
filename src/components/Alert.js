@@ -128,7 +128,7 @@ const Alert = ({ msg, onClose, timer }) => {
     }
   })
 
-  setTimeout(onClose, 3000)
+  setTimeout(onClose, 6000)
 
   return (
     <div className={errorClass} onClick={onClose}>

@@ -25,9 +25,7 @@ const App = () => {
     setError(null)
   }
   const onError = (err) => {
-    const msg = err.message
-    console.log('error', msg)
-    setError(msg)
+    setError(err.message)
   }
 
   return (

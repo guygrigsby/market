@@ -82,6 +82,7 @@ const Deck = ({
         setDeck={setDeck}
         setTTSDeck={setTTSDeck}
         exportCSV={exportCSV}
+        onError={onError}
         {...rest}
       />
 
@@ -109,6 +110,7 @@ const Deck = ({
           setCurrentCard={setSelected}
           setCards={setAlternateCards}
           cards={alternateCards}
+          onError={onError}
         />
       ) : null}
       {deck && (
@@ -118,6 +120,7 @@ const Deck = ({
               deck={deck}
               dark={small ? true : false}
               setSelected={setSelected}
+              onError={onError}
             />
           </div>
           <div className={col70()}>
@@ -127,6 +130,7 @@ const Deck = ({
               setSelected={setSelected}
               name={deckName}
               cards={deck}
+              onError={onError}
             />
           </div>
         </div>

@@ -25,6 +25,7 @@ const FetchDeckForm = ({
   setTTSDeck,
   loading,
   exportCSV,
+  onError,
 }) => {
   const [deckURL, setDeckURL] = React.useState(
     'https://cors-anywhere.herokuapp.com/https://deckbox.org/sets/2785835',
@@ -45,15 +46,20 @@ const FetchDeckForm = ({
   React.useEffect(() => {
     if (deckURL && loadDecks) {
       const f = async () => {
-        const decks = await fetchDecks(deckURL)
-        setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
-        setTTSDeck(decks.tts)
-        setDeckName(await getDeckName(deckURL))
+        try {
+          const decks = await fetchDecks(deckURL, onError)
+          setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
+          setTTSDeck(decks.tts)
+          setDeckName(await getDeckName(deckURL))
+        } catch (e) {
+          onError(e)
+          return e
+        }
       }
       f()
       setLoadDecks(false)
     }
-  }, [deckURL, setDeck, setTTSDeck, loadDecks, setDeckName])
+  }, [deckURL, setDeck, setTTSDeck, loadDecks, setDeckName, onError])
 
   const getDownload = () => {
     return JSON.stringify(ttsDeck)

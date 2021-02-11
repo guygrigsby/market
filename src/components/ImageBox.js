@@ -15,7 +15,7 @@ const card = (z, overlap) => {
     }}
   `
 }
-const ImageBox = ({ overlap = true, deck, classes, setSelected }) => {
+const ImageBox = ({ overlap = true, deck, classes, setSelected, onError }) => {
   return (
     <div className={cx('image-box', classes)} style={{ overflow: 'visible' }}>
       {deck ? (
@@ -26,6 +26,7 @@ const ImageBox = ({ overlap = true, deck, classes, setSelected }) => {
               card={e}
               cl={card(i, overlap)}
               key={i}
+              onError={onError}
             />
           )
         })
