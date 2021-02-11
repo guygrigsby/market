@@ -28,6 +28,7 @@ button,
   font-size: 16px;
 }
 button:hover:enabled {
+  cursor: pointer;
   background-color: #ddd;
   color: black;
 }

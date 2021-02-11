@@ -96,19 +96,16 @@ const genItems = (loggedIn) =>
       link: '/decks',
       content: 'Deck Building',
       authRequired: false,
-      hide: true,
     },
     {
       link: '/selling',
       content: 'Selling',
       authRequired: false,
-      hide: true,
     },
     {
       link: '/buying',
       content: 'Buy',
       authRequired: false,
-      hide: true,
     },
   ].filter((e) => (e.authRequired && loggedIn) || (!e.authRequired && !e.hide))
 

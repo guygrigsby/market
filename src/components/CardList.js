@@ -44,7 +44,6 @@ const CardList = ({
   loading,
   name,
   dark,
-  setExportCSV,
 }) => {
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
@@ -113,7 +112,6 @@ const CardList = ({
       >
         {(props) => (
           <div className="cardlist">
-            {setExportCSV(props.onExport)}
             <BootstrapTable
               rowEvents={rowEvents}
               rowClasses={rowClasses}

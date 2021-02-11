@@ -42,16 +42,20 @@ const log = css`
 const OMNOM = 'https://deckbox.org/sets/2785835'
 const SHORT_FAIRY = 'https://deckbox.org/sets/2811132'
 
-const Header = ({ setDeck, setTTSDeck, login }) => {
+const Header = ({ setDeck, setTTSDeck, login, onError }) => {
   const [reload, setReload] = React.useState(false)
 
   React.useEffect(() => {
     if (!reload) return
     const f = async () => {
-      const decks = await fetchDecks(reload)
+      try {
+        const decks = await fetchDecks(reload)
 
-      setTTSDeck(decks.tts)
-      setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
+        setTTSDeck(decks.tts)
+        setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
+      } catch (e) {
+        onError(e)
+      }
     }
     f()
     setReload(false)

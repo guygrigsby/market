@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/market/functions/store"
@@ -72,23 +73,25 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	ret := &DualDeck{}
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
+		start := time.Now()
 		log.Debug("starting TTS build")
 		ttsDeck, err := BuildTTS(ctx, store, deckList, log)
 		if err != nil {
 			return err
 		}
 		ret.TTS = ttsDeck
-		log.Debug("TTS build done", "deck", ttsDeck)
+		log.Debug("TTS build done", "time", time.Now().Sub(start), "deck", ttsDeck)
 		return nil
 	})
 	g.Go(func() error {
+		start := time.Now()
 		log.Debug("starting internal build")
 		internDeck, err := BuildInternal(ctx, store, deckList, log)
 		if err != nil {
 			return err
 		}
 		ret.Intern = internDeck
-		log.Debug("internal build done", "deck", internDeck)
+		log.Debug("internal build done", "time", time.Now().Sub(start), "deck", internDeck)
 		return nil
 	})
 	if err := g.Wait(); err != nil {

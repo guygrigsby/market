@@ -6,6 +6,7 @@ import Buying from './pages/Buying.js'
 import LoginPage from './pages/Login.js'
 import Deck from './pages/Deck.js'
 import Selling from './pages/Selling.js'
+import Alert from './components/Alert.js'
 import 'firebase/auth'
 
 const App = () => {
@@ -14,14 +15,21 @@ const App = () => {
   const [deck, setDeck] = React.useState(null)
   const [ttsDeck, setTTS] = React.useState(null)
   const [listings, setListings] = React.useState(null)
+  const [error, setError] = React.useState(null)
 
   const setTTSDeck = (deck) => {
     setTTS(deck)
   }
 
-  const onError = (msg) => {
-    console.log(msg)
+  const handleCloseAlert = () => {
+    setError(null)
   }
+  const onError = (err) => {
+    const msg = err.message
+    console.log('error', msg)
+    setError(msg)
+  }
+
   return (
     <Router>
       <Header
@@ -29,8 +37,10 @@ const App = () => {
         ttsDeck={ttsDeck}
         setTTSDeck={setTTSDeck}
         setDeck={setDeck}
+        onError={onError}
       />
       <Nav sticky />
+      {error && <Alert msg={error} onClose={handleCloseAlert} />}
       <Switch>
         <Route path="/selling">
           <Selling listings={listings} setListings={setListings} />
