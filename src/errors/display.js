@@ -1,4 +1,5 @@
 const matcher = new RegExp(
+  /* eslint-disable no-useless-escape */
   `failed to build deck rpc error: code = NotFound desc = "projects\/marketplace-c87d0\/databases\/\(default\)\/documents\/cards\/(.+)" not found`,
 )
 
