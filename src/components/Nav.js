@@ -92,21 +92,21 @@ const Nav = ({ sticky }) => {
 
 const genItems = (loggedIn) =>
   [
-    {
-      link: '/decks',
-      content: 'Deck Building',
-      authRequired: false,
-    },
-    {
-      link: '/selling',
-      content: 'Selling',
-      authRequired: false,
-    },
-    {
-      link: '/buying',
-      content: 'Buy',
-      authRequired: false,
-    },
+    //{
+    //  link: '/decks',
+    //  content: 'Deck Building',
+    //  authRequired: false,
+    //},
+    //{
+    //  link: '/selling',
+    //  content: 'Selling',
+    //  authRequired: false,
+    //},
+    //{
+    //  link: '/buying',
+    //  content: 'Buy',
+    //  authRequired: false,
+    //},
   ].filter((e) => (e.authRequired && loggedIn) || (!e.authRequired && !e.hide))
 
 Nav.propTypes = {
