@@ -35,7 +35,9 @@ button:hover:enabled {
 button:disabled {
   background-color: silver;
 }
-input {
+input,
+textarea {
+  font-family: 'Libre Franklin', sans-serif;
   border: 1px lightgray solid;
   border-radius: 1px;
   font-size: 1em;

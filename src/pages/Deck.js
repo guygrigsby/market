@@ -9,6 +9,7 @@ import ImageChooser from '../components/ImageChooser'
 import '../components/ImageChooser.css'
 import '../components/ImageChooser.js'
 import './Deck.css'
+
 const page = css`
   display: flex;
   flex-direction: column;
@@ -38,9 +39,9 @@ const Deck = ({
   setDeck,
   setTTSDeck,
   onError,
+  setLoading,
   ...rest
 }) => {
-  const [loading, setLoading] = React.useState(false)
   const [visible, setVisible] = React.useState(0)
   const [selected, setSelected] = React.useState(false)
   const [alternateCards, setAlternateCards] = React.useState()
@@ -126,7 +127,6 @@ const Deck = ({
           <div className={col70()}>
             <CardList
               setExportCSV={setExportCSV}
-              loading={loading}
               setSelected={setSelected}
               name={deckName}
               cards={deck}

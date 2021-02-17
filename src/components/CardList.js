@@ -37,14 +37,7 @@ const truncateType = (typeName) => {
   console.log('truncate', typeName, 'arr', arr)
   return arr[0]
 }
-const CardList = ({
-  setSelected,
-  cards,
-  columns,
-  loading,
-  name,
-  dark,
-}) => {
+const CardList = ({ setSelected, cards, columns, name, dark }) => {
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
       setSelected(row)
@@ -119,7 +112,6 @@ const CardList = ({
               classes={dark ? 'cardlistTableDark' : 'cardlistTable'}
               wrapperClasses={dark ? 'cardlistTableDark' : 'cardlistTable'}
               remote
-              loading={loading}
               {...props.baseProps}
             />
           </div>
