@@ -15,29 +15,26 @@ const tabButton = css`
     color: light-gray;
   }
 `
-const Tabs = ({ children, activeTab, setActiveTab }) => {
-  console.log('active tab', activeTab)
-  return (
-    <div>
-      <div className={tabHeader}>
-        {React.Children.map(children, (child, i) => (
-          <button
-            disabled={activeTab === i}
-            className={tabButton}
-            onClick={() => setActiveTab(i)}
-          >
-            {child.props.name}
-          </button>
-        ))}
-      </div>
-      {React.Children.toArray(children).map((e, i) => {
-        return (
-          <div key={`tab-${i}`}>{activeTab === i ? <Tab>{e}</Tab> : null}</div>
-        )
-      })}
+const Tabs = ({ children, activeTab, setActiveTab }) => (
+  <div>
+    <div className={tabHeader}>
+      {React.Children.map(children, (child, i) => (
+        <button
+          disabled={activeTab === i}
+          className={tabButton}
+          onClick={() => setActiveTab(i)}
+        >
+          {child.props.name}
+        </button>
+      ))}
     </div>
-  )
-}
+    {React.Children.toArray(children).map((e, i) => {
+      return (
+        <div key={`tab-${i}`}>{activeTab === i ? <Tab>{e}</Tab> : null}</div>
+      )
+    })}
+  </div>
+)
 
 const Tab = ({ children, active }) => {
   return <div className={tab}>{React.Children.only(children)}</div>

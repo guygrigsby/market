@@ -46,7 +46,6 @@ const FetchDeckForm = ({
   const [loadDecks, setLoadDecks] = React.useState(false)
 
   const setActiveTab = (i) => {
-    console.log('setting active', i)
     setActive(i)
   }
 
