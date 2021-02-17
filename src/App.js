@@ -7,7 +7,6 @@ import LoginPage from './pages/Login.js'
 import Deck from './pages/Deck.js'
 import Selling from './pages/Selling.js'
 import Alert from './components/Alert.js'
-import Loader from './components/Loader.js'
 import 'firebase/auth'
 
 const App = () => {
@@ -41,7 +40,6 @@ const App = () => {
       />
       <Nav sticky />
       {error && <Alert msg={error} onClose={handleCloseAlert} />}
-      {loading && <Loader />}
       <Switch>
         <Route path="/selling">
           <Selling listings={listings} setListings={setListings} />
@@ -57,6 +55,7 @@ const App = () => {
             ttsDeck={ttsDeck}
             setDeck={setDeck}
             setTTSDeck={setTTSDeck}
+            loading={loading}
             setLoading={setLoading}
           />
         </Route>
@@ -77,6 +76,7 @@ const App = () => {
             ttsDeck={ttsDeck}
             setDeck={setDeck}
             setTTSDeck={setTTSDeck}
+            loading={loading}
             setLoading={setLoading}
           />
         </Route>

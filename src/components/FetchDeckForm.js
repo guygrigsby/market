@@ -34,7 +34,6 @@ const textClass = (deckLoaded) => {
   const style = css`
     ${deckLoaded ? 'height:4em;' : 'min-height: 20em;'}
   `
-  console.log('loaded', deckLoaded, 'style', style)
   return style
 }
 
@@ -71,14 +70,14 @@ const FetchDeckForm = ({
 
   const makeDecks = React.useCallback(
     async (getDeck, getName) => {
-      setLoadDecks(true)
       const decks = await getDeck()
       setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
       setTTSDeck(decks.tts)
       setDeckName(await getName())
       setLoadDecks(false)
+      setLoading(false)
     },
-    [setDeck, setTTSDeck, setDeckName],
+    [setDeck, setTTSDeck, setDeckName, setLoading],
   )
 
   React.useEffect(() => {
@@ -115,6 +114,11 @@ const FetchDeckForm = ({
 
   const handleLoadDecks = (e) => {
     e.preventDefault()
+    e.stopPropagation()
+    if (!deckURL && !decklist) {
+      return
+    }
+    setLoading(true)
     setLoadDecks(true)
   }
 

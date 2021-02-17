@@ -6,8 +6,8 @@ import { css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
 import { naive, updateTTS } from '../services/replace.js'
 import ImageChooser from '../components/ImageChooser'
+import Loader from '../components/Loader'
 import '../components/ImageChooser.css'
-import '../components/ImageChooser.js'
 import './Deck.css'
 
 const page = css`
@@ -30,6 +30,11 @@ const tabs = css`
   height: 100%;
   overflow: visible;
 `
+const formSection = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`
 
 const Deck = ({
   deckName,
@@ -40,8 +45,10 @@ const Deck = ({
   setTTSDeck,
   onError,
   setLoading,
+  loading,
   ...rest
 }) => {
+  console.log('laoding in deck', loading)
   const [visible, setVisible] = React.useState(0)
   const [selected, setSelected] = React.useState(false)
   const [alternateCards, setAlternateCards] = React.useState()
@@ -74,19 +81,21 @@ const Deck = ({
   }
   return (
     <div className={page}>
-      <FetchDeckForm
-        deckName={deckName}
-        setDeckName={setDeckName}
-        deck={deck}
-        setLoading={setLoading}
-        ttsDeck={ttsDeck}
-        setDeck={setDeck}
-        setTTSDeck={setTTSDeck}
-        exportCSV={exportCSV}
-        onError={onError}
-        {...rest}
-      />
-
+      <div className={formSection}>
+        <FetchDeckForm
+          deckName={deckName}
+          setDeckName={setDeckName}
+          deck={deck}
+          setLoading={setLoading}
+          ttsDeck={ttsDeck}
+          setDeck={setDeck}
+          setTTSDeck={setTTSDeck}
+          exportCSV={exportCSV}
+          onError={onError}
+          {...rest}
+        />
+        {loading && <Loader />}
+      </div>
       {size.width < 786 ? (
         <div className="tab-menu">
           <div>
