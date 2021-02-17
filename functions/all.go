@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -32,19 +33,28 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ctx := context.Background()
+	var (
+		rc  io.ReadCloser
+		err error
+	)
+	hasBodyDeck := r.URL.Query().Get("decklist")
+	if hasBodyDeck != "true" {
 
-	uri := r.URL.Query().Get("deck")
+		uri := r.URL.Query().Get("deck")
 
-	rc, err := FetchDeck(uri, log)
-	if err != nil {
-		log.Error(
-			"failed to fetch deck",
-			"err", err,
-		)
-		http.Error(w, "cannot read decklist", http.StatusBadGateway)
-		return
+		rc, err = FetchDeck(uri, log)
+		if err != nil {
+			log.Error(
+				"failed to fetch deck",
+				"err", err,
+			)
+			http.Error(w, "cannot read decklist", http.StatusBadGateway)
+			return
+		}
+		log.Debug("fetched deck")
+	} else {
+		rc = r.Body
 	}
-	log.Debug("fetched deck")
 
 	deckList, err := mtgfail.ReadCardList(rc, log)
 	if err != nil {
