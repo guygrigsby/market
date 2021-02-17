@@ -1,17 +1,26 @@
 import React from 'react'
 import { css } from 'pretty-lights'
 import { fetchDecks, getDeckName } from '../services/deck.js'
+import Tabs from './Tabs.js'
 
 const inputClass = css`
   min-width: 301px;
 `
+const tabsClass = css`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
+const textClass = css`
+  min-width: 600px;
+  min-height: 600px;
+`
 const buttonClass = css`
-  margin-left: 1em;
+  margin-top: 1em;
 `
 const baseClass = (loading) => css`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
   cursor: ${loading ? 'wait' : 'default'};
   padding: 1rem;
 `
@@ -30,7 +39,14 @@ const FetchDeckForm = ({
   const [deckURL, setDeckURL] = React.useState(
     'https://cors-anywhere.herokuapp.com/https://deckbox.org/sets/2785835',
   )
+  const [decklist, setDecklist] = React.useState(null)
+  const [activeTab, setActive] = React.useState(0)
   const [loadDecks, setLoadDecks] = React.useState(false)
+
+  const setActiveTab = (i) => {
+    console.log('setting active', i)
+    setActive(i)
+  }
 
   React.useEffect(() => {
     if (deckURL && loadDecks && !deckName) {
@@ -71,20 +87,39 @@ const FetchDeckForm = ({
     setTTSDeck(null)
   }
 
+  const handleDecklistChange = (list) => {
+    setDecklist(list)
+    setLoadDecks(false)
+    setTTSDeck(null)
+  }
+
   return (
     <div className={baseClass(loading)}>
-      <input
-        className={inputClass}
-        placeholder="Deck URL"
-        type="url"
-        onChange={(e) => handleURLChange(e.target.value)}
-      />
-      {
-        <button className={buttonClass} onClick={(e) => setLoadDecks(true)}>
-          Fetch {ttsDeck ? 'New ' : ''}Deck
-        </button>
-      }
-
+      <div className={tabsClass}>
+        <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
+          <div name="URL">
+            <input
+              className={inputClass}
+              placeholder="Deck URL"
+              type="url"
+              onChange={(e) => handleURLChange(e.target.value)}
+            />
+          </div>
+          <div name="List">
+            <textarea
+              className={textClass}
+              placeholder="Deck List"
+              type="text"
+              onChange={(e) => handleDecklistChange(e.target.value)}
+            />
+          </div>
+        </Tabs>
+        {
+          <button className={buttonClass} onClick={(e) => setLoadDecks(true)}>
+            Fetch {ttsDeck ? 'New ' : ''}Deck
+          </button>
+        }
+      </div>
       {ttsDeck && (
         <a
           href={`data:text/json;charset=utf-8,${getDownload()}`}
