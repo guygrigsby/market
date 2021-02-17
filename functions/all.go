@@ -37,10 +37,18 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		rc  io.ReadCloser
 		err error
 	)
-	hasBodyDeck := r.URL.Query().Get("decklist")
-	if hasBodyDeck != "true" {
+	hasBodyDeck := r.URL.Query().Get("decklist") != ""
 
+	if hasBodyDeck {
+		log.Debug("decklist sent")
+		rc = r.Body
+	} else {
 		uri := r.URL.Query().Get("deck")
+		log.Debug(
+			"no decklist",
+			"value", hasBodyDeck,
+			"uri", uri,
+		)
 
 		rc, err = FetchDeck(uri, log)
 		if err != nil {
@@ -52,10 +60,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		log.Debug("fetched deck")
-	} else {
-		rc = r.Body
 	}
-
 	deckList, err := mtgfail.ReadCardList(rc, log)
 	if err != nil {
 		msg := "cannot fetch deck"

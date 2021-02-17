@@ -42,6 +42,20 @@ export const createTTS = (deck) => {
     .catch((e) => console.error(e))
 }
 
+export const fetchDecksFromList = (decklist) => {
+  const fullURI = new URL(`${Upstream}/CreateAllFormats?decklist=${true}`)
+  const headers = {
+    'Accept-Encoding': 'gzip',
+    'Content-Type': 'text/plain',
+  }
+  return fetch(fullURI, {
+    method: 'POST',
+    headers: headers,
+    body: decklist,
+  })
+    .then(handleErrors)
+    .then((response) => response.json())
+}
 export const fetchDecks = (url) => {
   const fullURI = new URL(`${Upstream}/CreateAllFormats?deck=${url}`)
   const headers = new Headers()

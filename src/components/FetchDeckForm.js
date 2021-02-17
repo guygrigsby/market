@@ -1,6 +1,10 @@
 import React from 'react'
 import { css } from 'pretty-lights'
-import { fetchDecks, getDeckName } from '../services/deck.js'
+import {
+  fetchDecks,
+  getDeckName,
+  fetchDecksFromList,
+} from '../services/deck.js'
 import Tabs from './Tabs.js'
 
 const inputClass = css`
@@ -36,9 +40,7 @@ const FetchDeckForm = ({
   exportCSV,
   onError,
 }) => {
-  const [deckURL, setDeckURL] = React.useState(
-    'https://cors-anywhere.herokuapp.com/https://deckbox.org/sets/2785835',
-  )
+  const [deckURL, setDeckURL] = React.useState(null)
   const [decklist, setDecklist] = React.useState(null)
   const [activeTab, setActive] = React.useState(0)
   const [loadDecks, setLoadDecks] = React.useState(false)
@@ -76,6 +78,24 @@ const FetchDeckForm = ({
       setLoadDecks(false)
     }
   }, [deckURL, setDeck, setTTSDeck, loadDecks, setDeckName, onError])
+
+  React.useEffect(() => {
+    if (decklist && loadDecks) {
+      const f = async () => {
+        try {
+          const decks = await fetchDecksFromList(decklist, onError)
+          setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
+          setTTSDeck(decks.tts)
+          setDeckName('New Deck')
+        } catch (e) {
+          onError(e)
+          return e
+        }
+      }
+      f()
+      setLoadDecks(false)
+    }
+  }, [decklist, setDeck, setTTSDeck, loadDecks, setDeckName, onError])
 
   const getDownload = () => {
     return JSON.stringify(ttsDeck)
