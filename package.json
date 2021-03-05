@@ -15,7 +15,7 @@
     "firebase": "^8.0.1",
     "firebase-functions": "^3.11.0",
     "firebaseui": "^4.7.1",
-    "mana-font": "^1.9.4",
+    "mana-font": "^1.10.0",
     "pretty-lights": "^0.0.19",
     "react": "^17.0.1",
     "react-autocomplete": "^1.8.1",

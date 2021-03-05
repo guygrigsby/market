@@ -8188,10 +8188,10 @@ makeerror@1.0.x:
   dependencies:
     tmpl "1.0.x"
 
-mana-font@^1.9.4:
-  version "1.9.4"
-  resolved "https://registry.yarnpkg.com/mana-font/-/mana-font-1.9.4.tgz#b62f753a38750420552d4524c657299931ce657c"
-  integrity sha512-g0QdZPZSkSwvSDVOaBR2zTDRdrsqbZIbLis60Eo8QP2d8g+MsJwZu9D51QuzL2wVKg0lDKokNntwMsaFHEIKLA==
+mana-font@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/mana-font/-/mana-font-1.10.0.tgz#19155db8ae4ab3b94494cc238b186d5dfeb6ac0a"
+  integrity sha512-FfwMSsRW1Hnjav12mLnOcP7BDEsZYNGMGbO808++eIYiyHW9vfJ7CUcVuGDjkd06hHt1m2IPBgZ3Oqw6JjhCpQ==
 
 map-cache@^0.2.2:
   version "0.2.2"

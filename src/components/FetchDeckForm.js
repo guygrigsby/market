@@ -20,7 +20,7 @@ const buttonClass = css`
   padding: 0.5em 1em;
 `
 const baseClass = css`
-  width: 50%;
+  width: 100%;
   padding: 1em;
 `
 

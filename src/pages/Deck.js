@@ -1,8 +1,7 @@
 import React from 'react'
 import FetchDeckForm from '../components/FetchDeckForm.js'
 import CardList from '../components/CardList'
-import { useWindowDimensions } from '../components/use-window-dimensions.js'
-import { css } from 'pretty-lights'
+import { cx, css } from 'pretty-lights'
 import ImageBox from '../components/ImageBox.js'
 import { naive, updateTTS } from '../services/replace.js'
 import ImageChooser from '../components/ImageChooser'
@@ -10,6 +9,57 @@ import Loader from '../components/Loader'
 import '../components/ImageChooser.css'
 import './Deck.css'
 
+const manaSymbols = [
+  'ms ms-w', //white
+  'ms ms-u', // blue
+  'ms ms-b', // black
+  'ms ms-r', // red
+  'ms ms-g', // green
+  'ms ms-s', // snow
+  'ms ms-p', // phrex pig
+]
+
+const rm = css`
+  margin-right: 5px;
+`
+
+const randomManaSymbol = () =>
+  cx(manaSymbols[Math.floor(Math.random() * manaSymbols.length)], rm)
+
+const li = (txt) => {
+  const lineItem = css`
+    padding: 0.25em;
+    font-size: 16px;
+    display: flex;
+    align-items: baseline;
+  `
+  return (
+    <li className={lineItem}>
+      <i className={`${randomManaSymbol()} ms-cost ms-shadow`}></i>
+      {` ${txt}`}
+    </li>
+  )
+}
+
+const list = css`
+  list-style-type: none;
+`
+const width = (w) =>
+  css`
+    width: ${w}%;
+  `
+
+const motd = css`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`
+
+const pageTop = css`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+`
 const page = css`
   display: flex;
   flex-direction: column;
@@ -23,14 +73,14 @@ const box = css`
   height: 100%;
   overflow: visible;
 `
-const tabs = css`
-  display: flex;
-  color: white;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+const newsHeader = css`
+  padding: 1em 0 0 1em;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
 `
 const formSection = css`
+  flex: 1;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -48,21 +98,10 @@ const Deck = ({
   loading,
   ...rest
 }) => {
-  console.log('laoding in deck', loading)
-  const [visible, setVisible] = React.useState(0)
   const [selected, setSelected] = React.useState(false)
   const [alternateCards, setAlternateCards] = React.useState()
   const [exportCSV, setExportCSV] = React.useState()
-  const size = useWindowDimensions()
-  const small = size.width < 768
-  const col30 = () => css`
-    width: ${small ? (visible === 0 ? '100%' : '0') : '30%'};
-    margin-left: 1em;
-  `
-  const col70 = () => css`
-    width: ${small ? (visible === 1 ? '100%' : '0') : '70%'};
-    margin-right: 1em;
-  `
+
   const update = async (oldC, newC) => {
     if (!oldC || !newC) return
     setDeck((prev) => {
@@ -81,33 +120,32 @@ const Deck = ({
   }
   return (
     <div className={page}>
-      <div className={formSection}>
-        <FetchDeckForm
-          deckName={deckName}
-          setDeckName={setDeckName}
-          deck={deck}
-          setLoading={setLoading}
-          ttsDeck={ttsDeck}
-          setDeck={setDeck}
-          setTTSDeck={setTTSDeck}
-          exportCSV={exportCSV}
-          onError={onError}
-          {...rest}
-        />
-        {loading && <Loader />}
-      </div>
-      {size.width < 786 ? (
-        <div className="tab-menu">
-          <div>
-            <button className="tab-button" onClick={() => setVisible(0)}>
-              Images
-            </button>
-            <button className="tab-button" onClick={() => setVisible(1)}>
-              List
-            </button>
-          </div>
+      <div className={pageTop}>
+        <div className={formSection}>
+          <FetchDeckForm
+            deckName={deckName}
+            setDeckName={setDeckName}
+            deck={deck}
+            setLoading={setLoading}
+            ttsDeck={ttsDeck}
+            setDeck={setDeck}
+            setTTSDeck={setTTSDeck}
+            exportCSV={exportCSV}
+            onError={onError}
+            {...rest}
+          />
+          {loading && <Loader />}
         </div>
-      ) : null}
+        <div className={motd}>
+          <div className={newsHeader}>News</div>
+          <ul className={list}>
+            {li('Cards are all up to date for Kaldheim.')}
+            {li(
+              'We are having issues with some multi-faced cards. It is known.',
+            )}
+          </ul>
+        </div>
+      </div>
       {selected ? (
         <ImageChooser
           onClick={(newCard, oldCard) => {
@@ -124,16 +162,16 @@ const Deck = ({
         />
       ) : null}
       {deck && (
-        <div className={small ? tabs : box}>
-          <div className={col30()}>
+        <div className={box}>
+          <div className={width(30)}>
             <ImageBox
               deck={deck}
-              dark={small ? true : false}
+              dark={false}
               setSelected={setSelected}
               onError={onError}
             />
           </div>
-          <div className={col70()}>
+          <div className={width(70)}>
             <CardList
               setExportCSV={setExportCSV}
               setSelected={setSelected}
