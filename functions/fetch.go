@@ -67,7 +67,15 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 			return nil, err
 
 		}
-		content = res.Body
+		content, err = mtgfail.Normalize(res.Body, log)
+		if err != nil {
+			log.Error(
+				"Unexpected format for deck status",
+				"err", err,
+				"url", deckURI,
+			)
+			return nil, err
+		}
 
 	// https://deckbox.org/sets/2649137
 	case "deckbox.org":

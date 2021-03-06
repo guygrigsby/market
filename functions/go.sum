@@ -133,8 +133,8 @@ github.com/googleapis/gax-go/v2 v2.0.5 h1:sjZBwGj9Jlw33ImPtvFviGYvseOtDM7hkSKB7+
 github.com/googleapis/gax-go/v2 v2.0.5/go.mod h1:DWXyrwAJ9X0FpwwEdw+IPEYBICEFu5mhpdKc/us6bOk=
 github.com/gorilla/handlers v1.4.2/go.mod h1:Qkdc/uu4tH4g6mTK6auzZ766c4CA0Ng8+o/OAirnOIQ=
 github.com/gorilla/mux v1.7.4/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
-github.com/guygrigsby/mtgfail v0.7.4 h1:GC0TktESWLJ60+oNaGNiOIwic22jbUfPSjVCUi17fd0=
-github.com/guygrigsby/mtgfail v0.7.4/go.mod h1:KBRmCHz/a1mM6NfUurEW0+YNGBYkL+NN+/aH3M3tDLg=
+github.com/guygrigsby/mtgfail v0.8.2 h1:2kJRr1ppTexm9PF3oE6glE4qqB8jDKXuV/WnGadWGUY=
+github.com/guygrigsby/mtgfail v0.8.2/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.3/go.mod h1:iADmTwqILo4mZ8BN3D2Q6+9jd8WM5uGBxy+E8yxSoD4=
