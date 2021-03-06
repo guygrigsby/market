@@ -41,6 +41,18 @@ export const createTTS = (deck) => {
     })
     .catch((e) => console.error(e))
 }
+export const isValid = (decklist) => {
+  const lines = decklist.split('\n')
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[0].split(' ')
+    const count = parseInt(line[0])
+    console.log('parsed line', count)
+    if (count === 'NaN') {
+      throw Error(`Invalid decklist: ${line} does not start with a number`)
+    }
+  }
+  return decklist
+}
 
 export const fetchDecksFromList = (decklist) => {
   const fullURI = new URL(`${Upstream}/CreateAllFormats?decklist=${true}`)

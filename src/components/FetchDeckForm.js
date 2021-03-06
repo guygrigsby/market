@@ -5,6 +5,7 @@ import {
   fetchDecks,
   getDeckName,
   fetchDecksFromList,
+  isValid,
 } from '../services/deck.js'
 import Tabs from './Tabs.js'
 
@@ -82,16 +83,27 @@ const FetchDeckForm = ({
 
   React.useEffect(() => {
     if (loadDecks) {
-      if (deckURL) {
-        makeDecks(
-          () => fetchDecks(deckURL, onError),
-          () => getDeckName(deckURL),
-        )
-      } else if (decklist) {
-        makeDecks(
-          () => fetchDecksFromList(decklist, onError),
-          () => 'New Deck',
-        )
+      try {
+        if (deckURL) {
+          makeDecks(
+            () => fetchDecks(deckURL, onError),
+            () => getDeckName(deckURL),
+          )
+        } else if (decklist) {
+          try {
+            const normalized = isValid(decklist)
+            console.log('normalized', normalized)
+            makeDecks(
+              () => fetchDecksFromList(normalized, onError),
+              () => 'New Deck',
+            )
+          } catch (e) {
+            onError(e)
+            return
+          }
+        }
+      } catch (e) {
+        onError(`failed to fetch deck. Please check format.${e}`)
       }
     }
   }, [deckURL, setDeckName, onError, decklist, makeDecks, loadDecks])
@@ -135,8 +147,8 @@ const FetchDeckForm = ({
         <textarea
           className={cx(inputClass, textClass(ttsDeck))}
           name="List"
-          placeholder={`1 x Ophiomancer
-1 x Contamination
+          placeholder={`1 Ophiomancer
+1 Contamination
 ...`}
           type="text"
           onChange={(e) => handleDecklistChange(e.target.value)}

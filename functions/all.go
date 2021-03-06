@@ -68,7 +68,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			"can't read cards",
 			"err", err,
 		)
-		http.Error(w, msg, http.StatusBadGateway)
+		http.Error(w, msg, http.StatusBadRequest)
 		return
 	}
 	log.Debug("parsed deck")
