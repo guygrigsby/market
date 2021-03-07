@@ -79,8 +79,8 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 		go func() {
 			defer wg.Done()
 			for card := range ch {
-				card.Name = store.CardKey(card.Name, log)
-				testingDoc := testingCards.Doc(mtgfail.Key(card.Name))
+				key := store.CardKey(card.Name, log)
+				testingDoc := testingCards.Doc(key)
 				_, err := testingDoc.Set(ctx, &card)
 				if err != nil {
 					log.Error(
