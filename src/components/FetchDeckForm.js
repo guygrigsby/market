@@ -6,6 +6,7 @@ import {
   getDeckName,
   fetchDecksFromList,
   isValid,
+  decodeTTS,
 } from '../services/deck.js'
 import Tabs from './Tabs.js'
 
@@ -53,6 +54,8 @@ const FetchDeckForm = ({
   const [decklist, setDecklist] = React.useState(null)
   const [activeTab, setActive] = React.useState(0)
   const [loadDecks, setLoadDecks] = React.useState(false)
+  const [upload, setUpload] = React.useState(false)
+  const uploadRef = React.useRef()
 
   const setActiveTab = (i) => {
     setActive(i)
@@ -124,21 +127,34 @@ const FetchDeckForm = ({
     setTTSDeck(null)
   }
 
-  const handleLoadDecks = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
     if (!deckURL && !decklist) {
       return
     }
     setLoading(true)
-    setLoadDecks(true)
+    switch (e.target.id) {
+      case 'deckurl':
+        setLoadDecks(true)
+        break
+      case 'decklist':
+        setLoadDecks(true)
+        break
+      case 'ttsupload':
+        setUpload(true)
+        decodeTTS(uploadRef.current.file)
+        break
+      default:
+    }
   }
 
   return (
-    <form onSubmit={handleLoadDecks} className={baseClass}>
+    <form onSubmit={handleSubmit} className={baseClass}>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
         <input
           className={inputClass}
+          id="deckurl"
           name="URL"
           placeholder="Deck URL"
           type="url"
@@ -152,6 +168,14 @@ const FetchDeckForm = ({
 ...`}
           type="text"
           onChange={(e) => handleDecklistChange(e.target.value)}
+        />
+        <input
+          className={inputClass}
+          name="upload existing TTS deckfile"
+          id="ttsupload"
+          ref={uploadRef}
+          type="file"
+          accept=".json"
         />
       </Tabs>
       <input type="submit" className={buttonClass} value="Fetch Deck" />

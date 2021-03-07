@@ -5,6 +5,7 @@ import {
   animals,
 } from 'unique-names-generator'
 import { decodeResponse } from '../errors/display.js'
+import { compress } from './compress.js'
 
 const corsProxy = 'https://cors-anywhere.herokuapp.com'
 
@@ -25,7 +26,23 @@ const handleErrors = async (response) => {
   }
   return response
 }
-
+export const decodeTTS = async (file) => {
+  const fullURI = new URL(`${Upstream}/DecodeTTSDeck`)
+  let compressedBody = await compress(file)
+  const headers = new Headers()
+  headers.append('Accept-Encoding', 'gzip')
+  headers.append('Content-Encoding', 'gzip')
+  return fetch(fullURI, {
+    method: 'POST',
+    headers: headers,
+    body: compressedBody,
+  })
+    .then(async (response) => await response.json())
+    .then((res) => {
+      return res
+    })
+    .catch((e) => console.error(e))
+}
 export const createTTS = (deck) => {
   const fullURI = new URL(`${Upstream}/CreateTTSDeckFromInternal`)
   const headers = new Headers()
