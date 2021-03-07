@@ -40,7 +40,7 @@ func (c *cardStore) PutMany(cards map[string]*mtgfail.Entry, log log15.Logger) e
 		name, card := k, v
 		go func() {
 			defer wg.Done()
-			name = NormalizeCardName(name, log)
+			name = CardKey(name, log)
 			doc := coll.Doc(name)
 			wr, err := doc.Set(ctx, card)
 			if err != nil {
@@ -75,7 +75,7 @@ func (c *cardStore) Put(key string, card *mtgfail.Entry, log log15.Logger) error
 	coll := c.client.Collection(collection)
 	ctx := context.Background()
 
-	name := NormalizeCardName(card.Name, log)
+	name := CardKey(card.Name, log)
 	doc := coll.Doc(name)
 	_, err := doc.Set(ctx, card)
 	if err != nil {
@@ -91,10 +91,10 @@ func (c *cardStore) Put(key string, card *mtgfail.Entry, log log15.Logger) error
 }
 
 func NormalizeCard(card *mtgfail.Entry, log log15.Logger) {
-	card.Name = NormalizeCardName(card.Name, log)
+	card.Name = CardKey(card.Name, log)
 }
 
-func NormalizeCardName(name string, log log15.Logger) string {
+func CardKey(name string, log log15.Logger) string {
 	var normalized strings.Builder
 	var prev rune
 	for i, r := range name {
@@ -105,7 +105,8 @@ func NormalizeCardName(name string, log log15.Logger) string {
 		normalized.WriteRune(unicode.ToLower(r))
 
 	}
-	return normalized.String()
+
+	return mtgfail.Key(normalized.String())
 }
 
 func (c *cardStore) Get(name string, log log15.Logger) (*mtgfail.Entry, error) {
@@ -131,7 +132,7 @@ func (c *cardStore) GetMany(names []string, log log15.Logger) ([]*mtgfail.Entry,
 		n := n
 		go func() {
 			defer wg.Done()
-			name := NormalizeCardName(n, log)
+			name := CardKey(n, log)
 			doc := coll.Doc(name)
 			docsnap, err := doc.Get(ctx)
 			if err != nil {

@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
+
 	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
@@ -72,18 +73,18 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 
 		done <- struct{}{}
 	}()
-	cards := client.Collection("cards")
+	testingCards := client.Collection("cards_indexed")
 	for i := 0; i < cc; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for card := range ch {
-				name := store.NormalizeCardName(card.Name, log)
-				doc := cards.Doc(name)
-				_, err := doc.Set(ctx, card)
+				card.Name = store.CardKey(card.Name, log)
+				testingDoc := testingCards.Doc(mtgfail.Key(card.Name))
+				_, err := testingDoc.Set(ctx, &card)
 				if err != nil {
 					log.Error(
-						"cannot create document skipping",
+						"Cannot create card in indexed collection",
 						"name", card.Name,
 						"err", err,
 					)
@@ -100,6 +101,7 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 	}
 	return nil
 }
+
 func parse(r io.Reader, log log15.Logger) (map[string]*mtgfail.Entry, error) {
 	b, err := ioutil.ReadAll(r)
 	if err != nil {

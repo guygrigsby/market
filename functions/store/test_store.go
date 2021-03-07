@@ -23,7 +23,7 @@ func TestNormalizeCardName(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		require.Equal(t, test.correctResult, NormalizeCardName(test.name, log15.New()))
+		require.Equal(t, test.correctResult, CardKey(test.name, log15.New()))
 	}
 
 }
