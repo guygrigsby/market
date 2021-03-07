@@ -58,7 +58,7 @@ func DecodeTTSDeck(w http.ResponseWriter, r *http.Request) {
 		rw = r.Body
 	}
 	defer rw.Close()
-	internalDeck, err := tts.Decode(rw)
+	internalDeck, err := tts.Decode(rw, log)
 	if err != nil {
 		msg := "unable to decode tts deck"
 		log.Error(
