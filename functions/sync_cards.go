@@ -72,7 +72,7 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 
 		done <- struct{}{}
 	}()
-	cards := client.Collection("deck_builder_cards")
+	cards := client.Collection("cards")
 	for i := 0; i < cc; i++ {
 		wg.Add(1)
 		go func() {
