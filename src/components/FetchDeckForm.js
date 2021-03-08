@@ -3,7 +3,6 @@ import { cx, css } from 'pretty-lights'
 import '../index.css'
 import {
   fetchDecks,
-  getDeckName,
   fetchDecksFromList,
   isValid,
   decodeTTS,
@@ -64,18 +63,6 @@ const FetchDeckForm = ({
   const setActiveTab = (i) => {
     setActive(i)
   }
-
-  React.useEffect(() => {
-    if (deckURL && loadDecks && !deckName) {
-      const f = async () => {
-        const name = await getDeckName(deckURL)
-
-        setDeckName(name)
-      }
-      f()
-    }
-  }, [deckURL, loadDecks, setDeckName, deckName])
-
   const makeDecks = React.useCallback(
     async (getDeck, getName) => {
       const decks = await getDeck()
@@ -94,7 +81,7 @@ const FetchDeckForm = ({
         if (deckURL) {
           makeDecks(
             () => fetchDecks(deckURL, onError),
-            () => getDeckName(deckURL),
+            () => 'New Deck',
           )
         } else if (decklist) {
           try {

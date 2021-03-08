@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -79,19 +80,47 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 		go func() {
 			defer wg.Done()
 			for card := range ch {
-				key := store.CardKey(card.Name, log)
+				var wg sync.WaitGroup
+				if strings.Contains(card.Name, "//") {
+					wg.Add(1)
+					go func(card *mtgfail.Entry) {
+						defer wg.Done()
+						re := regexp.MustCompile(`//.*`)
+						// Strip everything after the double slash
+						// Scryfall has the // , but some other places do not
+						n := string(re.ReplaceAll([]byte(card.Name), []byte{}))
+						key := store.CardKey(n, log)
 
-				doc := cards.Doc(key)
-				_, err := doc.Set(ctx, &card)
-				if err != nil {
-					log.Error(
-						"Cannot create card in indexed collection",
-						"name", card.Name,
-						"err", err,
-					)
+						doc := cards.Doc(key)
+						_, err := doc.Set(ctx, &card)
+						if err != nil {
+							log.Error(
+								"Cannot create secondary named card in indexed collection",
+								"name", card.Name,
+								"err", err,
+							)
+						}
+					}(card)
+
 				}
+				wg.Add(1)
+				go func(card *mtgfail.Entry) {
+					defer wg.Done()
+					key := store.CardKey(card.Name, log)
+
+					doc := cards.Doc(key)
+					_, err := doc.Set(ctx, &card)
+					if err != nil {
+						log.Error(
+							"Cannot create card in indexed collection",
+							"name", card.Name,
+							"err", err,
+						)
+					}
+				}(card)
 
 			}
+			wg.Wait()
 		}()
 	}
 	select {
