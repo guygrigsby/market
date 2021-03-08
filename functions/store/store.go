@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 	"sync"
-	"unicode"
 
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/mtgfail"
@@ -90,23 +89,10 @@ func (c *cardStore) Put(key string, card *mtgfail.Entry, log log15.Logger) error
 	return nil
 }
 
-func NormalizeCard(card *mtgfail.Entry, log log15.Logger) {
-	card.Name = CardKey(card.Name, log)
-}
-
 func CardKey(name string, log log15.Logger) string {
-	var normalized strings.Builder
-	var prev rune
-	for i, r := range name {
-		if r == '/' && prev == '/' {
-			return normalized.String()[:i-2]
-		}
-		prev = r
-		normalized.WriteRune(unicode.ToLower(r))
 
-	}
+	return mtgfail.Key(strings.ToLower(name))
 
-	return mtgfail.Key(normalized.String())
 }
 
 func (c *cardStore) Get(name string, log log15.Logger) (*mtgfail.Entry, error) {

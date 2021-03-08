@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/avast/retry-go v3.0.0+incompatible
-	github.com/guygrigsby/mtgfail v0.8.9
+	github.com/guygrigsby/mtgfail v0.8.11
 	github.com/inconshreveable/log15 v0.0.0-20201112154412-8562bdadbbac
 	github.com/kr/text v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect

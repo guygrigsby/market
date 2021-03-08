@@ -73,15 +73,16 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 
 		done <- struct{}{}
 	}()
-	testingCards := client.Collection("cards_indexed")
+	cards := client.Collection("cards")
 	for i := 0; i < cc; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for card := range ch {
 				key := store.CardKey(card.Name, log)
-				testingDoc := testingCards.Doc(key)
-				_, err := testingDoc.Set(ctx, &card)
+
+				doc := cards.Doc(key)
+				_, err := doc.Set(ctx, &card)
 				if err != nil {
 					log.Error(
 						"Cannot create card in indexed collection",
