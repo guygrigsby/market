@@ -119,29 +119,12 @@ func getDecklistFromInternal(deck []mtgfail.Entry) map[string]int {
 }
 
 // BuildDeck ...
-func BuildTTS(ctx context.Context, bulk mtgfail.CardStore, deckList map[string]int, log log15.Logger) (*tabletopsimulator.DeckFile, error) {
-	names := make([]string, len(deckList))
-	counts := make([]int, len(deckList))
-	var i int
-	for name, count := range deckList {
-		names[i] = name
-		counts[i] = count
-		i++
-
-	}
-
+func BuildTTS(ctx context.Context, decklist map[string]int, entries []*mtgfail.Entry, log log15.Logger) (*tabletopsimulator.DeckFile, error) {
 	tokenDeck := make(map[*mtgfail.Entry]int)
 	deck := make(map[*mtgfail.Entry]int)
 
-	for name, count := range deckList {
-		entry, err := bulk.Get(name, log)
-		if err != nil {
-			log.Error(
-				"failed to contact store to get card",
-				"err", err,
-			)
-			return nil, err
-		}
+	for _, entry := range entries {
+		count := decklist[entry.Name]
 		if entry.CardFaces != nil && entry.CardFaces[0].ImageUris.Png != "" {
 			var proxy mtgfail.Entry
 			err := deepcopy.Copy(&proxy, entry)

@@ -3,17 +3,14 @@ package cloudfuncs
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
-	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
-	"golang.org/x/sync/errgroup"
 )
 
 func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
@@ -86,38 +83,29 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	}
 	store := store.NewFirestore(client, log)
 	ret := &DualDeck{}
-	g, ctx := errgroup.WithContext(ctx)
-	g.Go(func() error {
-		start := time.Now()
-		log.Debug("starting TTS build")
-		ttsDeck, err := BuildTTS(ctx, store, deckList, log)
-		if err != nil {
-			return err
-		}
-		ret.TTS = ttsDeck
-		log.Debug("TTS build done", "time", time.Now().Sub(start), "deck", ttsDeck)
-		return nil
-	})
-	g.Go(func() error {
-		start := time.Now()
-		log.Debug("starting internal build")
-		internDeck, err := BuildInternal(ctx, store, deckList, log)
-		if err != nil {
-			return err
-		}
-		ret.Intern = internDeck
-		log.Debug("internal build done", "time", time.Now().Sub(start), "deck", internDeck)
-		return nil
-	})
-	if err := g.Wait(); err != nil {
+	names := make([]string, len(deckList))
+	counts := make([]int, len(deckList))
+	var i int
+	for name, count := range deckList {
+		names[i] = name
+		counts[i] = count
+		i++
+
+	}
+	entries, err := store.GetMany(names, log)
+	ret.Intern = entries
+
+	log.Debug("starting TTS build")
+	ttsDeck, err := BuildTTS(ctx, deckList, entries, log)
+	if err != nil {
 		log.Error(
-			"Cannot build decks",
+			"Failed to build TTS deck",
 			"err", err,
 		)
-
-		http.Error(w, fmt.Sprintf("failed to build deck %v", err), http.StatusInternalServerError)
 		return
 	}
+	ret.TTS = ttsDeck
+
 	b, err := json.Marshal(ret)
 	if err != nil {
 
