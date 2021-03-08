@@ -10,6 +10,10 @@ import {
 } from '../services/deck.js'
 import Tabs from './Tabs.js'
 
+const noteClass = css`
+  padding: 1em;
+`
+
 const buttonClass = css`
   color: #f2f2f2;
   text-align: center;
@@ -110,18 +114,33 @@ const FetchDeckForm = ({
       }
     }
   }, [deckURL, setDeckName, onError, decklist, makeDecks, loadDecks])
+  React.useEffect(() => {
+    if (upload) {
+      setUpload(false)
+      const f = async () => {
+        try {
+          await decodeTTS(uploadRef.current.file)
+        } catch (e) {
+          onError(e)
+        }
+      }
+      f()
+    }
+  }, [setUpload, upload, onError])
 
   const getDownload = () => {
     return JSON.stringify(ttsDeck)
   }
 
   const handleURLChange = (val) => {
+    console.log('set deck url', val)
     setDeckURL(val)
     setLoadDecks(false)
     setTTSDeck(null)
   }
 
   const handleDecklistChange = (list) => {
+    console.log('set decklist')
     setDecklist(list)
     setLoadDecks(false)
     setTTSDeck(null)
@@ -134,18 +153,19 @@ const FetchDeckForm = ({
       return
     }
     setLoading(true)
-    switch (e.target.id) {
-      case 'deckurl':
-        setLoadDecks(true)
-        break
-      case 'decklist':
-        setLoadDecks(true)
-        break
-      case 'ttsupload':
-        setUpload(true)
-        decodeTTS(uploadRef.current.file)
-        break
-      default:
+    if (upload) {
+      console.log('submit upload')
+      setUpload(true)
+      return
+    }
+    if (decklist) {
+      console.log('submit decklist')
+      setLoadDecks(true)
+      return
+    }
+    if (deckURL) {
+      console.log('submit deckurl')
+      setLoadDecks(true)
     }
   }
 
@@ -169,16 +189,20 @@ const FetchDeckForm = ({
           type="text"
           onChange={(e) => handleDecklistChange(e.target.value)}
         />
-        <input
-          className={inputClass}
-          name="upload existing TTS deckfile"
-          id="ttsupload"
-          ref={uploadRef}
-          type="file"
-          accept=".json"
-        />
+        <div name="Upload TTS deck">
+          <div className={noteClass}>
+            Note: This is an experimental feature.
+          </div>
+          <input
+            className={inputClass}
+            id="ttsupload"
+            ref={uploadRef}
+            type="file"
+            accept=".json"
+          />
+        </div>
       </Tabs>
-      <input type="submit" className={buttonClass} value="Fetch Deck" />
+      <input type="submit" className={buttonClass} value="Convert" />
       {ttsDeck && (
         <a
           href={`data:text/json;charset=utf-8,${getDownload()}`}

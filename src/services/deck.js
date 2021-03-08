@@ -89,10 +89,15 @@ export const fetchDecks = (url) => {
   const fullURI = new URL(`${Upstream}/CreateAllFormats?deck=${url}`)
   const headers = new Headers()
   headers.append('Accept-Encoding', 'gzip')
+  console.log('fetching', url)
   return fetch(fullURI, {
     headers: headers,
   })
     .then(handleErrors)
+    .then((res) => {
+      console.log('response', res)
+      return res
+    })
     .then((response) => response.json())
 }
 
