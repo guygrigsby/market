@@ -78,7 +78,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			"Failed to get firestore client",
 			"err", err,
 		)
-		http.Error(w, "failed to get firestore client", http.StatusBadGateway)
+		http.Error(w, "failed to get firestore client", http.StatusInternalServerError)
 		return
 	}
 	store := store.NewFirestore(client, log)

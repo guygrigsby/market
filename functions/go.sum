@@ -139,6 +139,10 @@ github.com/guygrigsby/mtgfail v0.9.4 h1:0ECXjB3TdtkK0uUAWRwc+6TguZCXuUbbpvm9qWdR
 github.com/guygrigsby/mtgfail v0.9.4/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
 github.com/guygrigsby/mtgfail v0.9.5 h1:qbHbjRr9BHtpmTUohYdbW3akHPJqCIcuZKVxIjvGR9k=
 github.com/guygrigsby/mtgfail v0.9.5/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
+github.com/guygrigsby/mtgfail v0.9.6 h1:18yiuxXI+Af5NKYxKOf8I0ZqrYynjv8kW6EQwa4W2OE=
+github.com/guygrigsby/mtgfail v0.9.6/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
+github.com/guygrigsby/mtgfail v1.0.0-rc3 h1:aad3ODlYYRUNIQIzbG730fUoFg/3gqnQGV9DThCwe9U=
+github.com/guygrigsby/mtgfail v1.0.0-rc3/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.3/go.mod h1:iADmTwqILo4mZ8BN3D2Q6+9jd8WM5uGBxy+E8yxSoD4=

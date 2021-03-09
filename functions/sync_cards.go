@@ -192,29 +192,30 @@ const (
 // prettierCard compares entry against card to determine if entry is prettier than card.
 // Essentially the first argument `card` is considered to be better unless certain criteria are met
 // Assumptions in order
-// borders other other than black or white are rejected
+// Card must be in English
+// black bordered cards are prettier
 // alpha and beta cards are the prettiest
 // full art is prettier than non-full art regardless of release
-// black bordered cards are prettier
 // newer is prettier
 //
-func prettierCard(card, entry *mtgfail.Entry) bool {
-	if !(entry.BorderColor == "black" || entry.BorderColor == "white") {
+func prettierCard(existing, entry *mtgfail.Entry) bool {
+	if entry.Lang != "en" {
 		return false
 	}
+	if entry.BorderColor != "black" {
+		return false
+	}
+	if existing.FullArt {
+		return false
+	}
+
 	if entry.SetName == "alpha" || entry.SetName == "beta" {
 		return true
-	}
-	if card.FullArt {
-		return false
 	}
 	if entry.FullArt {
 		return true
 	}
-	if entry.BorderColor == "black" && card.BorderColor != "black" {
-		return true
-	}
-	cardRelease, err := time.Parse(releaseDateFormat, card.ReleasedAt)
+	cardRelease, err := time.Parse(releaseDateFormat, entry.ReleasedAt)
 	if err == nil {
 		entryRelease, err := time.Parse(releaseDateFormat, entry.ReleasedAt)
 		if err == nil {

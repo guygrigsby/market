@@ -97,11 +97,9 @@ const CardList = ({ setSelected, cards, columns, name, dark }) => {
     <div className={box}>
       <div> {name && name}</div>
       <ToolkitProvider
-        keyField="id"
+        keyField="Name"
         data={cards ? cards : []}
         columns={defaultColumns}
-        search
-        exportCSV
       >
         {(props) => (
           <div className="cardlist">

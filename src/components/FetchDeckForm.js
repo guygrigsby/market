@@ -53,11 +53,11 @@ const FetchDeckForm = ({
   onError,
   setLoading,
 }) => {
-  const [deckURL, setDeckURL] = React.useState(null)
-  const [decklist, setDecklist] = React.useState(null)
+  const [deckURL, setDeckURL] = React.useState(undefined)
+  const [decklist, setDecklist] = React.useState(undefined)
   const [activeTab, setActive] = React.useState(0)
   const [loadDecks, setLoadDecks] = React.useState(false)
-  const [file, setFile] = React.useState(null)
+  const [file, setFile] = React.useState(undefined)
 
   const setActiveTab = (i) => {
     setActive(i)
@@ -163,8 +163,24 @@ const FetchDeckForm = ({
   const handleUpload = (e) => {
     setFile(e.target.files[0])
   }
+
+  const handleEnter = (event) => {
+    if (event.keyCode === 13) {
+      handleSubmit(event)
+    }
+  }
+
+  React.useEffect(() => {
+    // because fuck forms
+    document.addEventListener('keydown', handleEnter, false)
+
+    return () => {
+      document.removeEventListener('keydown', handleEnter, false)
+    }
+  })
+
   return (
-    <form onSubmit={handleSubmit} className={baseClass}>
+    <div className={baseClass}>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
         <input
           className={inputClass}
@@ -172,6 +188,7 @@ const FetchDeckForm = ({
           name="URL"
           placeholder="Deck URL"
           type="url"
+          value={deckURL}
           onChange={(e) => handleURLChange(e.target.value)}
         />
         <textarea
@@ -181,6 +198,7 @@ const FetchDeckForm = ({
 1 Contamination
 ...`}
           type="text"
+          value={decklist}
           onChange={(e) => handleDecklistChange(e.target.value)}
         />
         <div name="Upload TTS deck">
@@ -196,7 +214,9 @@ const FetchDeckForm = ({
           />
         </div>
       </Tabs>
-      <input type="submit" className={buttonClass} value="Convert" />
+      <button className={buttonClass} onClick={handleSubmit}>
+        Convert
+      </button>
       {ttsDeck && (
         <a
           href={`data:text/json;charset=utf-8,${getDownload()}`}
@@ -205,7 +225,7 @@ const FetchDeckForm = ({
           <button>Download TTS</button>
         </a>
       )}
-    </form>
+    </div>
   )
 }
 export default FetchDeckForm

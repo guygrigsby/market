@@ -37,6 +37,7 @@ const Tabs = ({ children, activeTab, setActiveTab }) => (
     <div className={tabHeader}>
       {React.Children.map(children, (child, i) => (
         <button
+          key={`tab-${i}`}
           className={activeTab === i ? activeButton : inactiveButton}
           onClick={() => setActiveTab(i)}
         >
