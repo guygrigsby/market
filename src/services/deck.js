@@ -1,5 +1,4 @@
 import { decodeResponse } from '../errors/display.js'
-import { compress } from './compress.js'
 
 export let Upstream
 if (process.env.NODE_ENV === 'development') {
