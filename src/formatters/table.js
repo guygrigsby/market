@@ -17,6 +17,9 @@ const centerHeader = css`
 `
 export const SetFormatter = ({ abrv, cl }) => {
   const sets = useSets()
+  if (abrv === '') {
+    return <div></div>
+  }
   return <SetIcon svg={sets.get(abrv).logo} className={cl} />
 }
 export const header = (str, width) => (

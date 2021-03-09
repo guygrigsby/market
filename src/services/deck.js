@@ -20,14 +20,13 @@ const handleErrors = async (response) => {
 }
 export const decodeTTS = async (file) => {
   const fullURI = new URL(`${Upstream}/DecodeTTSDeck`)
-  let compressedBody = await compress(file)
+  //let compressedBody = await compress(file)
   const headers = new Headers()
   headers.append('Accept-Encoding', 'gzip')
-  headers.append('Content-Encoding', 'gzip')
   return fetch(fullURI, {
     method: 'POST',
     headers: headers,
-    body: compressedBody,
+    body: file,
   })
     .then(async (response) => await response.json())
     .then((res) => {

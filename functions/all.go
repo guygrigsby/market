@@ -92,7 +92,14 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		i++
 
 	}
-	entries, err := store.GetMany(names, log)
+	entries, errs := store.GetMany(names, log)
+	if len(errs) > 0 {
+		log.Warn(
+			"Errors ocurred while getting cards from store",
+			"errs", errs,
+		)
+		ret.Errors = errs
+	}
 	ret.Intern = entries
 
 	log.Debug("starting TTS build")
@@ -135,6 +142,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 type DualDeck struct {
 	TTS    *tabletopsimulator.DeckFile `json:"tts,omitempty"`
 	Intern []*mtgfail.Entry            `json:"internal,omitempty"`
+	Errors []error                     `json:"errors,omitempty"`
 }
 
 func keySet(m map[string]int) []string {

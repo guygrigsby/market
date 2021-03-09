@@ -57,8 +57,7 @@ const FetchDeckForm = ({
   const [decklist, setDecklist] = React.useState(null)
   const [activeTab, setActive] = React.useState(0)
   const [loadDecks, setLoadDecks] = React.useState(false)
-  const [upload, setUpload] = React.useState(false)
-  const uploadRef = React.useRef()
+  const [file, setFile] = React.useState(null)
 
   const setActiveTab = (i) => {
     setActive(i)
@@ -66,13 +65,22 @@ const FetchDeckForm = ({
   const makeDecks = React.useCallback(
     async (getDeck, getName) => {
       const decks = await getDeck()
+      if (decks.errors && decks.errors.length > 0) {
+        setLoadDecks(false)
+        setLoading(false)
+        const errors = decks.errors.reduce((acc, e) => {
+          acc += `\n - ${e}`
+          return acc
+        }, '')
+        onError(errors)
+      }
       setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
       setTTSDeck(decks.tts)
       setDeckName(await getName())
       setLoadDecks(false)
       setLoading(false)
     },
-    [setDeck, setTTSDeck, setDeckName, setLoading],
+    [setDeck, setTTSDeck, setDeckName, setLoading, onError],
   )
 
   React.useEffect(() => {
@@ -102,25 +110,26 @@ const FetchDeckForm = ({
     }
   }, [deckURL, setDeckName, onError, decklist, makeDecks, loadDecks])
   React.useEffect(() => {
-    if (upload) {
-      setUpload(false)
+    if (file) {
       const f = async () => {
         try {
-          await decodeTTS(uploadRef.current.file)
+          const deck = await decodeTTS(file)
+          console.log('deck', deck)
+          setDeck(deck.sort((a, b) => (a.name > b.name ? 1 : -1)))
         } catch (e) {
           onError(e)
         }
+        setFile(null)
       }
       f()
     }
-  }, [setUpload, upload, onError])
+  }, [onError, file, setDeck])
 
   const getDownload = () => {
     return JSON.stringify(ttsDeck)
   }
 
   const handleURLChange = (val) => {
-    console.log('set deck url', val)
     setDeckURL(val)
     setLoadDecks(false)
     setTTSDeck(null)
@@ -136,15 +145,10 @@ const FetchDeckForm = ({
   const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (!deckURL && !decklist) {
+    if (!deckURL && !decklist && !file) {
       return
     }
     setLoading(true)
-    if (upload) {
-      console.log('submit upload')
-      setUpload(true)
-      return
-    }
     if (decklist) {
       console.log('submit decklist')
       setLoadDecks(true)
@@ -156,6 +160,9 @@ const FetchDeckForm = ({
     }
   }
 
+  const handleUpload = (e) => {
+    setFile(e.target.files[0])
+  }
   return (
     <form onSubmit={handleSubmit} className={baseClass}>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
@@ -183,9 +190,9 @@ const FetchDeckForm = ({
           <input
             className={inputClass}
             id="ttsupload"
-            ref={uploadRef}
             type="file"
             accept=".json"
+            onChange={handleUpload}
           />
         </div>
       </Tabs>

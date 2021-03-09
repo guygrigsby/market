@@ -9,6 +9,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
+	"github.com/pkg/errors"
 )
 
 const (
@@ -79,7 +80,7 @@ func (c *cardStore) Put(key string, card *mtgfail.Entry, log log15.Logger) error
 	_, err := doc.Set(ctx, card)
 	if err != nil {
 		c.log.Error(
-			"Cannot Get Data from store",
+			"Cannot put data to store",
 			"err", err,
 			"name", card.Name,
 			"key", key,
@@ -97,16 +98,16 @@ func CardKey(name string, log log15.Logger) string {
 }
 
 func (c *cardStore) Get(name string, log log15.Logger) (*mtgfail.Entry, error) {
-	e, err := c.GetMany([]string{name}, log)
-	if err != nil {
-		return nil, err
+	e, errs := c.GetMany([]string{name}, log)
+	if len(errs) > 0 {
+		return nil, errs[0]
 	}
 	if len(e) == 0 {
 		return nil, fmt.Errorf("No card available for %s", name)
 	}
 	return e[0], nil
 }
-func (c *cardStore) GetMany(names []string, log log15.Logger) ([]*mtgfail.Entry, error) {
+func (c *cardStore) GetMany(names []string, log log15.Logger) ([]*mtgfail.Entry, []error) {
 
 	coll := c.client.Collection(collection)
 	ctx := context.Background()
@@ -131,7 +132,7 @@ func (c *cardStore) GetMany(names []string, log log15.Logger) ([]*mtgfail.Entry,
 						"name", n,
 						"key", key,
 					)
-					errs <- err
+					errs <- errors.Wrap(err, fmt.Sprintf("Unable to find card %s:", n))
 					return
 				}
 
@@ -154,17 +155,18 @@ func (c *cardStore) GetMany(names []string, log log15.Logger) ([]*mtgfail.Entry,
 	}
 
 	var cards []*mtgfail.Entry
+	var e []error
 	for range names {
 		select {
 		case entry := <-results:
 			cards = append(cards, entry)
 		case err := <-errs:
 			c.log.Error("gather error", "err", err)
-			return nil, err
+			e = append(e, err)
 		}
 	}
 
-	return cards, nil
+	return cards, e
 }
 func Contains(ctx context.Context, str string, collection *firestore.CollectionRef, log log15.Logger) (*firestore.DocumentSnapshot, error) {
 

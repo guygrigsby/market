@@ -55,6 +55,7 @@ const Card = ({ onClick, size, card, cl, onError }) => {
       return
     }
     let src
+    // First we try to give the caller the size they want
     switch (size) {
       case 0:
         src = images.small
@@ -68,6 +69,11 @@ const Card = ({ onClick, size, card, cl, onError }) => {
       default:
         src = images.small
         break
+    }
+
+    // If that size is not available, we choose one that is.
+    if (!src) {
+      src = images.large || images.small || images.png
     }
 
     setImageSource(src)

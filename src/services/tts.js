@@ -4,5 +4,5 @@ export const getDecklist = (tts)=> {
   //  acc.push([...Object.values(os.CustomDeck)])
   //  return acc
   //}, [])
-  return names.Join(' ')
+  return names.Join('\n')
 }

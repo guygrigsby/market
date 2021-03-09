@@ -1,10 +1,9 @@
 package cloudfuncs
 
 import (
-	"context"
+	"encoding/json"
 	"io"
 	"net/http"
-	"time"
 
 	tts "github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
@@ -25,8 +24,6 @@ func DecodeTTSDeck(w http.ResponseWriter, r *http.Request) {
 		log.Debug("CORS preflight")
 		return
 	}
-	ctx, cancel := context.WithTimeout(r.Context(), 10*time.Second)
-	defer cancel()
 
 	var compress, isCompressed bool
 	accept := r.Header[http.CanonicalHeaderKey("Accept-Encoding")]
@@ -68,8 +65,41 @@ func DecodeTTSDeck(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, msg, http.StatusBadRequest)
 		return
 	}
-	_ = ctx
-	_ = internalDeck
-	_ = compress
+	b, err := json.Marshal(internalDeck)
+	if err != nil {
+
+		log.Error(
+			"Can't marshal deckfile",
+			"err", err,
+		)
+		return
+
+	}
+
+	w.Header().Add("Content-Type", "application/json")
+
+	if compress {
+		gw := gzip.NewWriter(w)
+		_, err = gw.Write(b)
+		if err != nil {
+			log.Error(
+				"Can't write gzipped internal deckfile",
+				"err", err,
+			)
+			return
+
+		}
+	} else {
+		_, err = w.Write(b)
+		if err != nil {
+			log.Error(
+				"Can't write internal deckfile",
+				"err", err,
+			)
+			return
+
+		}
+	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 }
