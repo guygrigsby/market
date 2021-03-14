@@ -2,8 +2,8 @@ import { decodeResponse } from '../errors/display.js'
 
 export let Upstream
 if (process.env.NODE_ENV === 'development') {
-  //Upstream = 'https://us-central1-marketplace-c87d0.cloudfunctions.net'
-  Upstream = 'http://localhost:8080'
+  Upstream = 'https://us-central1-marketplace-c87d0.cloudfunctions.net'
+  //Upstream = 'http://localhost:8080'
 } else {
   Upstream = 'https://us-central1-marketplace-c87d0.cloudfunctions.net'
 }
