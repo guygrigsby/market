@@ -97,7 +97,7 @@ const CardList = ({ setSelected, cards, columns, name, dark }) => {
     <div className={box}>
       <div> {name && name}</div>
       <ToolkitProvider
-        keyField="Name"
+        keyField="id"
         data={cards ? cards : []}
         columns={defaultColumns}
       >
