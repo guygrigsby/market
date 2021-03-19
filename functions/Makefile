@@ -7,3 +7,6 @@ test:
 
 gg:
 	echo $(shell 'cat ~/marketplace.json')
+
+run-functions:
+	FIREBASE_CONFIG=${FIREBASE_CONFIG}  go run cmd/local/main.go

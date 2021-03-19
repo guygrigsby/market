@@ -9,14 +9,13 @@ import (
 	"time"
 
 	retry "github.com/avast/retry-go"
-	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 )
 
 func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 	var (
-		err     error
-		content io.ReadCloser
+		err error
+		r   io.ReadCloser
 	)
 
 	u, err := url.Parse(deckURI)
@@ -67,15 +66,7 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 			return nil, err
 
 		}
-		content, err = mtgfail.Normalize(res.Body, log)
-		if err != nil {
-			log.Error(
-				"Unexpected format for deck status",
-				"err", err,
-				"url", deckURI,
-			)
-			return nil, err
-		}
+		r = res.Body
 
 	// https://deckbox.org/sets/2649137
 	case "deckbox.org":
@@ -110,16 +101,7 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 			return nil, errors.New("failed to contact deckbox")
 
 		}
-
-		content, err = mtgfail.Normalize(res.Body, log)
-		if err != nil {
-			log.Error(
-				"Unexpected format for deck status",
-				"err", err,
-				"url", deckURI,
-			)
-			return nil, err
-		}
+		r = res.Body
 
 	default:
 		log.Debug(
@@ -130,5 +112,5 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 
 		return nil, fmt.Errorf("Unknown Host")
 	}
-	return content, nil
+	return r, nil
 }
