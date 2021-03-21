@@ -3,6 +3,7 @@ package cloudfuncs
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -18,10 +19,75 @@ import (
 	"github.com/inconshreveable/log15"
 )
 
+func SyncCardsHTTP(w http.ResponseWriter, r *http.Request) {
+	log := log15.New()
+	err := SyncCards(r.Context(), store.PubSubMessage{})
+	if err != nil {
+		log.Error(
+			"Failed to sync cards",
+			"err", err,
+		)
+		http.Error(w, "failed to sync", http.StatusInternalServerError)
+	}
+}
 func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
+	start := time.Now()
 
 	log := log15.New()
-	res, err := http.DefaultClient.Get("https://c2.scryfall.com/file/scryfall-bulk/default-cards/default-cards-20201110220438.json")
+	log.Debug("starting", "time", start)
+	bulkRes, err := http.DefaultClient.Get("https://api.scryfall.com/bulk-data")
+	if err != nil {
+		log.Error(
+			"failed to get scryfall bulk cards",
+			"err", err,
+		)
+		return err
+	}
+	log.Debug(
+		"Got bulk urls",
+		"time", time.Since(start),
+	)
+	defer bulkRes.Body.Close()
+	b, err := ioutil.ReadAll(bulkRes.Body)
+	if err != nil {
+		log.Error(
+			"failed to read scryfall bulk cards",
+			"err", err,
+		)
+		return err
+	}
+	log.Debug(
+		"Got cards. Unmarshaling ",
+		"time", time.Since(start),
+	)
+	var bulk Bulk
+	err = json.Unmarshal(b, &bulk)
+	if err != nil {
+		log.Error(
+			"failed to unmarshal scryfall bulk cards",
+			"err", err,
+		)
+		return err
+	}
+	var defaultCardsURL string
+	for _, collection := range bulk.Data {
+		if collection.Type == defaultCards {
+			defaultCardsURL = collection.DownloadURI
+		}
+	}
+	log.Debug(
+		"Go most recent bulk URL",
+		"URL", defaultCardsURL,
+		"time", time.Since(start),
+	)
+	if defaultCardsURL == "" {
+		log.Error(
+			"Unable to get default cards URL",
+		)
+		return errors.New("Blank bulk cards URI")
+	}
+
+	res, err := http.DefaultClient.Get(defaultCardsURL)
 	if err != nil {
 		log.Error(
 			"get cards failed",
@@ -30,7 +96,10 @@ func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
 		return err
 	}
 	defer res.Body.Close()
-
+	log.Debug(
+		"Made call to retrieve all cards",
+		"time", time.Since(start),
+	)
 	cards, err := parse(res.Body, log)
 	if err != nil {
 		log.Error(
@@ -39,6 +108,10 @@ func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
 		)
 		return err
 	}
+	log.Debug(
+		"Finished parsing cards",
+		"time", time.Since(start),
+	)
 
 	client, err := firestore.NewClient(ctx, "marketplace-c87d0")
 	if err != nil {
@@ -48,7 +121,13 @@ func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
 		)
 		return err
 	}
-	err = upload(context.Background(), 100, client, cards, log)
+	log.Debug(
+		"Starting upload",
+		"time", time.Since(start),
+	)
+	ctx, cancel := context.WithTimeout(ctx, time.Second*500)
+	defer cancel()
+	err = upload(ctx, 1000, client, cards, log)
 	if err != nil {
 		log.Error(
 			"failed to upload",
@@ -56,6 +135,10 @@ func SyncCards(ctx context.Context, _ store.PubSubMessage) error {
 		)
 		return err
 	}
+	log.Debug(
+		"Finished upload",
+		"time", time.Since(start),
+	)
 	return nil
 
 }
@@ -64,10 +147,12 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 	var wg sync.WaitGroup
 	ch := make(chan *mtgfail.Entry, len(bulk))
 	done := make(chan struct{})
+	cardCount := 0
 	go func() {
 		for _, card := range bulk {
 
 			ch <- card
+			cardCount++
 		}
 		close(ch)
 		wg.Wait()
@@ -103,31 +188,34 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 					}(card)
 
 				}
-				wg.Add(1)
-				go func(card *mtgfail.Entry) {
-					defer wg.Done()
-					key := store.CardKey(card.Name, log)
+				key := store.CardKey(card.Name, log)
 
-					doc := cards.Doc(key)
-					_, err := doc.Set(ctx, &card)
-					if err != nil {
-						log.Error(
-							"Cannot create card in indexed collection",
-							"name", card.Name,
-							"err", err,
-						)
-					}
-				}(card)
+				doc := cards.Doc(key)
+				_, err := doc.Set(ctx, &card)
+				if err != nil {
+					log.Error(
+						"Cannot create card in indexed collection",
+						"name", card.Name,
+						"err", err,
+					)
+				}
+				log.Debug(
+					"uploaded card",
+					"name", card.Name,
+					"key", key,
+				)
 
 			}
-			wg.Wait()
 		}()
 	}
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
 	case <-done:
-
+		log.Info(
+			"Uploaded Cards",
+			"count", cardCount,
+		)
 	}
 	return nil
 }
@@ -187,7 +275,26 @@ func parse(r io.Reader, log log15.Logger) (map[string]*mtgfail.Entry, error) {
 
 const (
 	releaseDateFormat = "2006-01-02" //  reference time Mon Jan 2 15:04:05 -0700 MST 2006
+	defaultCards      = "default_cards"
 )
+
+type Bulk struct {
+	Object  string `json:"object"`
+	HasMore bool   `json:"has_more"`
+	Data    []struct {
+		Object          string    `json:"object"`
+		ID              string    `json:"id"`
+		Type            string    `json:"type"`
+		UpdatedAt       time.Time `json:"updated_at"`
+		URI             string    `json:"uri"`
+		Name            string    `json:"name"`
+		Description     string    `json:"description"`
+		CompressedSize  int       `json:"compressed_size"`
+		DownloadURI     string    `json:"download_uri"`
+		ContentType     string    `json:"content_type"`
+		ContentEncoding string    `json:"content_encoding"`
+	} `json:"data"`
+}
 
 // prettierCard compares entry against card to determine if entry is prettier than card.
 // Essentially the first argument `card` is considered to be better unless certain criteria are met
