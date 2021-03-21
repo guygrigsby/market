@@ -26,6 +26,10 @@ const App = () => {
     setError(null)
   }
   const onError = (err) => {
+    if (!err.message) {
+      setError(err)
+      return
+    }
     setError(err.message)
   }
 

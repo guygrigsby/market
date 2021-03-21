@@ -95,7 +95,7 @@ const CardList = ({ setSelected, cards, columns, name, dark }) => {
   }
   return (
     <div className={box}>
-      <div> {name && name}</div>
+      {cards && <div> Number of Cards {cards.length}</div>}
       <ToolkitProvider
         keyField="id"
         data={cards ? cards : []}

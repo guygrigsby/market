@@ -74,6 +74,14 @@ const FetchDeckForm = ({
         }, '')
         onError(errors)
       }
+      if (!decks.internal) {
+        onError('Unable to create deck')
+        return
+      }
+      if (!decks.tts) {
+        onError('Unable to create tts deck')
+        return
+      }
       setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
       setTTSDeck(decks.tts)
       setDeckName(await getName())
@@ -87,6 +95,7 @@ const FetchDeckForm = ({
     if (loadDecks) {
       try {
         if (deckURL) {
+          console.log('deckURL', deckURL)
           makeDecks(
             () => fetchDecks(deckURL, onError),
             () => 'New Deck',

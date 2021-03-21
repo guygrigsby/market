@@ -13,6 +13,12 @@ import (
 	"github.com/inconshreveable/log15"
 )
 
+func CreateAllFormatsLocal(w http.ResponseWriter, r *http.Request) {
+	r.Header.Set("testing", "true")
+	CreateAllFormats(w, r)
+}
+
+// CreateAllFormats makes both internal and tts formats decks
 func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 
 	log := log15.New()
@@ -69,10 +75,20 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Debug("parsed deck")
-	client, err := firestore.NewClient(
-		ctx,
-		"marketplace-c87d0",
-	)
+	testing := r.Header.Get("testing")
+
+	var client *firestore.Client
+	if testing != "" {
+		client, err = firestore.NewClient(
+			ctx,
+			"test",
+		)
+	} else {
+		client, err = firestore.NewClient(
+			ctx,
+			"marketplace-c87d0",
+		)
+	}
 	if err != nil {
 		log.Error(
 			"Failed to get firestore client",
