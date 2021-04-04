@@ -4,6 +4,9 @@ service cloud.firestore {
     match /cards/{card=**} {
       allow read: if true;
     }
+    match /Sets/{set=**} {
+      allow read: if true;
+    }
     match /{document=**} {
       allow read, write: if false;
     }
