@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/firestore"
+	"github.com/getlantern/deepcopy"
 	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/guygrigsby/mtgfail/tabletopsimulator"
@@ -105,10 +106,8 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	store := store.NewFirestore(client, log)
 	ret := &DualDeck{}
 	var names []string
-	for name, count := range deckList {
-		for c := 1; c <= count; c++ {
-			names = append(names, name)
-		}
+	for name := range deckList {
+		names = append(names, name)
 
 	}
 	log.Debug(
@@ -119,12 +118,11 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	entries, errs := store.GetMany(names, log)
 	if len(errs) > 0 {
 		log.Warn(
-			"Errors ocurred while getting cards from store",
+			"Errors occurred while getting cards from store",
 			"errs", errs,
 		)
 		ret.Errors = errs
 	}
-	ret.Intern = entries
 
 	log.Debug("starting TTS build")
 	ttsDeck, err := BuildTTS(ctx, deckList, entries, log)
@@ -135,7 +133,22 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
+	log.Debug(
+		"TTS build done",
+		"contents", ttsDeck,
+	)
 	ret.TTS = ttsDeck
+	mults, err := genDups(entries, deckList, log)
+	if err != nil {
+		msg := "cannot create copies for card multiples"
+		log.Error(
+			msg,
+			"err", err,
+		)
+		http.Error(w, msg, http.StatusInternalServerError)
+		return
+	}
+	ret.Intern = mults
 
 	b, err := json.Marshal(ret)
 	if err != nil {
@@ -161,6 +174,28 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
+}
+func genDups(entries []*mtgfail.Entry, dl map[string]int, log log15.Logger) ([]*mtgfail.Entry, error) {
+	var news []*mtgfail.Entry
+	for _, entry := range entries {
+		if count, ok := dl[entry.Name]; ok {
+			for i := 0; i < count; i++ {
+				var newEntry mtgfail.Entry
+				err := deepcopy.Copy(&newEntry, entry)
+				if err != nil {
+					log.Error(
+						"cannot copy duplicate card",
+						"card", entry.Name,
+						"err", err,
+					)
+					return nil, err
+				}
+				news = append(news, &newEntry)
+			}
+
+		}
+	}
+	return append(news, entries...), nil
 }
 func cardCount(deck map[string]int) int {
 	var count int
