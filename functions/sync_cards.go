@@ -7,7 +7,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -170,12 +169,18 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 					wg.Add(1)
 					go func(card *mtgfail.Entry) {
 						defer wg.Done()
-						re := regexp.MustCompile(`//.*`)
-						// Strip everything after the double slash
-						// Scryfall has the // , but some other places do not
-						n := string(re.ReplaceAll([]byte(card.Name), []byte{}))
-						key := store.CardKey(n, log)
-
+						var (
+							key  string
+							name string
+						)
+						if strings.Contains(card.Name, "//") {
+							// Strip everything after the double slash
+							// Scryfall has the // , but some other places do not
+							parts := strings.Split(card.Name, "//")
+							name = parts[0]
+							card.Name = name
+							key = store.CardKey(name, log)
+						}
 						doc := cards.Doc(key)
 						_, err := doc.Set(ctx, &card)
 						if err != nil {
@@ -185,6 +190,7 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 								"err", err,
 							)
 						}
+
 					}(card)
 
 				}

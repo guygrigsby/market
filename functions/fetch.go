@@ -9,13 +9,19 @@ import (
 	"time"
 
 	retry "github.com/avast/retry-go"
+	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 )
 
-func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
+func FetchDeck(deckURI string, log log15.Logger) (mtgfail.DeckSite, io.ReadCloser, error) {
+	log.Debug(
+		"Fetch Deck",
+		"url", deckURI,
+	)
 	var (
-		err error
-		r   io.ReadCloser
+		err  error
+		r    io.ReadCloser
+		site mtgfail.DeckSite
 	)
 
 	u, err := url.Parse(deckURI)
@@ -25,11 +31,17 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 			"Cannot parse deck uri",
 			"err", err,
 		)
-		return nil, err
+		return -1, nil, err
 	}
 	switch u.Host {
 	//https://tappedout.net/mtg-decks/22-01-20-kess-storm/
 	case "tappedout.net":
+		log.Debug(
+			"Fetch Deck tappedout",
+			"url", deckURI,
+			"host", u.Host,
+		)
+		site = mtgfail.TappedOut
 		deckURI = fmt.Sprintf("%s?fmt=txt", deckURI)
 		log.Debug(
 			"tappedout",
@@ -56,20 +68,25 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 				"err", err,
 				"uri", deckURI,
 			)
-			return nil, err
+			return site, nil, err
 		}
 		if res.StatusCode != 200 {
 			log.Error(
 				"Unexpected response status",
 				"status", res.Status,
 			)
-			return nil, err
+			return site, nil, err
 
 		}
 		r = res.Body
 
 	// https://deckbox.org/sets/2649137
 	case "deckbox.org":
+		log.Debug(
+			"Fetch Deck deckbox",
+			"url", deckURI,
+			"host", u.Host,
+		)
 		deckURI = fmt.Sprintf("%s/export", deckURI)
 		log.Debug(
 			"deckbox",
@@ -91,14 +108,14 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 				"err", err,
 				"uri", deckURI,
 			)
-			return nil, err
+			return site, nil, err
 		}
 		if res.StatusCode != 200 {
 			log.Error(
 				"Unexpected response status",
 				"status", res.Status,
 			)
-			return nil, errors.New("failed to contact deckbox")
+			return site, nil, errors.New("failed to contact deckbox")
 
 		}
 		r = res.Body
@@ -110,7 +127,7 @@ func FetchDeck(deckURI string, log log15.Logger) (io.ReadCloser, error) {
 			"Host", u.Host,
 		)
 
-		return nil, fmt.Errorf("Unknown Host")
+		return site, nil, fmt.Errorf("Unknown Host")
 	}
-	return r, nil
+	return site, r, nil
 }

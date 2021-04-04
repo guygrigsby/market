@@ -37,8 +37,9 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	}
 	ctx := context.Background()
 	var (
-		rc  io.ReadCloser
-		err error
+		rc   io.ReadCloser
+		err  error
+		site mtgfail.DeckSite
 	)
 	hasBodyDeck := r.URL.Query().Get("decklist") != ""
 
@@ -53,7 +54,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			"uri", uri,
 		)
 
-		rc, err = FetchDeck(uri, log)
+		site, rc, err = FetchDeck(uri, log)
 		if err != nil {
 			log.Error(
 				"failed to fetch deck",
@@ -64,7 +65,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Debug("fetched deck")
 	}
-	deckList, err := mtgfail.ReadCardList(rc, log)
+	deckList, err := mtgfail.Normalize(site, rc, log)
 	if err != nil {
 		msg := "cannot fetch deck"
 		log.Error(

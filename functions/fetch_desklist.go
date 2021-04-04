@@ -25,7 +25,7 @@ func FetchDeckList(w http.ResponseWriter, r *http.Request) {
 	}
 	uri := r.URL.Query().Get("deck")
 
-	dr, err := FetchDeck(uri, log)
+	_, dr, err := FetchDeck(uri, log)
 	if err != nil {
 		log.Error(
 			"failed to fetch deck",
