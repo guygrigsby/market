@@ -75,6 +75,14 @@ export const fetchDecks = (url) => {
       console.log('reponse', j)
       return j
     })
+    .then((res) => {
+      res.internal = res.internal.map((card, i) => {
+        const newID = `${card.id}-${i}`
+        card.id = newID
+        return card
+      })
+      return res
+    })
 }
 
 export const fetchDeck = async (url) => {
