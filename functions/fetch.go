@@ -36,12 +36,12 @@ func FetchDeck(deckURI string, log log15.Logger) (mtgfail.DeckSite, io.ReadClose
 	switch u.Host {
 	//https://tappedout.net/mtg-decks/22-01-20-kess-storm/
 	case "tappedout.net":
+		site = mtgfail.TappedOut
 		log.Debug(
 			"Fetch Deck tappedout",
 			"url", deckURI,
 			"host", u.Host,
 		)
-		site = mtgfail.TappedOut
 		deckURI = fmt.Sprintf("%s?fmt=txt", deckURI)
 		log.Debug(
 			"tappedout",
@@ -82,6 +82,7 @@ func FetchDeck(deckURI string, log log15.Logger) (mtgfail.DeckSite, io.ReadClose
 
 	// https://deckbox.org/sets/2649137
 	case "deckbox.org":
+		site = mtgfail.DeckBox
 		log.Debug(
 			"Fetch Deck deckbox",
 			"url", deckURI,

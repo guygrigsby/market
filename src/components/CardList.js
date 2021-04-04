@@ -31,6 +31,10 @@ const cellExpand = css`
 const rowClasses = css`
   margin-top: 3px;
 `
+const countClass = css`
+  margin-bottom: 3px;
+  font-weight: 600;
+`
 
 const truncateType = (typeName) => {
   const arr = typeName.split(' ')
@@ -95,7 +99,10 @@ const CardList = ({ setSelected, cards, columns, name, dark }) => {
   }
   return (
     <div className={box}>
-      {cards && <div> Number of Cards {cards.length}</div>}
+      {cards && (
+        <div className={countClass}> {`Card Count ${cards.length}`}</div>
+      )}
+
       <ToolkitProvider
         keyField="id"
         data={cards ? cards : []}

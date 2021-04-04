@@ -70,11 +70,11 @@ export const fetchDecks = (url) => {
     headers: headers,
   })
     .then(handleErrors)
-    .then((res) => {
-      console.log('response', res)
-      return res
+    .then(async (response) => {
+      const j = await response.json()
+      console.log('reponse', j)
+      return j
     })
-    .then((response) => response.json())
 }
 
 export const fetchDeck = async (url) => {

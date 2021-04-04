@@ -39,7 +39,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	var (
 		rc   io.ReadCloser
 		err  error
-		site mtgfail.DeckSite
+		site mtgfail.DeckSite = -1
 	)
 	hasBodyDeck := r.URL.Query().Get("decklist") != ""
 
@@ -75,7 +75,11 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, msg, http.StatusBadRequest)
 		return
 	}
-	log.Debug("parsed deck")
+	log.Debug(
+		"parsed deck",
+		"count", len(deckList),
+		"decklist", deckList,
+	)
 	testing := r.Header.Get("testing")
 
 	var client *firestore.Client
@@ -100,15 +104,18 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	}
 	store := store.NewFirestore(client, log)
 	ret := &DualDeck{}
-	names := make([]string, len(deckList))
-	counts := make([]int, len(deckList))
-	var i int
+	var names []string
 	for name, count := range deckList {
-		names[i] = name
-		counts[i] = count
-		i++
+		for c := 1; c <= count; c++ {
+			names = append(names, name)
+		}
 
 	}
+	log.Debug(
+		"collated card names",
+		"count", len(names),
+		"names", names,
+	)
 	entries, errs := store.GetMany(names, log)
 	if len(errs) > 0 {
 		log.Warn(
@@ -154,6 +161,13 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
+}
+func cardCount(deck map[string]int) int {
+	var count int
+	for _, v := range deck {
+		count += v
+	}
+	return count
 }
 
 type DualDeck struct {

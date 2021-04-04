@@ -143,6 +143,10 @@ github.com/guygrigsby/mtgfail v0.9.5 h1:qbHbjRr9BHtpmTUohYdbW3akHPJqCIcuZKVxIjvG
 github.com/guygrigsby/mtgfail v0.9.5/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
 github.com/guygrigsby/mtgfail v0.9.6 h1:18yiuxXI+Af5NKYxKOf8I0ZqrYynjv8kW6EQwa4W2OE=
 github.com/guygrigsby/mtgfail v0.9.6/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
+github.com/guygrigsby/mtgfail v1.0.0-rc11 h1:PoqrZQBN25UkQyWEViNZCbT68C2x82gCv5kQHjqodgs=
+github.com/guygrigsby/mtgfail v1.0.0-rc11/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
+github.com/guygrigsby/mtgfail v1.0.0-rc12 h1:4MBvnMXdeoWE5W2c1elhUf73hn8qRPA12MzMRbBHIuM=
+github.com/guygrigsby/mtgfail v1.0.0-rc12/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
 github.com/guygrigsby/mtgfail v1.0.0-rc3 h1:aad3ODlYYRUNIQIzbG730fUoFg/3gqnQGV9DThCwe9U=
 github.com/guygrigsby/mtgfail v1.0.0-rc3/go.mod h1:NtDR774IxjocatCnj16YYW17o61FHaZ9Qag9PF9O2bU=
 github.com/guygrigsby/mtgfail v1.0.0-rc5 h1:POWNIlhFrvniX/jcUoXx+pBNhbCbmE4T6e2IfRdG2GM=
