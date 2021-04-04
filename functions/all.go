@@ -179,7 +179,7 @@ func genDups(entries []*mtgfail.Entry, dl map[string]int, log log15.Logger) ([]*
 	var news []*mtgfail.Entry
 	for _, entry := range entries {
 		if count, ok := dl[entry.Name]; ok {
-			for i := 0; i < count; i++ {
+			for i := 1; i < count; i++ {
 				var newEntry mtgfail.Entry
 				err := deepcopy.Copy(&newEntry, entry)
 				if err != nil {
