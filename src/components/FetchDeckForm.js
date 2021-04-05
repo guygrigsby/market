@@ -96,13 +96,7 @@ const FetchDeckForm = ({
   React.useEffect(() => {
     if (loadDecks) {
       try {
-        if (deckURL !== '') {
-          console.log('deckURL', deckURL)
-          makeDecks(
-            () => fetchDecks(deckURL, onError),
-            () => 'New Deck',
-          )
-        } else if (decklist !== '') {
+        if (decklist !== '') {
           try {
             const normalized = isValid(decklist)
             console.log('normalized', normalized)
@@ -114,6 +108,12 @@ const FetchDeckForm = ({
             onError(e)
             return
           }
+        } else if (deckURL !== '') {
+          console.log('deckURL', deckURL)
+          makeDecks(
+            () => fetchDecks(deckURL, onError),
+            () => 'New Deck',
+          )
         }
       } catch (e) {
         onError(`failed to fetch deck. Please check format.${e}`)
@@ -143,9 +143,13 @@ const FetchDeckForm = ({
   const handleURLChange = (val) => {
     const prefetch = async () => {
       try {
-        fetchDecklist(val)
+        const list = await fetchDecklist(val)
+        console.log('prefetched list', list)
+        if (list != null) {
+          setDecklist(list)
+        }
       } catch (e) {
-        console.log('could not prefetch decklist', val)
+        console.log('could not prefetch decklist', val, e)
       }
     }
 

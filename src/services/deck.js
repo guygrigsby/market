@@ -46,15 +46,18 @@ export const isValid = (decklist) => {
   }
   return decklist
 }
-export const fetchDecklist = (url) => {
-  const domain = new URL(url).domain
+const PROXY = `${Upstream}/Proxy`
+export const fetchDecklist = (uri) => {
+  const url = new URL(uri)
+  console.log('url', url)
+  const domain = url.host
+  console.log('domain', domain)
   let decklistURI = ''
   switch (domain) {
-    case 'tappedout.com':
-      decklistURI = `${url}?fmt=txt`
+    case 'tappedout.net':
+      decklistURI = `${PROXY}?upstream=${uri}?fmt=txt`
       break
     default:
-      throw new TypeError('Unknown deckside')
   }
   const headers = {
     Accept: 'text/plain',

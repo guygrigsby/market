@@ -40,6 +40,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Access-Control-Allow-Methods", "GET")
 	w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
 	w.Header().Add("Access-Control-Allow-Headers", "Accept-Encoding")
+	w.Header().Add("Access-Control-Allow-Headers", "Accept")
 	w.Header().Set("Access-Control-Max-Age", "3600")
 	if r.Method == http.MethodOptions {
 		w.WriteHeader(http.StatusNoContent)
