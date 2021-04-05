@@ -1,10 +1,10 @@
 package cloudfuncs
 
 import (
-	"context"
 	"encoding/json"
 	"io"
 	"net/http"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/getlantern/deepcopy"
@@ -18,9 +18,19 @@ func CreateAllFormatsLocal(w http.ResponseWriter, r *http.Request) {
 	r.Header.Set("testing", "true")
 	CreateAllFormats(w, r)
 }
+func recTime(last time.Time, msg string, log log15.Logger) time.Time {
+	n := time.Since(last)
+	log.Info(
+		"Time",
+		"msg", msg,
+		"elapsed", n,
+	)
+	return last.Add(n)
+}
 
 // CreateAllFormats makes both internal and tts formats decks
 func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
 
 	log := log15.New()
 
@@ -36,7 +46,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		log.Debug("CORS preflight")
 		return
 	}
-	ctx := context.Background()
+	ctx := r.Context()
 	var (
 		rc   io.ReadCloser
 		err  error
@@ -44,8 +54,10 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 	)
 	hasBodyDeck := r.URL.Query().Get("decklist") != ""
 
+	f := recTime(start, "Starting FetchDeck", log)
 	if hasBodyDeck {
 		log.Debug("decklist sent")
+		site = mtgfail.RawDeck
 		rc = r.Body
 	} else {
 		uri := r.URL.Query().Get("deck")
@@ -54,7 +66,6 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 			"value", hasBodyDeck,
 			"uri", uri,
 		)
-
 		site, rc, err = FetchDeck(uri, log)
 		if err != nil {
 			log.Error(
@@ -66,7 +77,11 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Debug("fetched deck")
 	}
+	fe := recTime(f, "Ending FetchDeck", log)
+	n := recTime(fe, "Starting Normalize", log)
 	deckList, err := mtgfail.Normalize(site, rc, log)
+	log.Debug("decklist", "val", deckList)
+	ne := recTime(n, "Ending Normalize", log)
 	if err != nil {
 		msg := "cannot fetch deck"
 		log.Error(
@@ -76,11 +91,6 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, msg, http.StatusBadRequest)
 		return
 	}
-	log.Debug(
-		"parsed deck",
-		"count", len(deckList),
-		"decklist", deckList,
-	)
 	testing := r.Header.Get("testing")
 
 	var client *firestore.Client
@@ -110,12 +120,9 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		names = append(names, name)
 
 	}
-	log.Debug(
-		"collated card names",
-		"count", len(names),
-		"names", names,
-	)
+	s := recTime(ne, "Starting Store Access", log)
 	entries, errs := store.GetMany(names, log)
+	se := recTime(s, "Ending Store Access", log)
 	if len(errs) > 0 {
 		log.Warn(
 			"Errors occurred while getting cards from store",
@@ -124,8 +131,9 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		ret.Errors = errs
 	}
 
-	log.Debug("starting TTS build")
+	t := recTime(se, "Starting BuildTTS", log)
 	ttsDeck, err := BuildTTS(ctx, deckList, entries, log)
+	recTime(t, "Ending BuildTTS", log)
 	if err != nil {
 		log.Error(
 			"Failed to build TTS deck",
@@ -133,10 +141,6 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	log.Debug(
-		"TTS build done",
-		"contents", ttsDeck,
-	)
 	ret.TTS = ttsDeck
 	mults, err := genDups(entries, deckList, log)
 	if err != nil {
@@ -173,6 +177,8 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 
 	}
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	recTime(start, "Ending Handler", log)
 
 }
 func genDups(entries []*mtgfail.Entry, dl map[string]int, log log15.Logger) ([]*mtgfail.Entry, error) {

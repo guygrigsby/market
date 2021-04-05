@@ -1,7 +1,8 @@
 GOOGLE_APPLICATION_CREDENTIALS=${HOME}/listing-publisher.json
 
+
 run-functions:
-	./run.sh
+	@./run.sh
 release:
 	@gcloud functions deploy CreateAllFormats 
 
