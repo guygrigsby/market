@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { cx, css } from 'pretty-lights'
 import PropTypes from 'prop-types'
-import { useAuth } from '../AuthProvider.js'
 import firebase from 'firebase/app'
 
 const style = css`
@@ -47,23 +46,7 @@ const backgroundGlow = css`
 `
 
 const Nav = ({ sticky }) => {
-  const [loggedIn, setLoggedIn] = React.useState(false)
-  const auth = useAuth()
-  React.useEffect(() => {
-    firebase.auth().onAuthStateChanged(
-      (u) => {
-        if (u) {
-          setLoggedIn(true)
-        } else {
-          setLoggedIn(false)
-        }
-      },
-      function (error) {
-        console.error('error on auth state change', error)
-      },
-    )
-  }, [auth])
-  const items = genItems(loggedIn)
+  const items = genItems(false)
   return (
     <nav className={cx(style, sticky ? stickyClass : '')}>
       {items.map((e, idx) =>

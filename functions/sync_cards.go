@@ -13,6 +13,7 @@ import (
 
 	"cloud.google.com/go/firestore"
 
+	"github.com/getlantern/deepcopy"
 	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
@@ -169,17 +170,33 @@ func upload(ctx context.Context, cc int, client *firestore.Client, bulk map[stri
 					wg.Add(1)
 					go func(card *mtgfail.Entry) {
 						defer wg.Done()
-						var (
-							key  string
-							name string
-						)
+						key := store.CardKey(card.Name, log)
 						if strings.Contains(card.Name, "//") {
-							// Strip everything after the double slash
+							// Add additional entry without everything after the double slash
 							// Scryfall has the // , but some other places do not
-							parts := strings.Split(card.Name, "//")
-							name = parts[0]
-							card.Name = name
-							key = store.CardKey(name, log)
+							var cc mtgfail.Entry
+							err := deepcopy.Copy(cc, card)
+							if err != nil {
+								log.Error(
+									"failed to copy multiface card",
+									"err", err,
+								)
+								return
+							}
+							parts := strings.Split(cc.Name, "//")
+
+							cc.Name = parts[0]
+							key := store.CardKey(parts[0], log)
+							doc := cards.Doc(key)
+							_, err = doc.Set(ctx, &cc)
+							if err != nil {
+								log.Error(
+									"Cannot create secondary named card in indexed collection",
+									"name", card.Name,
+									"err", err,
+								)
+								return
+							}
 						}
 						doc := cards.Doc(key)
 						_, err := doc.Set(ctx, &card)
