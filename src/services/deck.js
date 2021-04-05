@@ -46,7 +46,25 @@ export const isValid = (decklist) => {
   }
   return decklist
 }
-
+export const fetchDecklist = (url) => {
+  const domain = new URL(url).domain
+  let decklistURI = ''
+  switch (domain) {
+    case 'tappedout.com':
+      decklistURI = `${url}?fmt=txt`
+      break
+    default:
+      throw new TypeError('Unknown deckside')
+  }
+  const headers = {
+    Accept: 'text/plain',
+  }
+  return fetch(decklistURI, {
+    headers: headers,
+  })
+    .then(handleErrors)
+    .then((response) => response.text())
+}
 export const fetchDecksFromList = (decklist) => {
   const fullURI = new URL(`${Upstream}/CreateAllFormats?decklist=${true}`)
   const headers = {
