@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { cx, css } from 'pretty-lights'
 import PropTypes from 'prop-types'
-import firebase from 'firebase/app'
 
 const style = css`
   display: flex;

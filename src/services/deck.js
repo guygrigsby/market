@@ -48,7 +48,12 @@ export const isValid = (decklist) => {
 }
 const PROXY = `${Upstream}/Proxy`
 export const fetchDecklist = (uri) => {
-  const url = new URL(uri)
+  let url
+  try {
+    url = new URL(uri)
+  } catch (e) {
+    return null
+  }
   console.log('url', url)
   const domain = url.host
   console.log('domain', domain)
@@ -58,6 +63,7 @@ export const fetchDecklist = (uri) => {
       decklistURI = `${PROXY}?upstream=${uri}?fmt=txt`
       break
     default:
+      return null
   }
   const headers = {
     Accept: 'text/plain',
