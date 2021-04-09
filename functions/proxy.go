@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
 )
 
@@ -24,6 +25,27 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	upstream := r.URL.Query().Get("upstream")
+	valid, err := sanitizeURL(upstream)
+	if !valid {
+		msg := "CORS upstream url did not pass checks"
+		log.Debug(
+			msg,
+			"url", upstream,
+		)
+		http.Error(w, msg, http.StatusForbidden)
+		return
+	}
+	if err != nil {
+		msg := " CORS proxy cannot parse upstream url"
+		log.Debug(
+			msg,
+			"url", upstream,
+			"err", err,
+		)
+		http.Error(w, msg, http.StatusBadRequest)
+		return
+
+	}
 	res, err := http.DefaultClient.Get(upstream)
 	if err != nil {
 		log.Error(
@@ -50,4 +72,8 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 		)
 		http.Error(w, "cannot write response", http.StatusInternalServerError)
 	}
+}
+
+func sanitizeURL(uri string) (bool, error) {
+	return mtgfail.SupportedDomain(uri)
 }
