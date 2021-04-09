@@ -1,9 +1,11 @@
 package cloudfuncs
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	"github.com/guygrigsby/mtgfail"
 	"github.com/inconshreveable/log15"
@@ -24,9 +26,9 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 		log.Debug("CORS preflight")
 		return
 	}
-	upstream := r.URL.Query().Get("upstream")
-	valid, err := sanitizeURL(upstream)
-	if !valid {
+	u := r.URL.Query().Get("upstream")
+	upstream, err := sanitizeURL(u)
+	if err != nil {
 		msg := "CORS upstream url did not pass checks"
 		log.Debug(
 			msg,
@@ -46,7 +48,7 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
-	res, err := http.DefaultClient.Get(upstream)
+	res, err := http.DefaultClient.Get(upstream.String())
 	if err != nil {
 		log.Error(
 			"unable to call upstream",
@@ -74,6 +76,13 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func sanitizeURL(uri string) (bool, error) {
-	return mtgfail.SupportedDomain(uri)
+func sanitizeURL(uri string) (*url.URL, error) {
+	supported, cleaned, err := mtgfail.SanitizeURL(uri)
+	if err != nil {
+		return nil, err
+	}
+	if !supported {
+		return nil, errors.New("unsupported decksite")
+	}
+	return cleaned, nil
 }
