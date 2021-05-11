@@ -7,13 +7,13 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   Upstream = 'https://us-central1-marketplace-c87d0.cloudfunctions.net'
 }
-const handleErrors = async (response) => {
+const handleErrors = (response) => {
   if (!response.ok) {
-    const res = await response.text()
+    const res = response.text()
     if (res) {
-      throw Error(`${response.statusText}: ${decodeResponse(res)}`)
+      console.Error(`${response.statusText}: ${decodeResponse(res)}`)
     }
-    throw Error(response.statusText)
+    console.Errori('Errot with status', response.statusText)
   }
   return response
 }
@@ -76,11 +76,13 @@ export const fetchDecks = (url) => {
       return j
     })
     .then((res) => {
-      res.internal = res.internal.map((card, i) => {
-        const newID = `${card.id}-${i}`
-        card.id = newID
-        return card
-      })
+      res.internal = res
+        ? res.internal.map((card, i) => {
+            const newID = `${card.id}-${i}`
+            card.id = newID
+            return card
+          })
+        : []
       return res
     })
 }

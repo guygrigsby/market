@@ -33,6 +33,11 @@ func FetchDeck(deckURI string, log log15.Logger) (mtgfail.DeckSite, io.ReadClose
 		)
 		return -1, nil, err
 	}
+	log.Debug(
+		"Preparing to contact deck host",
+		"url", deckURI,
+		"host", u.Host,
+	)
 	switch u.Host {
 	//https://tappedout.net/mtg-decks/22-01-20-kess-storm/
 	case "tappedout.net":
