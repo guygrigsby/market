@@ -46,7 +46,34 @@ export const isValid = (decklist) => {
   }
   return decklist
 }
-
+const PROXY = `${Upstream}/Proxy`
+export const fetchDecklist = (uri) => {
+  let url
+  try {
+    url = new URL(uri)
+  } catch (e) {
+    return null
+  }
+  console.log('url', url)
+  const domain = url.host
+  console.log('domain', domain)
+  let decklistURI = ''
+  switch (domain) {
+    case 'tappedout.net':
+      decklistURI = `${PROXY}?upstream=${uri}?fmt=txt`
+      break
+    default:
+      return null
+  }
+  const headers = {
+    Accept: 'text/plain',
+  }
+  return fetch(decklistURI, {
+    headers: headers,
+  })
+    .then(handleErrors)
+    .then((response) => response.text())
+}
 export const fetchDecksFromList = (decklist) => {
   const fullURI = new URL(`${Upstream}/CreateAllFormats?decklist=${true}`)
   const headers = {
