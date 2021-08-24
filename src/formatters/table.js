@@ -20,7 +20,12 @@ export const SetFormatter = ({ abrv, cl }) => {
   if (abrv === '') {
     return <div></div>
   }
-  return <SetIcon svg={sets.get(abrv).logo} className={cl} />
+  try {
+    const logo = sets.get(abrv).logo
+    return <SetIcon svg={logo} className={cl} />
+  } catch (e) {
+    return <></>
+  }
 }
 export const header = (str, width) => (
   <span style={{ maxWidth: width }}>{str}</span>

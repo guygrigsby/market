@@ -4,14 +4,16 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"os"
 	"time"
 
-	"cloud.google.com/go/firestore"
+	firebase "firebase.google.com/go"
 	"github.com/getlantern/deepcopy"
 	"github.com/guygrigsby/market/functions/store"
 	"github.com/guygrigsby/mtgfail"
 	"github.com/guygrigsby/mtgfail/tabletopsimulator"
 	"github.com/inconshreveable/log15"
+	"google.golang.org/api/option"
 )
 
 func CreateAllFormatsLocal(w http.ResponseWriter, r *http.Request) {
@@ -92,20 +94,22 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, msg, http.StatusBadRequest)
 		return
 	}
-	testing := r.Header.Get("testing")
 
-	var client *firestore.Client
-	if testing != "" {
-		client, err = firestore.NewClient(
-			ctx,
-			"test",
+	credsFile := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+
+	config := &firebase.Config{ProjectID: "marketplace-c87d0"}
+	opt := option.WithCredentialsFile(credsFile)
+	app, err := firebase.NewApp(ctx, config, opt)
+	if err != nil {
+		log.Error(
+			"Failed to get firebase app",
+			"err", err,
 		)
-	} else {
-		client, err = firestore.NewClient(
-			ctx,
-			"marketplace-c87d0",
-		)
+		http.Error(w, "failed to get firebase app", http.StatusInternalServerError)
+		return
 	}
+
+	client, err := app.Firestore(ctx)
 	if err != nil {
 		log.Error(
 			"Failed to get firestore client",
@@ -114,7 +118,8 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to get firestore client", http.StatusInternalServerError)
 		return
 	}
-	store := store.NewFirestore(client, log)
+	fb := store.NewFirestore(client, log)
+
 	ret := &DualDeck{}
 	var names []string
 	for name := range deckList {
@@ -122,7 +127,7 @@ func CreateAllFormats(w http.ResponseWriter, r *http.Request) {
 
 	}
 	s := recTime(ne, "Starting Store Access", log)
-	entries, errs := store.GetMany(names, log)
+	entries, errs := fb.GetMany(names, log)
 	se := recTime(s, "Ending Store Access", log)
 	if len(errs) > 0 {
 		log.Warn(
