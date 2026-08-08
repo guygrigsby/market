@@ -3,6 +3,7 @@ import { cx, css } from 'pretty-lights'
 import '../index.css'
 import {
   fetchDecks,
+  fetchDecklist,
   fetchDecksFromList,
   isValid,
   decodeTTS,
@@ -53,9 +54,9 @@ const FetchDeckForm = ({
   onError,
   setLoading,
 }) => {
-  const [deckURL, setDeckURL] = React.useState(undefined)
-  const [decklist, setDecklist] = React.useState(undefined)
-  const [activeTab, setActive] = React.useState(0)
+  const [deckURL, setDeckURL] = React.useState('')
+  const [decklist, setDecklist] = React.useState('')
+  const [activeTab, setActive] = React.useState(1)
   const [loadDecks, setLoadDecks] = React.useState(false)
   const [file, setFile] = React.useState(undefined)
 
@@ -64,9 +65,9 @@ const FetchDeckForm = ({
   }
   const makeDecks = React.useCallback(
     async (getDeck, getName) => {
+      setLoadDecks(false)
       const decks = await getDeck()
       if (decks.errors && decks.errors.length > 0) {
-        setLoadDecks(false)
         setLoading(false)
         const errors = decks.errors.reduce((acc, e) => {
           acc += `\n - ${e}`
@@ -76,16 +77,17 @@ const FetchDeckForm = ({
       }
       if (!decks.internal) {
         onError('Unable to create deck')
+        setLoading(false)
         return
       }
       if (!decks.tts) {
         onError('Unable to create tts deck')
+        setLoading(false)
         return
       }
       setDeck(decks.internal.sort((a, b) => (a.name > b.name ? 1 : -1)))
       setTTSDeck(decks.tts)
       setDeckName(await getName())
-      setLoadDecks(false)
       setLoading(false)
     },
     [setDeck, setTTSDeck, setDeckName, setLoading, onError],
@@ -94,13 +96,7 @@ const FetchDeckForm = ({
   React.useEffect(() => {
     if (loadDecks) {
       try {
-        if (deckURL) {
-          console.log('deckURL', deckURL)
-          makeDecks(
-            () => fetchDecks(deckURL, onError),
-            () => 'New Deck',
-          )
-        } else if (decklist) {
+        if (decklist !== '') {
           try {
             const normalized = isValid(decklist)
             console.log('normalized', normalized)
@@ -112,6 +108,12 @@ const FetchDeckForm = ({
             onError(e)
             return
           }
+        } else if (deckURL !== '') {
+          console.log('deckURL', deckURL)
+          makeDecks(
+            () => fetchDecks(deckURL, onError),
+            () => 'New Deck',
+          )
         }
       } catch (e) {
         onError(`failed to fetch deck. Please check format.${e}`)
@@ -139,6 +141,19 @@ const FetchDeckForm = ({
   }
 
   const handleURLChange = (val) => {
+    const prefetch = async () => {
+      try {
+        const list = await fetchDecklist(val)
+        console.log('prefetched list', list)
+        if (list != null) {
+          setDecklist(list)
+        }
+      } catch (e) {
+        console.log('could not prefetch decklist', val, e)
+      }
+    }
+
+    prefetch()
     setDeckURL(val)
     setLoadDecks(false)
     setTTSDeck(null)
@@ -154,16 +169,16 @@ const FetchDeckForm = ({
   const handleSubmit = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (!deckURL && !decklist && !file) {
+    if (deckURL === '' && decklist === '' && !file) {
       return
     }
     setLoading(true)
-    if (decklist) {
+    if (decklist !== '') {
       console.log('submit decklist')
       setLoadDecks(true)
       return
     }
-    if (deckURL) {
+    if (deckURL !== '') {
       console.log('submit deckurl')
       setLoadDecks(true)
     }

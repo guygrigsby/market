@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom'
 import './firebase.js' // This order matters
 import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
-import { ProvideShoppingCart } from './use-cart.js'
 import './index.css'
 
 if (module.hot) {
@@ -13,9 +12,7 @@ if (module.hot) {
 
 ReactDOM.render(
   <ErrorBoundary>
-    <ProvideShoppingCart>
       <App />
-    </ProvideShoppingCart>
   </ErrorBoundary>,
   document.getElementById('root'),
 )
